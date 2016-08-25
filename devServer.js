@@ -7,7 +7,7 @@ var app = express();
 var compiler = webpack(config);
 
 const {
-  HOST = 'localhost',
+  HOST = '0.0.0.0', //localhost',
   PORT = 3000
 } = process.env;
 

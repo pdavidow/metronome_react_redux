@@ -1,5 +1,3 @@
-const SET_RH = 'SET_RH';
-const SET_LH = 'SET_LH';
-const SET_RH_LH = 'SET_RH_LH';
+const SET_BEAT = 'SET_BEAT';
 
-export {SET_RH, SET_LH, SET_RH_LH};
+export {SET_BEAT};

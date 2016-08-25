@@ -1,8 +1,8 @@
-import {combineReducers} from 'redux';
-import beat from './beat';
-import form from './reduxForm';
+import {SET_BEAT} from 'constants/actionTypes';
 
-export default combineReducers({
-  beat,
-  form
-});
+export default (state = {rh: 0, lh: 0}, action) => {
+  switch (type) {
+    case SET_BEAT: return {...state, ...action};
+    default: return state;
+  }
+};

@@ -1,17 +1,19 @@
 import {connect} from 'react-redux';
 import createBeat from 'components/beat';
-import {SET_RH_LH} from 'constants/actionTypes';
+import {setBeat} from 'actions';
 
 export default (React) => {
   const Beat = createBeat(React);
-  const mapStateToProps = (state, ownProps) => (
-    {
-      fields: {...(state.beat)},
-      onSubmit: (store.dispatch({ type : SET_RH_LH, rh: rh, lh: lh}))
-    });
+
+  const mapStateToProps = (state) => ({...state});
+
+  const mapDispatchToProps = (dispatch) => (
+    {onSubmit: (rh, lh) => dispatch(setBeat(rh, lh))}
+  );
 
   return connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
   )(Beat);
 };
 

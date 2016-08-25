@@ -15,6 +15,7 @@ const tickIndices = ({noteCount}, {rh, lh}) => {
   return indicies;
 };
 
+// todo simplify, DRY
 const rhTickIndices = ({rh, lh}) => tickIndices({noteCount: rh}, {rh, lh});
 const lhTickIndices = ({rh, lh}) => tickIndices({noteCount: lh}, {rh, lh});
 

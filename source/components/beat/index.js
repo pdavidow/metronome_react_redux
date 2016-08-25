@@ -1,36 +1,36 @@
-//http://redux-form.com/5.3.1/#/getting-started?_k=02vygh
-import {reduxForm} from 'redux-form';
-
 export default (React) => {
   const PropTypes = React.PropTypes;
 
-  const Beat = ({fields: {rh, lh}}, onSubmit) => {
+  const Beat = ({rh, lh, onSubmit}) => {
     return (
-      <form onSubmit={handleSubmit}>
+      <div className='beat'>
         <div className='rh'>
           <label>Right Hand Note Count</label>
-          <input type="number" placeholder="1" min="1" {...rh}/>
+          <input type="number" placeholder={rh} min="1" ref={node => {input_rh = node}}/>
         </div>
+
         <div className='lh'>
           <label>Left Hand Note Count</label>
-          <input type="number" placeholder="1" min="1" {...lh}/>
+          <input type="number" placeholder={lh} min="1" ref={node => {input_lh = node}}/>
         </div>
-        <button type="submit">Submit</button>
-      </form>
-    );
+
+        <button
+          onClick={() => {
+            onSubmit(input_rh.value, input_lh.value);
+            input_rh.value = '';
+            input_lh.value = '';
+          }}>
+          Submit
+        </button>
+      </div>
+        );
   };
 
   Beat.propTypes = {
-    fields: PropTypes.object.isRequired,
     rh: PropTypes.number.isRequired,
     lh: PropTypes.number.isRequired,
     onSubmit: PropTypes.func.isRequired
   };
 
-  const BeatForm = reduxForm({
-    form: 'beat',        // a unique name for this form
-    fields: ['rh', 'lh'] // all the fields in your form
-  })(Beat);
-
-  return BeatForm;
+  return Beat;
 };
