@@ -1,16 +1,16 @@
 import test from 'tape';
 import deepFreeze from 'deep-freeze';
-import {SET_BEAT} from 'constants/actionTypes';
+import {setBeat} from 'actions';
 
-import beat from 'store/reducers/beat';
+import beat from 'store/reducers';
 
 test('Set rh, lh', nest => {
   nest.test('initial', assert => {
-    const message = `should set {rh: 0, lh: 0}`;
+    const message = `should set {rh: 1, lh: 1}`;
 
     const expected = {
-      rh: 0,
-      lh: 0
+      rh: 1,
+      lh: 1
     };
 
     const actual = beat();
@@ -22,19 +22,9 @@ test('Set rh, lh', nest => {
   nest.test('SET_BEAT', assert => {
     const message = 'should set rh & lh';
 
-    const stateBefore = {
-      rh: 0,
-      lh: 0
-    };
-    const action = {
-      type: SET_BEAT,
-      rh: 3,
-      lh:4
-    };
-    const expected = {
-      rh: 3,
-      lh: 4
-    };
+    const stateBefore = {rh: 1, lh: 1};
+    const action = setBeat({rh: 3, lh: 4});
+    const expected = {rh: 3, lh: 4};
 
     deepFreeze(stateBefore);
     deepFreeze(action);

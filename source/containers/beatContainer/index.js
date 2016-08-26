@@ -8,7 +8,7 @@ export default (React) => {
   const mapStateToProps = (state) => ({...state});
 
   const mapDispatchToProps = (dispatch) => (
-    {onSubmit: (rh, lh) => dispatch(setBeat(rh, lh))}
+    {onSubmit: ({rh, lh}) => dispatch(setBeat({rh, lh}))}
   );
 
   return connect(

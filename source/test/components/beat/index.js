@@ -12,7 +12,7 @@ test('Beat component', nest => {
   nest.test('rh, lh structure', assert => {
     const msg = 'Should have rh, lh classes';
 
-    const props = {rh: 0, lh: 0};
+    const props = {rh: 3, lh: 4, onSubmit: (()=>{})};
     const el = <Beat {...props} />;
     const $ = dom.load(render(el));
 

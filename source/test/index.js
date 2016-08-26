@@ -1,4 +1,4 @@
 import './App.js';
-import './store/reducers/beat';
+import './store/reducers';
 import './components/beat';
 import './models/beat';
