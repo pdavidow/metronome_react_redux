@@ -19,20 +19,18 @@ export default (React) => {
     return (
       <div className='beat'>
         <div className='rh'>
-          <label>Right Hand note count</label>
+          <label>Right Hand note count: {rh}</label>
           <input
             type="number"
-            value={rh}
             min="1"
             ref={node => input_rh = node}
           />
         </div>
 
         <div className='lh'>
-          <label>Left Hand note count</label>
+          <label>Left Hand note count: {lh}</label>
           <input
             type="number"
-            value={lh}
             min="1"
             ref={node => input_lh = node}
           />
