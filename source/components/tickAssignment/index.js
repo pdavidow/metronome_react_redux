@@ -1,17 +1,26 @@
 export default (React) => {
   const TickAssignment = (props) => {
+    const PropTypes = React.PropTypes;
+
+    TickAssignment.propTypes = {
+      tickCount: PropTypes.number.isRequired,
+      rhTickIndices: PropTypes.number.isRequired,
+      lhTickIndices: PropTypes.number.isRequired
+    };
+    const {tickCount, rhTickIndices, lhTickIndices} = props;
+
     return (
       <div className="tickAssignment">
         <label>===================================</label>
-        <h3>TickAssignment</h3>
+        <h3>Ticks</h3>
         <div className="tickCount">
-          <label>tickCount</label>
+          <label>Tick Count: {tickCount ? tickCount.toString() : "--"}</label>
         </div>
         <div className="rhTickIndices">
-          <label>rhTickIndices</label>
+          <label>Right-Hand Indices: {rhTickIndices ? rhTickIndices.toString() : "--"}</label>
         </div>
         <div className="lhTickIndices">
-          <label>lhTickIndices</label>
+          <label>Left-Hand Indices: {lhTickIndices ? lhTickIndices.toString() : "--"}</label>
         </div>
       </div>
     );
