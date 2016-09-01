@@ -1,7 +1,14 @@
 export default (React) => {
   const PropTypes = React.PropTypes;
 
-  const Beat = ({rh, lh, onSubmit}) => {
+  const Beat = (props) => {
+    Beat.propTypes = {
+      rh: PropTypes.number.isRequired,
+      lh: PropTypes.number.isRequired,
+      onSubmit: PropTypes.func.isRequired
+    };
+    const {rh, lh, onSubmit} = props;
+
     let input_rh, input_lh;
 
     const clearInputs = () => {
@@ -18,6 +25,9 @@ export default (React) => {
 
     return (
       <div className='beat'>
+        <label>===================================</label>
+        <h3>Beat</h3>
+        <label>((waiting for ReduxForm))</label>
         <div className='rh'>
           <label>Right Hand note count: {rh}</label>
           <input
@@ -39,12 +49,6 @@ export default (React) => {
         <button type="submit" onClick={submitButtonAction}>Submit</button>
       </div>
     );
-  };
-
-  Beat.propTypes = {
-    rh: PropTypes.number.isRequired,
-    lh: PropTypes.number.isRequired,
-    onSubmit: PropTypes.func.isRequired
   };
 
   return Beat;

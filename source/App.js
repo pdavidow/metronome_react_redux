@@ -1,11 +1,11 @@
-import createBeatContainer from 'containers/beatContainer';
+import createMetronomeContainer from 'containers/metronome';
 
 export default (React) => () => {
-  const BeatContainer = createBeatContainer(React);
+  const MetronomeContainer = createMetronomeContainer(React);
 
   return (
     <div>
-      <BeatContainer />
+      <MetronomeContainer />
     </div>
   );
 };

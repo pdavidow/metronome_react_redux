@@ -6,7 +6,7 @@ import {createStore} from 'redux';
 import combinedReducers from 'store/reducers';
 
 const App = createApp(React);
-let store = createStore(combinedReducers);
+const store = createStore(combinedReducers);
 const rootEl = document.getElementById('root');
 
 render(

@@ -1,9 +1,20 @@
 import {connect} from 'react-redux';
 import createBeat from 'components/beat';
+import createTickAssignment from 'components/tickAssignment';
 import {setBeat} from 'actions';
 
 export default (React) => {
-  const Beat = createBeat(React);
+  const Metronome = (props) => {
+    const Beat = createBeat(React);
+    const TickAssignment = createTickAssignment(React);
+
+    return (
+      <div>
+        <Beat {...props}/>
+        <TickAssignment {...props}/>
+      </div>
+    );
+   };
 
   const mapStateToProps = (state) => ({...state});
 
@@ -14,6 +25,6 @@ export default (React) => {
   return connect(
     mapStateToProps,
     mapDispatchToProps
-  )(Beat);
+  )(Metronome);
 };
 
