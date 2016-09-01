@@ -2,8 +2,9 @@ import {lcm} from 'mathjs';
 
 const tickCount = ({rh, lh}) => lcm(rh, lh);
 
-const tickIndices = ({noteCount}, {rh, lh}) => {
-  const myTickCount = tickCount({rh, lh});
+const tickIndices = ({focus}, beat) => {
+  const noteCount = beat[focus];
+  const myTickCount = tickCount(beat);
   const interval = myTickCount / noteCount;
   const indicies = [];
   let index = 0;
@@ -15,8 +16,7 @@ const tickIndices = ({noteCount}, {rh, lh}) => {
   return indicies;
 };
 
-// todo simplify, DRY
-const rhTickIndices = ({rh, lh}) => tickIndices({noteCount: rh}, {rh, lh});
-const lhTickIndices = ({rh, lh}) => tickIndices({noteCount: lh}, {rh, lh});
+const rhTickIndices = (beat = {rh:1, lh:1}) => tickIndices({focus: 'rh'}, beat);
+const lhTickIndices = (beat = {rh:1, lh:1}) => tickIndices({focus: 'lh'}, beat);
 
 export {tickCount, rhTickIndices, lhTickIndices};
