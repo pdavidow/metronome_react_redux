@@ -1,22 +1,18 @@
-import {lcm} from 'mathjs';
+import {calc_tickCount} from 'models/beat';
 
-const tickCountFunc = ({rh, lh}) => lcm(rh, lh);
+const calc_tickDuration = ({
+  beat = {rh: 1, lh: 1},
+  classicTicksPerMinute = 1,
+  classicTicksPerBeat = 1
+}) => {
+    const tickCount = calc_tickCount(beat);
+    const ticksPerSec = calc_ticksPerSec({classicTicksPerMinute});
 
-const tickIndicesFunc = ({focus}, beat) => {
-  const noteCount = beat[focus];
-  const myTickCount = tickCountFunc(beat);
-  const interval = myTickCount / noteCount;
-  const indicies = [];
-  let index = 0;
-
-  while (index < myTickCount) {
-    indicies.push(index);
-    index += interval;
-  }
-  return indicies;
+    return classicTicksPerBeat / (tickCount * ticksPerSec);
 };
 
-const rhTickIndicesFunc = (beat = {rh:1, lh:1}) => tickIndicesFunc({focus: 'rh'}, beat);
-const lhTickIndicesFunc = (beat = {rh:1, lh:1}) => tickIndicesFunc({focus: 'lh'}, beat);
+const calc_ticksPerSec = ({
+  classicTicksPerMinute = 1
+}) => classicTicksPerMinute / 60;
 
-export {tickCountFunc, rhTickIndicesFunc, lhTickIndicesFunc};
+export {calc_tickDuration};

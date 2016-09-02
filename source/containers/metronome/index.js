@@ -2,7 +2,7 @@ import {connect} from 'react-redux';
 import createBeat from 'components/beat';
 import createTickAssignment from 'components/tickAssignment';
 import {setBeat} from 'actions';
-import {tickCountFunc, rhTickIndicesFunc, lhTickIndicesFunc} from 'models/metronome';
+import {calc_tickCount, calc_rhTickIndices, calc_lhTickIndices} from 'models/beat';
 
 export default (React) => {
   const Metronome = (props) => {
@@ -19,9 +19,9 @@ export default (React) => {
 
   const mapStateToProps = (state) => {
     const beat = state;
-    const tickCount = tickCountFunc(beat);
-    const rhTickIndices = rhTickIndicesFunc(beat);
-    const lhTickIndices = lhTickIndicesFunc(beat);
+    const tickCount = calc_tickCount(beat);
+    const rhTickIndices = calc_rhTickIndices(beat);
+    const lhTickIndices = calc_lhTickIndices(beat);
 
     return {
       ...beat,
