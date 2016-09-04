@@ -1,5 +1,5 @@
-import {range} from 'lodash';
-import {calc_tickCount} from 'models/beat';
+import {includes, range} from 'lodash';
+import {calc_tickCount, calc_rhTickIndices, calc_lhTickIndices} from 'models/beat';
 
 const calc_tickDuration = ({
   beat = {rh: 1, lh: 1},
@@ -36,4 +36,73 @@ const calc_ticksPerSec = ({
   classicTicksPerMinute = 1
 }) => classicTicksPerMinute / 60;
 
-export {calc_tickDuration, calc_tickStartTimeOffsets};
+const calc_ticks = ({
+  beat = {rh: 1, lh: 1},
+  classicTicksPerMinute = 1,
+  classicTicksPerBeat = 1
+}) => {
+  const tickStartTimeOffsets = calc_tickStartTimeOffsets({
+    beat,
+    classicTicksPerMinute,
+    classicTicksPerBeat
+  });
+  const rhTickIndices = calc_rhTickIndices(beat);
+  const lhTickIndices = calc_lhTickIndices(beat);
+
+  const callback = (startOffset, index) => {
+    const isRH = includes(rhTickIndices, index);
+    const isLH = includes(lhTickIndices, index);
+
+    return {
+      isRH,
+      isLH,
+      startOffset
+    };
+  };
+
+  return tickStartTimeOffsets.map(callback);
+};
+
+const calc_rhTicks = ({
+  beat = {rh: 1, lh: 1},
+  classicTicksPerMinute = 1,
+  classicTicksPerBeat = 1
+}) => {
+  const ticks = calc_ticks({
+    beat,
+    classicTicksPerMinute,
+    classicTicksPerBeat
+  });
+
+  return ticks.filter((each) => each.isRH);
+};
+
+const calc_lhTicks = ({
+  beat = {rh: 1, lh: 1},
+  classicTicksPerMinute = 1,
+  classicTicksPerBeat = 1
+}) => {
+  const ticks = calc_ticks({
+    beat,
+    classicTicksPerMinute,
+    classicTicksPerBeat
+  });
+
+  return ticks.filter((each) => each.isLH);
+};
+
+const calc_rhOrLhticks = ({
+  beat = {rh: 1, lh: 1},
+  classicTicksPerMinute = 1,
+  classicTicksPerBeat = 1
+}) => {
+  const ticks = calc_ticks({
+    beat,
+    classicTicksPerMinute,
+    classicTicksPerBeat
+  });
+
+  return ticks.filter((each) => each.isRH || each.isLH);
+};
+
+export {calc_tickDuration, calc_tickStartTimeOffsets, calc_ticks, calc_rhTicks, calc_lhTicks, calc_rhOrLhticks};
