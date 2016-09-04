@@ -1,5 +1,9 @@
 import {includes, range} from 'lodash';
-import {calc_tickCount, calc_rhTickIndices, calc_lhTickIndices} from 'models/beat';
+import {
+  calc_tickCount,
+  calc_rhTickIndices,
+  calc_lhTickIndices
+} from 'models/beat';
 
 const calc_tickDuration = ({
   beat = {rh: 1, lh: 1},
@@ -63,10 +67,11 @@ const calc_ticks = ({
   return tickStartTimeOffsets.map(callback);
 };
 
-const calc_rhTicks = ({
+const calc_filteredTicks = ({
   beat = {rh: 1, lh: 1},
   classicTicksPerMinute = 1,
-  classicTicksPerBeat = 1
+  classicTicksPerBeat = 1,
+  filter = ()=>true
 }) => {
   const ticks = calc_ticks({
     beat,
@@ -74,7 +79,22 @@ const calc_rhTicks = ({
     classicTicksPerBeat
   });
 
-  return ticks.filter((each) => each.isRH);
+  return ticks.filter(filter);
+};
+
+const calc_rhTicks = ({
+  beat = {rh: 1, lh: 1},
+  classicTicksPerMinute = 1,
+  classicTicksPerBeat = 1
+}) => {
+  const filter = (each) => each.isRH;
+
+  return calc_filteredTicks({
+    beat,
+    classicTicksPerMinute,
+    classicTicksPerBeat,
+    filter
+  });
 };
 
 const calc_lhTicks = ({
@@ -82,13 +102,14 @@ const calc_lhTicks = ({
   classicTicksPerMinute = 1,
   classicTicksPerBeat = 1
 }) => {
-  const ticks = calc_ticks({
+  const filter = (each) => each.isLH;
+
+  return calc_filteredTicks({
     beat,
     classicTicksPerMinute,
-    classicTicksPerBeat
+    classicTicksPerBeat,
+    filter
   });
-
-  return ticks.filter((each) => each.isLH);
 };
 
 const calc_rhOrLhticks = ({
@@ -96,13 +117,21 @@ const calc_rhOrLhticks = ({
   classicTicksPerMinute = 1,
   classicTicksPerBeat = 1
 }) => {
-  const ticks = calc_ticks({
+  const filter = (each) => each.isRH || each.isLH;
+
+  return calc_filteredTicks({
     beat,
     classicTicksPerMinute,
-    classicTicksPerBeat
+    classicTicksPerBeat,
+    filter
   });
-
-  return ticks.filter((each) => each.isRH || each.isLH);
 };
 
-export {calc_tickDuration, calc_tickStartTimeOffsets, calc_ticks, calc_rhTicks, calc_lhTicks, calc_rhOrLhticks};
+export {
+  calc_tickDuration,
+  calc_tickStartTimeOffsets,
+  calc_ticks,
+  calc_rhTicks,
+  calc_lhTicks,
+  calc_rhOrLhticks
+};

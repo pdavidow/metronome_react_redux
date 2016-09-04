@@ -1,6 +1,13 @@
 import test from 'tape';
 import {range} from 'lodash';
-import {calc_tickDuration, calc_tickStartTimeOffsets, calc_ticks, calc_rhTicks, calc_lhTicks, calc_rhOrLhticks} from 'models/metronome';
+import {
+  calc_tickDuration,
+  calc_tickStartTimeOffsets,
+  calc_ticks,
+  calc_rhTicks,
+  calc_lhTicks,
+  calc_rhOrLhticks
+} from 'models/metronome';
 
 test('Metronome model', nestOuter => {
   nestOuter.test('...Tick duration (sec)', nestInner => {
