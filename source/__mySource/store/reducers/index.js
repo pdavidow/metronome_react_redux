@@ -1,4 +1,4 @@
-import {SET_BEAT} from 'constants/actionTypes';
+import {SET_BEAT} from '__mySource/constants/actionTypes';
 
 const defaultState = {
   rh: 1,

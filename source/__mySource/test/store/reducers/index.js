@@ -1,8 +1,8 @@
 import test from 'tape';
 import deepFreeze from 'deep-freeze';
-import {setBeat} from 'actions';
 
-import beat from 'store/reducers';
+import {setBeat} from '__mySource/actions';
+import beat from '__mySource/store/reducers';
 
 test('Set rh, lh', nest => {
   nest.test('initial', assert => {

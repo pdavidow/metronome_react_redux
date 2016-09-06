@@ -1,5 +1,6 @@
 import test from 'tape';
 import {range} from 'lodash';
+
 import {
   calc_tickCount,
   calc_rhTickIndices,
@@ -10,7 +11,7 @@ import {
   calc_rhTicks,
   calc_lhTicks,
   calc_rhOrLhTicks
-} from 'models/metronome';
+} from '__mySource/models/metronome';
 
 test('Metronome model', nestOuter => {
   nestOuter.test('...Tick count should equal Lowest Common Multiple of rh and lh', nestInner => {

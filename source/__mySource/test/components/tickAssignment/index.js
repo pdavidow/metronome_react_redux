@@ -3,7 +3,7 @@ import reactDom from 'react-dom/server';
 import test from 'tape';
 import dom from 'cheerio';
 
-import createTickAssignment from 'components/tickAssignment';
+import createTickAssignment from '__mySource/components/tickAssignment';
 
 const TickAssignment = createTickAssignment(React);
 const render = reactDom.renderToStaticMarkup;
