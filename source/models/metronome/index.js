@@ -1,7 +1,7 @@
 import {includes, range} from 'lodash';
 import {lcm} from 'mathjs';
 
-const calc_tickCount = ({rh, lh}) => lcm(rh, lh);
+const calc_tickCount = ({rh = 1, lh = 1} = {}) => lcm(rh, lh);
 
 const calc_tickIndices = ({focus} = 'rh', beat = {rh:1, lh:1}) => {
   const noteCount = beat[focus];
@@ -57,7 +57,7 @@ const calc_ticksPerSec = ({
 
 const calc_ticks = ({
   beat = {rh: 1, lh: 1},
-  classicTicksPerMinute = 1,
+  classicTicksPerMinute = 60,
   classicTicksPerBeat = 1
 } = {}) => {
   const tickStartTimeOffsets = calc_tickStartTimeOffsets({

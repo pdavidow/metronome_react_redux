@@ -847,5 +847,126 @@ test('Metronome model', nestOuter => {
       assert.end();
     });
   });
+  nestOuter.test('...Defaults for calc_tickCount', nestInner => {
+    const msg = "{rh:1, lh:1}";
+    nestInner.test('......Test #1', assert => {
+      const actual = calc_tickCount();
+      const expected = 1;
+
+      assert.equal(actual, expected, msg);
+      assert.end();
+    });
+
+  });
+  nestOuter.test('...Defaults for calc_rhTickIndices', nestInner => {
+    const msg = "beat = {rh:1, lh:1}";
+    nestInner.test('......Test #1', assert => {
+      const actual = calc_rhTickIndices();
+      const expected = [0];
+
+      assert.deepEqual(actual, expected, msg);
+      assert.end();
+    });
+
+  });
+  nestOuter.test('...Defaults for calc_lhTickIndices', nestInner => {
+    const msg = "beat = {rh:1, lh:1}";
+    nestInner.test('......Test #1', assert => {
+      const actual = calc_lhTickIndices();
+      const expected = [0];
+
+      assert.deepEqual(actual, expected, msg);
+      assert.end();
+    });
+
+  });
+  nestOuter.test('...Defaults for calc_tickDuration', nestInner => {
+    const msg = "beat = {rh: 1, lh: 1}, classicTicksPerMinute = 60, classicTicksPerBeat = 1";
+    nestInner.test('......Test #1', assert => {
+      const actual = calc_tickDuration();
+      const expected = 1;
+
+      assert.equal(actual, expected, msg);
+      assert.end();
+    });
+  });
+  nestOuter.test('...Defaults for calc_tickStartTimeOffsets', nestInner => {
+    const msg = "beat = {rh: 1, lh: 1}, classicTicksPerMinute = 60, classicTicksPerBeat = 1";
+    nestInner.test('......Test #1', assert => {
+      const actual = calc_tickStartTimeOffsets();
+      const expected = [0];
+
+      assert.deepEqual(actual, expected, msg);
+      assert.end();
+    });
+  });
+  nestOuter.test('...Defaults for calc_ticks', nestInner => {
+    const msg = "beat = {rh: 1, lh: 1}, classicTicksPerMinute = 60, classicTicksPerBeat = 1";
+    nestInner.test('......Test #1', assert => {
+      const actual = calc_ticks();
+
+      const expected = [
+        {
+          isRH: true,
+          isLH: true,
+          startOffset: 0
+        }
+      ];
+
+      assert.deepEqual(actual, expected, msg);
+      assert.end();
+    });
+  });
+  nestOuter.test('...Defaults for calc_rhTicks', nestInner => {
+    const msg = "beat = {rh: 1, lh: 1}, classicTicksPerMinute = 60, classicTicksPerBeat = 1";
+    nestInner.test('......Test #1', assert => {
+      const actual = calc_rhTicks();
+
+      const expected = [
+        {
+          isRH: true,
+          isLH: true,
+          startOffset: 0
+        }
+      ];
+
+      assert.deepEqual(actual, expected, msg);
+      assert.end();
+    });
+  });
+  nestOuter.test('...Defaults for calc_lhTicks', nestInner => {
+    const msg = "beat = {rh: 1, lh: 1}, classicTicksPerMinute = 60, classicTicksPerBeat = 1";
+    nestInner.test('......Test #1', assert => {
+      const actual = calc_lhTicks();
+
+      const expected = [
+        {
+          isRH: true,
+          isLH: true,
+          startOffset: 0
+        }
+      ];
+
+      assert.deepEqual(actual, expected, msg);
+      assert.end();
+    });
+  });
+  nestOuter.test('...Defaults for calc_rhOrLhTicks', nestInner => {
+    const msg = "beat = {rh: 1, lh: 1}, classicTicksPerMinute = 60, classicTicksPerBeat = 1";
+    nestInner.test('......Test #1', assert => {
+      const actual = calc_rhOrLhTicks();
+
+      const expected = [
+        {
+          isRH: true,
+          isLH: true,
+          startOffset: 0
+        }
+      ];
+
+      assert.deepEqual(actual, expected, msg);
+      assert.end();
+    });
+  });
 });
 
