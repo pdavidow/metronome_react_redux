@@ -11,8 +11,7 @@ export default (React) => {
 
     return (
       <div className="tickAssignment">
-        <label>===================================</label>
-        <h3>Ticks</h3>
+        <h3>Ticks   ===================================</h3>
         <div className="tickCount">
           <label>Tick Count: {tickCount ? tickCount.toString() : "--"}</label>
         </div>
