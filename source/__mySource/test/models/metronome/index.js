@@ -10,8 +10,7 @@ import {
   calc_ticks,
   calc_rhTicks,
   calc_lhTicks,
-  calc_rhOrLhTicks,
-  audioAnalyser
+  calc_rhOrLhTicks
 } from '__mySource/models/metronome';
 
 test('Metronome model', nestOuter => {
@@ -967,28 +966,6 @@ test('Metronome model', nestOuter => {
       ];
 
       assert.deepEqual(actual, expected, msg);
-      assert.end();
-    });
-  });
-  nestOuter.test('...Play Ticks', nestInner => {
-    nestInner.test('......Test #1', assert => {
-      const msg = "Ensure some sound is being produced";
-
-      const ticks = calc_ticks();
-
-      playTicksIntoAudioAnalyser({
-        ticks,
-        audioAnalyser
-      });
-
-      const bufferLength = analyser.frequencyBinCount;
-      const dataArray = new Uint8Array(bufferLength);
-      analyser.getByteTimeDomainData(dataArray);
-
-      const actual = dataArray.size > 0;
-      const expected = true;
-
-      assert.equal(actual, expected, msg);
       assert.end();
     });
   });
