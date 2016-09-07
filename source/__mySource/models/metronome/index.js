@@ -142,6 +142,10 @@ const calc_rhOrLhTicks = ({
   });
 };
 
+const audioContext = OfflineAudioContext(2,44100*40,44100);
+const audioAnalyser = audioContext.createAnalyser();
+
+qerwrqwerqwerewqr
 export {
   calc_tickCount,
   calc_rhTickIndices,
@@ -151,5 +155,6 @@ export {
   calc_ticks,
   calc_rhTicks,
   calc_lhTicks,
-  calc_rhOrLhTicks
+  calc_rhOrLhTicks,
+  audioAnalyser
 };
