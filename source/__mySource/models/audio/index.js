@@ -1,50 +1,52 @@
 import {BufferLoader} from './buffer_loader';
+import raw_tone_700hz from  '__mySource/assets/audio/tone_700hz.mp3';
 
-let audioContext, onFinishedLoading;
-const tones = {};
-
-const initializeSound = (callback) => {
-  onFinishedLoading = callback;
-
-  // http://chimera.labs.oreilly.com/books/1234000001552/ch01.html#s01_2
-  const contextClass = (
-    window.AudioContext ||
-    window.webkitAudioContext ||
-    window.mozAudioContext ||
-    window.oAudioContext ||
-    window.msAudioContext
-  );
-  if (contextClass) {
-    audioContext = contextClass();
-  } else {
-    alert('Web Audio API is not supported in current browser (try Chrome).');
-  };
-
-  const bufferLoader = BufferLoader(audioContext, toneSounds(), finishedLoading);
-  bufferLoader.load();
+const Audio = {
+  initializeSound_onFinishedLoading: function(finishedLoadingFunction) {
+    Audio.finishedLoadingFunction = finishedLoadingFunction;
+    try {
+      window.AudioContext = window.AudioContext || window.webkitAudioContext;
+      window.context = new AudioContext();
+    }
+    catch (e) {
+      alert('Web Audio API is not supported in Audio browser');
+    }
+    var bufferLoader = new BufferLoader(context, Audio.toneSounds, Audio.finishedLoading);
+    bufferLoader.load();
+  },
+  get toneSounds() {
+    return [
+      raw_tone_700hz];
+  },
+  finishedLoading: function(buffers) {
+    Audio.assignTones(buffers);
+    if (Audio.finishedLoadingFunction) Audio.finishedLoadingFunction.apply();
+  },
+  assignTones: function(buffers) {
+    Audio.tone_700hz = buffers[0];
+  },
+  startBufferAtTimeAtPosition: function(buffer, time, vector) {
+    var source = context.createBufferSource();
+    var panner = context.createPanner();
+    source.buffer = buffer;
+    panner.setPosition(vector[0], vector[1], vector[2]);
+    panner.connect(context.destination);
+    source.connect(panner);
+    source.start(time);
+    return source;
+  },
+  startBufferAtTime: function(buffer, time) {
+    var source = context.createBufferSource();
+    source.buffer = buffer;
+    source.connect(context.destination);
+    source.start(time);
+    return source;
+  },
+  playAudio: function() {
+    console.log("...play");
+    Audio.startBufferAtTime(Audio.tone_700hz, 0);
+  },
 };
 
-const finishedLoading = (buffers) => {
-  assignTones(buffers);
-  if (onFinishedLoading) onFinishedLoading();
-};
-
-const assignTones = (buffers) => {
-  tones.hz_1000 = buffers[0];
-};
-
-const startBufferAtTime = (buffer, time) => {
-  const source = audioContext.createBufferSource();
-  source.buffer = buffer;
-  source.connect(audioContext.destination);
-  source.start(time);
-  return source;
-};
-
-const play = () => {
-  console.log("...play");
-  startBufferAtTime(tones.hz_1000, 0);
-};
-
-const currentTime = () => audioContext.currentTime;
+export {Audio};
 

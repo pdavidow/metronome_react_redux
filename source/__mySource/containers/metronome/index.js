@@ -2,6 +2,7 @@ import {connect} from 'react-redux';
 
 import createBeat from '__mySource/components/beat';
 import createTickAssignment from '__mySource/components/tickAssignment';
+import createTempPlayer from '__mySource/components/tempPlayer';
 import {setBeat} from '__mySource/actions';
 import {
   calc_tickCount,
@@ -13,11 +14,15 @@ export default (React) => {
   const Metronome = (props) => {
     const Beat = createBeat(React);
     const TickAssignment = createTickAssignment(React);
+    const TempPlayer = createTempPlayer(React);
 
     return (
       <div>
         <Beat {...props}/>
+        <p>=========================</p>
         <TickAssignment {...props}/>
+        <p>=========================</p>
+        <TempPlayer />
       </div>
     );
    };

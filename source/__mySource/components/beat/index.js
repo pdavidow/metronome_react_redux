@@ -25,7 +25,7 @@ export default (React) => {
 
     return (
       <div className='beat'>
-        <h3>Beat   ===================================</h3>
+        <h3>Beat</h3>
         <label>((waiting for ReduxForm))</label>
         <div className='rh'>
           <label>Right Hand note count: {rh}</label>
