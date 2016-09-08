@@ -14,17 +14,20 @@ module.exports = {
     publicPath: '/static/'
   },
   module: {
-    loaders: [{
-      test: /\.js$/,
-      loader: 'babel-loader',
-      exclude: /node_modules/,
-      //include: path.join(__dirname, 'source'),
-      query: {
-        presets: ['es2015', 'stage-2', 'react']
+    loaders: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        exclude: /(node_modules)/,
+        //include: path.join(__dirname, 'source'),
+        query: {
+          presets: ['es2015', 'stage-2', 'react'],
+        }
+     },
+      {
+        test: /\.jpe?g$|\.gif$|\.png$|\.svg$|\.woff$|\.ttf$|\.wav$|\.mp3$/,
+        loader: "file"
       }
-    },
-      { test: /\.jpe?g$|\.gif$|\.png$|\.svg$|\.woff$|\.ttf$|\.wav$|\.mp3$/,
-        loader: "file" }
     ]
   }
 };
