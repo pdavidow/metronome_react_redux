@@ -1,14 +1,14 @@
-import {Audio} from '__mySource/models/audio';
+import Audio from '__mySource/models/audio';
 
 export default (React) => {
   return () => ({
     componentDidMount () {
-      Audio.initializeSound_onFinishedLoading(() => console.log("Finished Loading Audio"));
+      Audio.initialize();
     },
     render () {
       return (
         <div>
-          <button type="submit" onClick={Audio.playAudio}>=== PLAY TEST TONE ===</button>
+          <button type="submit" onClick={Audio.beepNow}>=== PLAY TEST TONE ===</button>
         </div>
       );
     }

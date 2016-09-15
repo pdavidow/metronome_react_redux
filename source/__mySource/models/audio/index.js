@@ -1,52 +1,28 @@
-import {BufferLoader} from './buffer_loader';
-import raw_tone_700hz from  '__mySource/assets/audio/tone_700hz.mp3';
-
 const Audio = {
-  initializeSound_onFinishedLoading: function(finishedLoadingFunction) {
-    Audio.finishedLoadingFunction = finishedLoadingFunction;
+  initialize() {
     try {
-      window.AudioContext = window.AudioContext || window.webkitAudioContext;
-      window.context = new AudioContext();
+    // NOTE: THIS RELIES ON THE MONKEYPATCH LIBRARY BEING LOADED FROM
+    // Http://cwilso.github.io/AudioContext-MonkeyPatch/AudioContextMonkeyPatch.js
+    // TO WORK ON CURRENT CHROME!!  But this means our code can be properly
+    // spec-compliant, and work on Chrome, Safari and Firefox.
+    Audio.audioContext = new AudioContext();
     }
     catch (e) {
-      alert('Web Audio API is not supported in Audio browser');
-    }
-    var bufferLoader = new BufferLoader(context, Audio.toneSounds, Audio.finishedLoading);
-    bufferLoader.load();
+      alert('Web Audio API is not supported in current browser');
+    };
   },
-  get toneSounds() {
-    return [
-      raw_tone_700hz];
+  playoOcillator({oscillator, startTime = Audio.audioContext.currentTime, duration = 1} = {}) {
+    oscillator.connect(Audio.audioContext.destination);
+    oscillator.start(startTime);
+    oscillator.stop(startTime + duration);
   },
-  finishedLoading: function(buffers) {
-    Audio.assignTones(buffers);
-    if (Audio.finishedLoadingFunction) Audio.finishedLoadingFunction.apply();
-  },
-  assignTones: function(buffers) {
-    Audio.tone_700hz = buffers[0];
-  },
-  startBufferAtTimeAtPosition: function(buffer, time, vector) {
-    var source = context.createBufferSource();
-    var panner = context.createPanner();
-    source.buffer = buffer;
-    panner.setPosition(vector[0], vector[1], vector[2]);
-    panner.connect(context.destination);
-    source.connect(panner);
-    source.start(time);
-    return source;
-  },
-  startBufferAtTime: function(buffer, time) {
-    var source = context.createBufferSource();
-    source.buffer = buffer;
-    source.connect(context.destination);
-    source.start(time);
-    return source;
-  },
-  playAudio: function() {
-    console.log("...play");
-    Audio.startBufferAtTime(Audio.tone_700hz, 0);
-  },
+  beepNow() {
+    const oscillator = Audio.audioContext.createOscillator();
+    oscillator.frequency.value = 800;
+    Audio.playoOcillator({oscillator, duration: 0.05});
+  }
 };
 
-export {Audio};
+export default Audio;
+
 
