@@ -12,7 +12,7 @@ const render = reactDom.renderToStaticMarkup;
 
 test('Metronome Container', nest => {
   nest.test('class structure', assert => {
-    const msg = 'Should have beat, tickAssignment classes';
+    const msg = 'Should have beat, tickAssignment, metronomeSetting classes';
 
     const store = createStore(combinedReducers);
     const el = <MetronomeContainer store={store}/>;
@@ -20,12 +20,14 @@ test('Metronome Container', nest => {
 
     const actual = {
       beat: Boolean($('.beat').html()),
-      tickAssignment: Boolean($('.tickAssignment').html())
+      tickAssignment: Boolean($('.tickAssignment').html()),
+      metronomeSetting: Boolean($('.metronomeSetting').html())
     };
 
     const expected = {
       beat: true,
-      tickAssignment: true
+      tickAssignment: true,
+      metronomeSetting: true
     };
 
     assert.deepEqual(actual, expected, msg);

@@ -5,4 +5,6 @@ import '__mySource/test/models/metronome';
 import '__mySource/test/containers/metronome'
 import '__mySource/test/components/beat';
 import '__mySource/test/components/tickAssignment';
+import '__mySource/test/components/metronomeSetting';
+
 
