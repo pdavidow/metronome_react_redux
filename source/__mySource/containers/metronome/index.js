@@ -4,7 +4,10 @@ import createBeat from '__mySource/components/beat';
 import createTickAssignment from '__mySource/components/tickAssignment';
 import createMetronomeSetting from '__mySource/components/metronomeSetting';
 import createTempPlayer from '__mySource/components/tempPlayer';
-import {setBeat} from '__mySource/actions';
+import {
+  setBeat,
+  setMetronomeSetting
+} from '__mySource/actions';
 import {
   calc_tickCount,
   calc_rhTickIndices,
@@ -33,12 +36,14 @@ export default (React) => {
 
   const mapStateToProps = (state) => {
     const beat = state.beat;
+    const metronomeSetting = state.metronomeSetting;
     const tickCount = calc_tickCount(beat);
     const rhTickIndices = calc_rhTickIndices(beat);
     const lhTickIndices = calc_lhTickIndices(beat);
 
     return {
       ...beat,
+      ...metronomeSetting,
       tickCount,
       rhTickIndices,
       lhTickIndices
@@ -46,7 +51,12 @@ export default (React) => {
   };
 
   const mapDispatchToProps = (dispatch) => (
-    {onSubmit: ({rh, lh}) => dispatch(setBeat({rh, lh}))}
+    {
+      onBeatSubmit: ({rh, lh}) =>
+        dispatch(setBeat({rh, lh}) ),
+      onMetronomeSettingSubmit: ({classicTicksPerMinute, classicTicksPerBeat}) =>
+        dispatch(setMetronomeSetting({classicTicksPerMinute, classicTicksPerBeat}) )
+    }
   );
 
   return connect(

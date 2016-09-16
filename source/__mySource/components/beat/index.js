@@ -5,9 +5,9 @@ export default (React) => {
     Beat.propTypes = {
       rh: PropTypes.number.isRequired,
       lh: PropTypes.number.isRequired,
-      onSubmit: PropTypes.func.isRequired
+      onBeatSubmit: PropTypes.func.isRequired
     };
-    const {rh, lh, onSubmit} = props;
+    const {rh, lh, onBeatSubmit} = props;
 
     let input_rh, input_lh;
 
@@ -19,7 +19,7 @@ export default (React) => {
     const submitButtonAction = () => {
       const new_rh = Number(input_rh.value);
       const new_lh = Number(input_lh.value);
-      onSubmit({rh: new_rh, lh: new_lh});
+      onBeatSubmit({rh: new_rh, lh: new_lh});
       clearInputs();
     };
 
