@@ -28,7 +28,7 @@ export default (React) => {
    };
 
   const mapStateToProps = (state) => {
-    const beat = state;
+    const beat = state.beat;
     const tickCount = calc_tickCount(beat);
     const rhTickIndices = calc_rhTickIndices(beat);
     const lhTickIndices = calc_lhTickIndices(beat);

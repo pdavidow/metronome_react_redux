@@ -1,15 +1,8 @@
-import {SET_BEAT} from '__mySource/constants/actionTypes';
+import {combineReducers} from 'redux';
+import beatReducer from './beat';
 
-const defaultState = {
-  rh: 1,
-  lh: 1
+const reducers = {
+  beat: beatReducer,
 };
 
-export default (state = defaultState, action = {}) => {
-  const {type, payload} = action;
-
-  switch (type) {
-    case SET_BEAT: return {...state, ...payload};
-    default: return state;
-  }
-};
+export default combineReducers(reducers);
