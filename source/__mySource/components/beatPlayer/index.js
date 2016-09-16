@@ -8,7 +8,7 @@ export default (React) => {
     render () {
       return (
         <div>
-          <button type="submit" onClick={Audio.beepNow}>=== PLAY TEST TONE ===</button>
+          <button type="submit" onClick={Audio.beepNow}>=== Play Beat ===</button>
         </div>
       );
     }

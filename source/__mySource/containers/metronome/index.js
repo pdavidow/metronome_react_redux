@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import createBeat from '__mySource/components/beat';
 import createTickAssignment from '__mySource/components/tickAssignment';
 import createMetronomeSetting from '__mySource/components/metronomeSetting';
-import createTempPlayer from '__mySource/components/tempPlayer';
+import createBeatPlayer from '__mySource/components/beatPlayer';
 import {
   setBeat,
   setMetronomeSetting
@@ -19,7 +19,7 @@ export default (React) => {
     const Beat = createBeat(React);
     const TickAssignment = createTickAssignment(React);
     const MetronomeSetting = createMetronomeSetting(React);
-    const TempPlayer = createTempPlayer(React);
+    const BeatPlayer = createBeatPlayer(React);
 
     return (
       <div>
@@ -29,7 +29,7 @@ export default (React) => {
         <p>=========================</p>
         <MetronomeSetting {...props}/>
         <p>=========================</p>
-        <TempPlayer />
+        <BeatPlayer />
       </div>
     );
    };
