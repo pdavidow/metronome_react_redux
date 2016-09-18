@@ -4,6 +4,9 @@ import createBeat from '__mySource/components/beat';
 import createTickAssignment from '__mySource/components/tickAssignment';
 import createMetronomeSetting from '__mySource/components/metronomeSetting';
 import createBeatPlayer from '__mySource/components/beatPlayer';
+import Audio from '__mySource/models/audio';
+import {calc_ticks} from '__mySource/models/metronome';
+
 import {
   setBeat,
   setMetronomeSetting
@@ -29,7 +32,7 @@ export default (React) => {
         <p>=========================</p>
         <MetronomeSetting {...props}/>
         <p>=========================</p>
-        <BeatPlayer />
+        <BeatPlayer {...props}/>
       </div>
     );
    };
@@ -40,13 +43,15 @@ export default (React) => {
     const tickCount = calc_tickCount(beat);
     const rhTickIndices = calc_rhTickIndices(beat);
     const lhTickIndices = calc_lhTickIndices(beat);
+    const ticks = calc_ticks({beat, ...metronomeSetting});
 
     return {
       ...beat,
       ...metronomeSetting,
       tickCount,
       rhTickIndices,
-      lhTickIndices
+      lhTickIndices,
+      onPlay: () => Audio.playTicks({ticks})
     };
   };
 

@@ -158,5 +158,4 @@ export {
   calc_lhTicks,
   calc_rhOrLhTicks,
   playTicks
-
 };

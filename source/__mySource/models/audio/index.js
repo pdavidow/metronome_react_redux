@@ -6,8 +6,8 @@ import {
   LH_TICK_DURATION,
   BACKGROUND_TICK_DURATION
 } from '__mySource/constants/audio';
-
-const Audio = {
+// todo refactor
+const Audio = { // todo: only expose public API (see what I did alot in meteor code)
   initialize() {
     try {
     // NOTE: THIS RELIES ON THE MONKEYPATCH LIBRARY BEING LOADED FROM
@@ -31,30 +31,31 @@ const Audio = {
     Audio.playOcillator({oscillator, duration: 0.05});
   },
   playTicks({ticks = []}) {
+    console.log("ticks", ticks);
     ticks.forEach(({isRH, isLH, startOffset}) => {
-      if (isRH) playRhTick({startOffset});
-      if (isLH) playLhTick({startOffset});
-      if (!isRH && !isLH) playBackgroundTick({startOffset});
+      if (isRH) Audio.playRhTick({startOffset});
+      if (isLH) Audio.playLhTick({startOffset});
+      if (!isRH && !isLH) Audio.playBackgroundTick({startOffset});
       }
     )
   },
   playRhTick({startOffset}) {
-    const oscillator = rhOscillator();
+    const oscillator = Audio.rhOscillator();
     const startTime = Audio.audioContext.currentTime + startOffset;
     const duration = RH_TICK_DURATION;
-    playOcillator({oscillator, startTime, duration});
+    Audio.playOcillator({oscillator, startTime, duration});
   },
   playLhTick({startOffset}) {
-    const oscillator = lhOscillator();
+    const oscillator = Audio.lhOscillator();
     const startTime = Audio.audioContext.currentTime + startOffset;
     const duration = LH_TICK_DURATION;
-    playOcillator({oscillator, startTime, duration});
+    Audio.playOcillator({oscillator, startTime, duration});
   },
   playBackgroundTick({startOffset}) {
-    const oscillator = backgroundOscillator();
+    const oscillator = Audio.backgroundOscillator();
     const startTime = Audio.audioContext.currentTime + startOffset;
     const duration = BACKGROUND_TICK_DURATION;
-    playOcillator({oscillator, startTime, duration});
+    Audio.playOcillator({oscillator, startTime, duration});
   },
   rhOscillator() {
     const oscillator = Audio.audioContext.createOscillator();
