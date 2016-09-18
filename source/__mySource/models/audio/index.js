@@ -58,18 +58,20 @@ const Audio = { // todo: only expose public API (see what I did alot in meteor c
     Audio.playOcillator({oscillator, startTime, duration});
   },
   rhOscillator() {
-    const oscillator = Audio.audioContext.createOscillator();
-    oscillator.frequency.value = RH_AUDIO_FREQ;
-    return oscillator;
+    const freq = RH_AUDIO_FREQ;
+    return Audio.oscillator({freq});
   },
   lhOscillator() {
-    const oscillator = Audio.audioContext.createOscillator();
-    oscillator.frequency.value = LH_AUDIO_FREQ;
-    return oscillator;
+    const freq = LH_AUDIO_FREQ;
+    return Audio.oscillator({freq});
   },
   backgroundOscillator() {
+    const freq = BACKGROUND_AUDIO_FREQ;
+    return Audio.oscillator({freq});
+  },
+  oscillator({freq = 0}) {
     const oscillator = Audio.audioContext.createOscillator();
-    oscillator.frequency.value = BACKGROUND_AUDIO_FREQ;
+    oscillator.frequency.value = freq;
     return oscillator;
   },
 };

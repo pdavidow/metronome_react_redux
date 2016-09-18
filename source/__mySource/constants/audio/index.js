@@ -3,7 +3,7 @@ const LH_AUDIO_FREQ = 500; // hz
 const BACKGROUND_AUDIO_FREQ = 1800; // hz
 const RH_TICK_DURATION = 0.05; // sec
 const LH_TICK_DURATION = 0.05; // sec
-const BACKGROUND_TICK_DURATION = 0.002; // sec
+const BACKGROUND_TICK_DURATION = 0.001; // sec
 
 export {
   RH_AUDIO_FREQ,
