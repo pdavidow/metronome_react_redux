@@ -1,6 +1,8 @@
 import {includes, range} from 'lodash';
 import {lcm} from 'mathjs';
 
+import audio from '__mySource/models/audio';
+
 const calc_tickCount = ({rh = 1, lh = 1} = {}) => lcm(rh, lh);
 
 const calc_tickIndices = ({focus} = 'rh', beat = {rh:1, lh:1}) => {
@@ -142,6 +144,9 @@ const calc_rhOrLhTicks = ({
   });
 };
 
+const playTicks = ({ticks = []} = {}) =>
+  audio.playTicks({ticks});
+
 export {
   calc_tickCount,
   calc_rhTickIndices,
@@ -151,5 +156,7 @@ export {
   calc_ticks,
   calc_rhTicks,
   calc_lhTicks,
-  calc_rhOrLhTicks
+  calc_rhOrLhTicks,
+  playTicks
+
 };
