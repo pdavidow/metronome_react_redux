@@ -6,7 +6,7 @@ import {
   LH_TICK_DURATION,
   BACKGROUND_TICK_DURATION
 } from '__mySource/constants/audio';
-// todo refactor
+
 const Audio = { // todo: only expose public API (see what I did alot in meteor code)
   initialize() {
     try {
@@ -20,7 +20,8 @@ const Audio = { // todo: only expose public API (see what I did alot in meteor c
       alert('Web Audio API is not supported in current browser');
     };
   },
-  playOcillator({oscillator, startTime = Audio.audioContext.currentTime, duration = 1} = {}) {
+  playOcillator({oscillator, startOffset, duration} = {}) {
+    const startTime = Audio.audioContext.currentTime + startOffset;
     oscillator.connect(Audio.audioContext.destination);
     oscillator.start(startTime);
     oscillator.stop(startTime + duration);
@@ -30,8 +31,7 @@ const Audio = { // todo: only expose public API (see what I did alot in meteor c
     oscillator.frequency.value = 800;
     Audio.playOcillator({oscillator, duration: 0.05});
   },
-  playTicks({ticks = []}) {
-    console.log("ticks", ticks);
+  playTicks({ticks = []} = {}) {
     ticks.forEach(({isRH, isLH, startOffset}) => {
       if (isRH) Audio.playRhTick({startOffset});
       if (isLH) Audio.playLhTick({startOffset});
@@ -41,21 +41,18 @@ const Audio = { // todo: only expose public API (see what I did alot in meteor c
   },
   playRhTick({startOffset}) {
     const oscillator = Audio.rhOscillator();
-    const startTime = Audio.audioContext.currentTime + startOffset;
     const duration = RH_TICK_DURATION;
-    Audio.playOcillator({oscillator, startTime, duration});
+    Audio.playOcillator({oscillator, startOffset, duration});
   },
   playLhTick({startOffset}) {
     const oscillator = Audio.lhOscillator();
-    const startTime = Audio.audioContext.currentTime + startOffset;
     const duration = LH_TICK_DURATION;
-    Audio.playOcillator({oscillator, startTime, duration});
+    Audio.playOcillator({oscillator, startOffset, duration});
   },
   playBackgroundTick({startOffset}) {
     const oscillator = Audio.backgroundOscillator();
-    const startTime = Audio.audioContext.currentTime + startOffset;
     const duration = BACKGROUND_TICK_DURATION;
-    Audio.playOcillator({oscillator, startTime, duration});
+    Audio.playOcillator({oscillator, startOffset, duration});
   },
   rhOscillator() {
     const freq = RH_AUDIO_FREQ;
@@ -69,7 +66,7 @@ const Audio = { // todo: only expose public API (see what I did alot in meteor c
     const freq = BACKGROUND_AUDIO_FREQ;
     return Audio.oscillator({freq});
   },
-  oscillator({freq = 0}) {
+  oscillator({freq = 0} = {}) {
     const oscillator = Audio.audioContext.createOscillator();
     oscillator.frequency.value = freq;
     return oscillator;
