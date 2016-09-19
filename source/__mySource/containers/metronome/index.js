@@ -11,7 +11,6 @@ import createBeat from '__mySource/components/beat';
 import createTickAssignment from '__mySource/components/tickAssignment';
 import createMetronomeSetting from '__mySource/components/metronomeSetting';
 import createBeatPlayer from '__mySource/components/beatPlayer';
-import Audio from '__mySource/models/audio';
 import {play} from '__mySource/models/metronome';
 
 import {

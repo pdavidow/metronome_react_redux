@@ -1,4 +1,4 @@
-import Audio from '__mySource/models/audio';
+import {initialize as initializeAudio} from '__mySource/models/audio';
 
 export default (React) => {
   const PropTypes = React.PropTypes;
@@ -11,7 +11,7 @@ export default (React) => {
 
     return {
       componentDidMount () {
-        Audio.initialize();
+        initializeAudio();
       },
 
       render () { // todo: disable button during play

@@ -1,7 +1,7 @@
 import {includes, range} from 'lodash';
 import {lcm} from 'mathjs';
 
-import audio from '__mySource/models/audio';
+import {playTicks} from '__mySource/models/audio';
 
 const calc_tickCount = ({rh = 1, lh = 1} = {}) => lcm(rh, lh);
 
@@ -99,9 +99,6 @@ const calc_rhOrLhTicks = ({
   const filter = (each) => each.isRH || each.isLH;
   return calc_filteredTicks({beat, metronomeSetting, filter});
 };
-
-const playTicks = ({ticks = []} = {}) =>
-  audio.playTicks({ticks});
 
 const play = ({
   beat = {rh: 1, lh: 1},
