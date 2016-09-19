@@ -44,6 +44,7 @@ export default (React) => {
     const rhTickIndices = calc_rhTickIndices(beat);
     const lhTickIndices = calc_lhTickIndices(beat);
     const ticks = calc_ticks({beat, ...metronomeSetting});
+    const onPlay = () => Audio.playTicks({ticks});
 
     return {
       ...beat,
@@ -51,7 +52,7 @@ export default (React) => {
       tickCount,
       rhTickIndices,
       lhTickIndices,
-      onPlay: () => Audio.playTicks({ticks})
+      onPlay
     };
   };
 
