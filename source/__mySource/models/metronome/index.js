@@ -76,30 +76,6 @@ const calc_filteredTicks = ({
   return ticks.filter(filter);
 };
 
-const calc_rhTicks = ({
-  beat = {rh: 1, lh: 1},
-  metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1}
-} = {}) => {
-  const filter = (each) => each.isRH;
-  return calc_filteredTicks({beat, metronomeSetting, filter});
-};
-
-const calc_lhTicks = ({
-  beat = {rh: 1, lh: 1},
-  metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1}
-} = {}) => {
-  const filter = (each) => each.isLH;
-  return calc_filteredTicks({beat, metronomeSetting, filter});
-};
-
-const calc_rhOrLhTicks = ({
-  beat = {rh: 1, lh: 1},
-  metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1}
-} = {}) => {
-  const filter = (each) => each.isRH || each.isLH;
-  return calc_filteredTicks({beat, metronomeSetting, filter});
-};
-
 const play = ({
   beat = {rh: 1, lh: 1},
   metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1}
@@ -115,8 +91,5 @@ export {
   calc_tickDuration,
   calc_tickStartTimeOffsets,
   calc_ticks,
-  calc_rhTicks,
-  calc_lhTicks,
-  calc_rhOrLhTicks,
   play
 };
