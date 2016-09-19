@@ -106,8 +106,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_tickDuration({
         beat: {rh: 3, lh: 4},
-        classicTicksPerMinute: 60,
-        classicTicksPerBeat: 12
+        metronomeSetting: {classicTicksPerMinute: 60, classicTicksPerBeat: 12}
       });
 
       const expected = 1;
@@ -120,8 +119,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_tickDuration({
         beat: {rh: 3, lh: 4},
-        classicTicksPerMinute: 30,
-        classicTicksPerBeat: 12
+        metronomeSetting: {classicTicksPerMinute: 30, classicTicksPerBeat: 12}
       });
 
       const expected = 2;
@@ -134,8 +132,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_tickDuration({
         beat: {rh: 3, lh: 4},
-        classicTicksPerMinute: 120,
-        classicTicksPerBeat: 12
+        metronomeSetting: {classicTicksPerMinute: 120, classicTicksPerBeat: 12}
       });
 
       const expected = 1/2;
@@ -148,8 +145,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_tickDuration({
         beat: {rh: 3, lh: 4},
-        classicTicksPerMinute: 60,
-        classicTicksPerBeat: 24
+        metronomeSetting: {classicTicksPerMinute: 60, classicTicksPerBeat: 24}
       });
 
       const expected = 2;
@@ -162,8 +158,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_tickDuration({
         beat: {rh: 3, lh: 4},
-        classicTicksPerMinute: 60,
-        classicTicksPerBeat: 6
+        metronomeSetting: {classicTicksPerMinute: 60, classicTicksPerBeat: 6}
       });
 
       const expected = 1/2;
@@ -176,8 +171,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_tickDuration({
         beat: {rh: 3, lh: 4},
-        classicTicksPerMinute: 30,
-        classicTicksPerBeat: 6
+        metronomeSetting: {classicTicksPerMinute: 30, classicTicksPerBeat: 6}
       });
 
       const expected = 1;
@@ -190,8 +184,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_tickDuration({
         beat: {rh: 3, lh: 4},
-        classicTicksPerMinute: 120,
-        classicTicksPerBeat: 24
+        metronomeSetting: {classicTicksPerMinute: 120, classicTicksPerBeat: 24}
       });
 
       const expected = 1;
@@ -204,8 +197,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_tickDuration({
         beat: {rh: 3, lh: 4},
-        classicTicksPerMinute: 30,
-        classicTicksPerBeat: 3
+        metronomeSetting: {classicTicksPerMinute: 30, classicTicksPerBeat: 3}
       });
 
       const expected = 1/2;
@@ -218,8 +210,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_tickDuration({
         beat: {rh: 3, lh: 4},
-        classicTicksPerMinute: 10,
-        classicTicksPerBeat: 24
+        metronomeSetting: {classicTicksPerMinute: 10, classicTicksPerBeat: 24}
       });
 
       const expected = 12;
@@ -232,8 +223,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_tickDuration({
         beat: {rh: 3, lh: 4},
-        classicTicksPerMinute: 120,
-        classicTicksPerBeat: 4
+        metronomeSetting: {classicTicksPerMinute: 120, classicTicksPerBeat: 4}
       });
 
       const expected = 1/6;
@@ -248,8 +238,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_tickStartTimeOffsets({
         beat: {rh: 3, lh: 4},
-        classicTicksPerMinute: 60,
-        classicTicksPerBeat: 12
+        metronomeSetting: {classicTicksPerMinute: 60, classicTicksPerBeat: 12}
       });
 
       const expected = range(0, 12, 1);
@@ -262,8 +251,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_tickStartTimeOffsets({
         beat: {rh: 3, lh: 4},
-        classicTicksPerMinute: 30,
-        classicTicksPerBeat: 12
+        metronomeSetting: {classicTicksPerMinute: 30, classicTicksPerBeat: 12}
       });
 
       const expected = range(0, 24, 2);
@@ -276,8 +264,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_tickStartTimeOffsets({
         beat: {rh: 3, lh: 4},
-        classicTicksPerMinute: 120,
-        classicTicksPerBeat: 12
+        metronomeSetting: {classicTicksPerMinute: 120, classicTicksPerBeat: 12}
       });
 
       const expected = range(0, 6, 1/2);
@@ -290,8 +277,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_tickStartTimeOffsets({
         beat: {rh: 3, lh: 4},
-        classicTicksPerMinute: 60,
-        classicTicksPerBeat: 24
+        metronomeSetting: {classicTicksPerMinute: 60, classicTicksPerBeat: 24}
       });
 
       const expected = range(0, 24, 2);
@@ -304,8 +290,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_tickStartTimeOffsets({
         beat: {rh: 3, lh: 4},
-        classicTicksPerMinute: 60,
-        classicTicksPerBeat: 6
+        metronomeSetting: {classicTicksPerMinute: 60, classicTicksPerBeat: 6}
       });
 
       const expected = range(0, 6, 1/2);
@@ -318,8 +303,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_tickStartTimeOffsets({
         beat: {rh: 3, lh: 4},
-        classicTicksPerMinute: 120,
-        classicTicksPerBeat: 4
+        metronomeSetting: {classicTicksPerMinute: 120, classicTicksPerBeat: 4}
       });
 
       const expected = range(0, 2, 1/6);
@@ -332,8 +316,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_tickStartTimeOffsets({
         beat: {rh: 8, lh: 6},
-        classicTicksPerMinute: 15,
-        classicTicksPerBeat: 12
+        metronomeSetting: {classicTicksPerMinute: 15, classicTicksPerBeat: 12}
       });
 
       const expected = range(0, 48, 2);
@@ -349,8 +332,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_ticks({
         beat: {rh: 3, lh: 4},
-        classicTicksPerMinute: 60,
-        classicTicksPerBeat: 12
+        metronomeSetting: {classicTicksPerMinute: 60, classicTicksPerBeat: 12}
       });
 
       const expected = [
@@ -424,8 +406,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_ticks({
         beat: {rh: 8, lh: 6},
-        classicTicksPerMinute: 15,
-        classicTicksPerBeat: 12
+        metronomeSetting: {classicTicksPerMinute: 15, classicTicksPerBeat: 12}
       });
 
       const expected = [
@@ -561,8 +542,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_rhTicks({
         beat: {rh: 3, lh: 4},
-        classicTicksPerMinute: 60,
-        classicTicksPerBeat: 12
+        metronomeSetting: {classicTicksPerMinute: 60, classicTicksPerBeat: 12}
       });
 
       const expected = [
@@ -591,8 +571,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_rhTicks({
         beat: {rh: 8, lh: 6},
-        classicTicksPerMinute: 15,
-        classicTicksPerBeat: 12
+        metronomeSetting: {classicTicksPerMinute: 15, classicTicksPerBeat: 12}
       });
 
       const expected = [
@@ -649,8 +628,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_lhTicks({
         beat: {rh: 3, lh: 4},
-        classicTicksPerMinute: 60,
-        classicTicksPerBeat: 12
+        metronomeSetting: {classicTicksPerMinute: 60, classicTicksPerBeat: 12}
       });
 
       const expected = [
@@ -684,8 +662,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_lhTicks({
         beat: {rh: 8, lh: 6},
-        classicTicksPerMinute: 15,
-        classicTicksPerBeat: 12
+        metronomeSetting: {classicTicksPerMinute: 15, classicTicksPerBeat: 12}
       });
 
       const expected = [
@@ -732,8 +709,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_rhOrLhTicks({
         beat: {rh: 3, lh: 4},
-        classicTicksPerMinute: 60,
-        classicTicksPerBeat: 12
+        metronomeSetting: {classicTicksPerMinute: 60, classicTicksPerBeat: 12}
       });
 
       const expected = [
@@ -777,8 +753,7 @@ test('Metronome model', nestOuter => {
 
       const actual = calc_rhOrLhTicks({
         beat: {rh: 8, lh: 6},
-        classicTicksPerMinute: 15,
-        classicTicksPerBeat: 12
+        metronomeSetting: {classicTicksPerMinute: 15, classicTicksPerBeat: 12}
       });
 
       const expected = [

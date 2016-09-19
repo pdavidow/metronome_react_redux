@@ -12,7 +12,7 @@ import createTickAssignment from '__mySource/components/tickAssignment';
 import createMetronomeSetting from '__mySource/components/metronomeSetting';
 import createBeatPlayer from '__mySource/components/beatPlayer';
 import Audio from '__mySource/models/audio';
-import {calc_ticks} from '__mySource/models/metronome';
+import {play} from '__mySource/models/metronome';
 
 import {
   setBeat,
@@ -50,8 +50,7 @@ export default (React) => {
     const tickCount = calc_tickCount(beat);
     const rhTickIndices = calc_rhTickIndices(beat);
     const lhTickIndices = calc_lhTickIndices(beat);
-    const ticks = calc_ticks({beat, ...metronomeSetting});
-    const onPlay = () => Audio.playTicks({ticks});
+    const onPlay = () => play({beat, metronomeSetting});
 
     return {
       ...beat,
