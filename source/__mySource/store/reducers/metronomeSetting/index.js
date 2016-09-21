@@ -1,4 +1,5 @@
 import {SET_METRONOME_SETTING} from '../../../constants/actionTypes';
+////////////////////////////////////
 
 const defaultState = {
   classicTicksPerMinute: 60,

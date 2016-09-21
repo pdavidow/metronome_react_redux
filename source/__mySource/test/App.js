@@ -7,6 +7,7 @@ import {createStore} from 'redux';
 
 import combinedReducers from '../store/reducers';
 import createApp from '../App.js';
+////////////////////////////////////
 
 const render = reactDom.renderToStaticMarkup;
 let store = createStore(combinedReducers);

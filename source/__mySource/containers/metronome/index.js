@@ -12,7 +12,6 @@ import createTickAssignment from '../../components/tickAssignment';
 import createMetronomeSetting from '../../components/metronomeSetting';
 import createBeatPlayer from '../../components/beatPlayer';
 import {play} from '../../models/metronome';
-
 import {
   setBeat,
   setMetronomeSetting
@@ -22,6 +21,7 @@ import {
   calc_rhTickIndices,
   calc_lhTickIndices
 } from '__mySource/models/metronome';
+////////////////////////////////////
 
 export default (React) => {
   const Metronome = (props) => {

@@ -4,6 +4,7 @@ import test from 'tape';
 import dom from 'cheerio';
 
 import createTickAssignment from '../../../components/tickAssignment';
+////////////////////////////////////
 
 const TickAssignment = createTickAssignment(React);
 const render = reactDom.renderToStaticMarkup;

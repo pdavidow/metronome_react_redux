@@ -11,8 +11,8 @@ import {
   calc_rhTicks,
   calc_lhTicks,
   calc_rhOrLhTicks
-// } from '__mySource/models/metronome'; // todo
-} from '../../../models/metronome'; // todo
+} from '../../../models/metronome';
+////////////////////////////////////
 
 test('Metronome model', nestOuter => {
   nestOuter.test('...Tick count should equal Lowest Common Multiple of rh and lh', nestInner => {

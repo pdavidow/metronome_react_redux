@@ -4,20 +4,10 @@ import test from 'tape-async';
 import sleep from 'sleep-promise';
 import 'babel-polyfill'; // http://stackoverflow.com/questions/28976748/regeneratorruntime-is-not-defined
 
-import {
-  play,
-//} from '/__mySource/models/metronome'; // todo
-//} from '/home/nitrous/code/mrr/source/__mySource/models/metronome';
-} from '../../../../models/metronome';
-
-//import {initialize} from '/__mySource/models/audio'; // todo
-//import {initialize as initializeAudio} from '/home/nitrous/code/mrr/source/__mySource/models/audio';
+import {play} from '../../../../models/metronome';
 import {initialize as initializeAudio} from '../../../../models/audio';
-
-import {RH_LH_TICK_DURATION
-//} from '/__mySource/constants/audio'; // todo
-} from '../../../../constants/audio';
-
+import {RH_LH_TICK_DURATION} from '../../../../constants/audio';
+////////////////////////////////////
 
 initializeAudio();
 

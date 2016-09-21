@@ -3,6 +3,7 @@ import deepFreeze from 'deep-freeze';
 
 import {setBeat} from '../../../../actions';
 import beat from '../../../../store/reducers/beat';
+////////////////////////////////////
 
 test('Set rh, lh', nest => {
   nest.test('initial', assert => {

@@ -4,6 +4,7 @@ import test from 'tape';
 import dom from 'cheerio';
 
 import createMetronomeSetting from '../../../components/metronomeSetting';
+////////////////////////////////////
 
 const MetronomeSetting = createMetronomeSetting(React);
 const render = reactDom.renderToStaticMarkup;

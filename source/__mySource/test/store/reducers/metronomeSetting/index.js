@@ -3,6 +3,7 @@ import deepFreeze from 'deep-freeze';
 
 import {setMetronomeSetting} from '../../../../actions';
 import metronomeSetting from '../../../../store/reducers/metronomeSetting';
+////////////////////////////////////
 
 test('Set classicTicksPerMinute, classicTicksPerBeat', nest => {
   nest.test('initial', assert => {

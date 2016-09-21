@@ -7,6 +7,5 @@ import '../test/components/beat';
 import '../test/components/tickAssignment';
 import '../test/components/metronomeSetting';
 
-// exclude audio, as this needs to be done manually in browser for now
 
 

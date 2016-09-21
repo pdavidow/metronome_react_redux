@@ -4,6 +4,7 @@ import test from 'tape';
 import dom from 'cheerio';
 
 import createBeat from '../../../components/beat';
+////////////////////////////////////
 
 const Beat = createBeat(React);
 const render = reactDom.renderToStaticMarkup;
