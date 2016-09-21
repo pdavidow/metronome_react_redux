@@ -15,12 +15,12 @@ import {play} from '../../models/metronome';
 import {
   setBeat,
   setMetronomeSetting
-} from '__mySource/actions';
+} from '../../actions';
 import {
   calc_tickCount,
   calc_rhTickIndices,
   calc_lhTickIndices
-} from '__mySource/models/metronome';
+} from '../../models/metronome';
 ////////////////////////////////////
 
 export default (React) => {
