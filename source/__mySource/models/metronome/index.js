@@ -1,7 +1,8 @@
-import {includes, range} from 'lodash';
+import {includes, last, range} from 'lodash';
 import {lcm} from 'mathjs';
 
-import {playTicks} from '__mySource/models/audio';
+//import {playTicks} from '__mySource/models/audio'; todo
+import {playTicks} from '/home/nitrous/code/mrr/source/__mySource/models/audio';
 
 const calc_tickCount = ({rh = 1, lh = 1} = {}) => lcm(rh, lh);
 
@@ -52,7 +53,8 @@ const calc_ticksPerSec = ({classicTicksPerMinute = 1} = {}) => classicTicksPerMi
 
 const calc_ticks = ({
   beat = {rh: 1, lh: 1},
-  metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1}
+  metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1},
+  onEnded
 } = {}) => {
   const tickStartTimeOffsets = calc_tickStartTimeOffsets({beat, metronomeSetting});
   const rhTickIndices = calc_rhTickIndices(beat);
@@ -64,23 +66,18 @@ const calc_ticks = ({
     return {isRH, isLH, startOffset};
   };
 
-  return tickStartTimeOffsets.map(callback);
-};
+  const ticks =  tickStartTimeOffsets.map(callback);
+  if (onEnded != undefined) last(ticks).onEnded = onEnded;
 
-const calc_filteredTicks = ({
-  beat = {rh: 1, lh: 1},
-  metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1},
-  filter = ()=>true
-} = {}) => {
-  const ticks = calc_ticks({beat, metronomeSetting});
-  return ticks.filter(filter);
+  return ticks;
 };
 
 const play = ({
   beat = {rh: 1, lh: 1},
-  metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1}
+  metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1},
+  onEnded = () => {}
 } = {}) => {
-  const ticks = calc_ticks({beat, metronomeSetting});
+  const ticks = calc_ticks({beat, metronomeSetting, onEnded});
   playTicks({ticks});
 };
 

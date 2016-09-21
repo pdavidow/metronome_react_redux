@@ -7,4 +7,6 @@ import '__mySource/test/components/beat';
 import '__mySource/test/components/tickAssignment';
 import '__mySource/test/components/metronomeSetting';
 
+// exclude audio, as this needs to be done manually in browser for now
+//import '__mySource/test/audio/model/metronome/index.js';
 

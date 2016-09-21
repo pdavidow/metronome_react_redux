@@ -49,7 +49,8 @@ export default (React) => {
     const tickCount = calc_tickCount(beat);
     const rhTickIndices = calc_rhTickIndices(beat);
     const lhTickIndices = calc_lhTickIndices(beat);
-    const onPlay = () => play({beat, metronomeSetting});
+    const onEnded = () => console.log("ended");
+    const onPlay = () => play({beat, metronomeSetting, onEnded});
 
     return {
       ...beat,

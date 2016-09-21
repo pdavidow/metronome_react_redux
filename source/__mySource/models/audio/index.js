@@ -5,7 +5,8 @@ import {
   RH_TICK_DURATION,
   LH_TICK_DURATION,
   BACKGROUND_TICK_DURATION
-} from '__mySource/constants/audio';
+//} from '__mySource/constants/audio'; todo
+} from '/home/nitrous/code/mrr/source/__mySource/constants/audio';
 
 let audioContext;
 
@@ -22,34 +23,37 @@ const initialize = () => {
   };
 };
 
-const playTicks = ({ticks = []} = {}) => {
-  ticks.forEach(({isRH, isLH, startOffset}) => {
-    if (isRH) playRhTick({startOffset});
-    if (isLH) playLhTick({startOffset});
-    if (!isRH && !isLH) playBackgroundTick({startOffset});
+const playTicks = ({
+  ticks = []
+} = {}) => {
+  ticks.forEach(({isRH, isLH, startOffset, onEnded}) => {
+    if (isRH) playRhTick({startOffset, onEnded});
+    if (isLH) playLhTick({startOffset, onEnded});
+    if (!isRH && !isLH) playBackgroundTick({startOffset, onEnded});
     }
   )
 };
 
-const playRhTick = ({startOffset}) => {
+const playRhTick = ({startOffset, onEnded}) => {
   const oscillator = rhOscillator();
   const duration = RH_TICK_DURATION;
-  playOscillator({oscillator, startOffset, duration});
+  playOscillator({oscillator, startOffset, duration, onEnded});
 };
-const playLhTick = ({startOffset}) => {
+const playLhTick = ({startOffset, onEnded}) => {
   const oscillator = lhOscillator();
   const duration = LH_TICK_DURATION;
-  playOscillator({oscillator, startOffset, duration});
+  playOscillator({oscillator, startOffset, duration, onEnded});
 };
-const playBackgroundTick = ({startOffset}) => {
+const playBackgroundTick = ({startOffset, onEnded}) => {
   const oscillator = backgroundOscillator();
   const duration = BACKGROUND_TICK_DURATION;
-  playOscillator({oscillator, startOffset, duration});
+  playOscillator({oscillator, startOffset, duration, onEnded});
 };
 
-const playOscillator = ({oscillator, startOffset = 0, duration = 1}) => {
+const playOscillator = ({oscillator, startOffset = 0, duration = 1, onEnded}) => {
   const startTime = audioContext.currentTime + startOffset;
   oscillator.connect(audioContext.destination);
+  if (onEnded != undefined) oscillator.onended = onEnded;
   oscillator.start(startTime);
   oscillator.stop(startTime + duration);
 };
