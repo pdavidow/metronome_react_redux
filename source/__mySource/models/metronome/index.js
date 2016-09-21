@@ -60,13 +60,13 @@ const calc_ticks = ({
   const rhTickIndices = calc_rhTickIndices(beat);
   const lhTickIndices = calc_lhTickIndices(beat);
 
-  const callback = (startOffset, index) => {
+  const tick = (startOffset, index) => {
     const isRH = includes(rhTickIndices, index);
     const isLH = includes(lhTickIndices, index);
     return {isRH, isLH, startOffset};
   };
 
-  const ticks =  tickStartTimeOffsets.map(callback);
+  const ticks =  tickStartTimeOffsets.map(tick);
   if (onEnded != undefined) last(ticks).onEnded = onEnded;
 
   return ticks;
