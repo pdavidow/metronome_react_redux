@@ -32,7 +32,7 @@ test('Metronome model', nestOuter => {
       assert.equal(actual, expected, msg);
       assert.end();
     });
-    nestInner.test('......1 tick', async(assert) => { // FAILS
+    nestInner.test('......1 tick', async(assert) => { 
       const msg = 'Should increment by 1';
 
       initializeAudio();

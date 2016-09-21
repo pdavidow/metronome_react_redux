@@ -1,9 +1,11 @@
 import {
   RH_AUDIO_FREQ,
   LH_AUDIO_FREQ,
+  RH_LH_AUDIO_FREQ,
   BACKGROUND_AUDIO_FREQ,
   RH_TICK_DURATION,
   LH_TICK_DURATION,
+  RH_LH_TICK_DURATION,
   BACKGROUND_TICK_DURATION
 //} from '__mySource/constants/audio'; // todo
 } from '/home/nitrous/code/mrr/source/__mySource/constants/audio';
@@ -27,9 +29,10 @@ const playTicks = ({
   ticks = []
 } = {}) => {
   ticks.forEach(({isRH, isLH, startOffset, onEnded}) => {
-    if (isRH) playRhTick({startOffset, onEnded});
-    if (isLH) playLhTick({startOffset, onEnded});
-    if (!isRH && !isLH) playBackgroundTick({startOffset, onEnded});
+    if (!isRH && !isLH) return playBackgroundTick({startOffset, onEnded});
+    if (isRH && !isLH) return playRhTick({startOffset, onEnded});
+    if (!isRH && isLH) return playLhTick({startOffset, onEnded});
+    if (isRH && isLH) return playRhLhTick({startOffset, onEnded});
     }
   )
 };
@@ -42,6 +45,11 @@ const playRhTick = ({startOffset, onEnded}) => {
 const playLhTick = ({startOffset, onEnded}) => {
   const oscillator = lhOscillator();
   const duration = LH_TICK_DURATION;
+  playOscillator({oscillator, startOffset, duration, onEnded});
+};
+const playRhLhTick = ({startOffset, onEnded}) => {
+  const oscillator = rhLhOscillator();
+  const duration = RH_LH_TICK_DURATION;
   playOscillator({oscillator, startOffset, duration, onEnded});
 };
 const playBackgroundTick = ({startOffset, onEnded}) => {
@@ -64,6 +72,10 @@ const rhOscillator = () => {
 };
 const lhOscillator = () => {
   const freq = LH_AUDIO_FREQ;
+  return oscillator({freq});
+};
+const rhLhOscillator = () => {
+  const freq = RH_LH_AUDIO_FREQ;
   return oscillator({freq});
 };
 const backgroundOscillator = () => {
