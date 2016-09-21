@@ -1,4 +1,4 @@
-import createMetronomeContainer from '__mySource/containers/metronome';
+import createMetronomeContainer from './containers/metronome';
 
 export default (React) => () => {
   const MetronomeContainer = createMetronomeContainer(React);

@@ -1,5 +1,5 @@
-import {SET_BEAT} from '__mySource/constants/actionTypes';
-import {SET_METRONOME_SETTING} from '__mySource/constants/actionTypes';
+import {SET_BEAT} from '../constants/actionTypes';
+import {SET_METRONOME_SETTING} from '../constants/actionTypes';
 
 export const setBeat = ({rh, lh}) => {
   return {

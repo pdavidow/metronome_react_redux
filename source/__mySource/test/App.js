@@ -5,8 +5,8 @@ import dom from 'cheerio';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 
-import combinedReducers from '__mySource/store/reducers';
-import createApp from '__mySource/App.js';
+import combinedReducers from '../store/reducers';
+import createApp from '../App.js';
 
 const render = reactDom.renderToStaticMarkup;
 let store = createStore(combinedReducers);

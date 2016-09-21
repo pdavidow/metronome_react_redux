@@ -11,7 +11,8 @@ import {
   calc_rhTicks,
   calc_lhTicks,
   calc_rhOrLhTicks
-} from '__mySource/models/metronome';
+// } from '__mySource/models/metronome'; // todo
+} from '../../../models/metronome'; // todo
 
 test('Metronome model', nestOuter => {
   nestOuter.test('...Tick count should equal Lowest Common Multiple of rh and lh', nestInner => {
@@ -38,7 +39,7 @@ test('Metronome model', nestOuter => {
       assert.end();
     });
   });
-  
+
   nestOuter.test('...Right Hand tick indices', nestInner => {
     const msg = 'Right Hand should know its tick indices';
     nestInner.test('......Test #1', assert => {

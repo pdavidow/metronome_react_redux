@@ -7,11 +7,11 @@
 
 import {connect} from 'react-redux';
 
-import createBeat from '__mySource/components/beat';
-import createTickAssignment from '__mySource/components/tickAssignment';
-import createMetronomeSetting from '__mySource/components/metronomeSetting';
-import createBeatPlayer from '__mySource/components/beatPlayer';
-import {play} from '__mySource/models/metronome';
+import createBeat from '../../components/beat';
+import createTickAssignment from '../../components/tickAssignment';
+import createMetronomeSetting from '../../components/metronomeSetting';
+import createBeatPlayer from '../../components/beatPlayer';
+import {play} from '../../models/metronome';
 
 import {
   setBeat,

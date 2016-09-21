@@ -8,7 +8,8 @@ import {
   RH_LH_TICK_DURATION,
   BACKGROUND_TICK_DURATION
 //} from '/__mySource/constants/audio'; // todo
-} from '/home/nitrous/code/mrr/source/__mySource/constants/audio';
+//} from '/home/nitrous/code/mrr/source/__mySource/constants/audio';
+} from '../../constants/audio';
 
 let audioContext;
 

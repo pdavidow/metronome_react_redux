@@ -3,8 +3,8 @@ import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 
-import createApp from '__mySource/App';
-import combinedReducers from '__mySource/store/reducers';
+import createApp from './App';
+import combinedReducers from './store/reducers';
 
 const App = createApp(React);
 const store = createStore(combinedReducers);

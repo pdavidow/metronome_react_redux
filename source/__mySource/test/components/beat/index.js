@@ -3,7 +3,7 @@ import reactDom from 'react-dom/server';
 import test from 'tape';
 import dom from 'cheerio';
 
-import createBeat from '__mySource/components/beat';
+import createBeat from '../../../components/beat';
 
 const Beat = createBeat(React);
 const render = reactDom.renderToStaticMarkup;

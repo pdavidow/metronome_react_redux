@@ -1,4 +1,4 @@
-import {initialize as initializeAudio} from '__mySource/models/audio';
+import {initialize as initializeAudio} from '../../models/audio';
 
 export default (React) => {
   const PropTypes = React.PropTypes;

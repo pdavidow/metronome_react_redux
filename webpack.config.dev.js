@@ -1,5 +1,3 @@
-//__dirname =  "/home/nitrous/code/mrr/source/" + __dirname; // todo
-
 var path = require('path');
 
 module.exports = {

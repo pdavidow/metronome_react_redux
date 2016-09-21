@@ -3,7 +3,7 @@ import reactDom from 'react-dom/server';
 import test from 'tape';
 import dom from 'cheerio';
 
-import createMetronomeSetting from '__mySource/components/metronomeSetting';
+import createMetronomeSetting from '../../../components/metronomeSetting';
 
 const MetronomeSetting = createMetronomeSetting(React);
 const render = reactDom.renderToStaticMarkup;

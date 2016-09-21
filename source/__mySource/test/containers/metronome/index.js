@@ -4,8 +4,8 @@ import test from 'tape';
 import dom from 'cheerio';
 import {createStore} from 'redux';
 
-import combinedReducers from '__mySource/store/reducers';
-import createMetronomeContainer from '__mySource/containers/metronome';
+import combinedReducers from '../../../store/reducers';
+import createMetronomeContainer from '../../../containers/metronome';
 
 const MetronomeContainer = createMetronomeContainer(React);
 const render = reactDom.renderToStaticMarkup;
