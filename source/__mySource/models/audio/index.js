@@ -7,7 +7,7 @@ import {
   LH_TICK_DURATION,
   RH_LH_TICK_DURATION,
   BACKGROUND_TICK_DURATION
-//} from '__mySource/constants/audio'; // todo
+//} from '/__mySource/constants/audio'; // todo
 } from '/home/nitrous/code/mrr/source/__mySource/constants/audio';
 
 let audioContext;
@@ -29,6 +29,8 @@ const playTicks = ({
   ticks = []
 } = {}) => {
   ticks.forEach(({isRH, isLH, startOffset, onEnded}) => {
+    // todo global rename: isRH -> isRh, isLH -> isLh
+    // encapsulate tick state: if (isBackgroundOnly), if (isRhOnly) ...?...
     if (!isRH && !isLH) return playBackgroundTick({startOffset, onEnded});
     if (isRH && !isLH) return playRhTick({startOffset, onEnded});
     if (!isRH && isLH) return playLhTick({startOffset, onEnded});

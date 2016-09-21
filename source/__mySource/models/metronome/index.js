@@ -1,7 +1,7 @@
 import {includes, last, range} from 'lodash';
 import {lcm} from 'mathjs';
 
-//import {playTicks} from '__mySource/models/audio'; todo
+//import {playTicks} from '/__mySource/models/audio'; // todo
 import {playTicks} from '/home/nitrous/code/mrr/source/__mySource/models/audio';
 
 const calc_tickCount = ({rh = 1, lh = 1} = {}) => lcm(rh, lh);
