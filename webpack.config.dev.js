@@ -6,7 +6,7 @@ module.exports = {
     root: __dirname + '/source'
   },
   entry: [
-    './source/__mySource/index'
+    './source/index'
   ],
   output: {
     path: path.join(__dirname, 'build'),
