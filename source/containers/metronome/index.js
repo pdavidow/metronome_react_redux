@@ -1,9 +1,7 @@
 // todo
 // - 'Stop' button
-// - Disable Play button while playing
 // - Animate ticks with sequence of vertical lines representing ticks, and dot on top/bottom for rh/lh; do highlights when played
 // - ReduxForm v6
-// - TESTS!!!!!!!!
 
 import {connect} from 'react-redux';
 
@@ -51,10 +49,14 @@ export default (React) => {
     const tickCount = calc_tickCount(beat);
     const rhTickIndices = calc_rhTickIndices(beat);
     const lhTickIndices = calc_lhTickIndices(beat);
-    const onEnded = () => isPlaying = false;
+    const onEnded = () => {
+      isPlaying = false;
+      this.forceUpdate();
+    };
     const onPlay = () => {
       isPlaying = true;
       play({beat, metronomeSetting, onEnded});
+      this.forceUpdate();
     };
 
     return {
@@ -72,6 +74,7 @@ export default (React) => {
     {
       onBeatSubmit: ({rh, lh}) =>
         dispatch(setBeat({rh, lh}) ),
+
       onMetronomeSettingSubmit: ({classicTicksPerMinute, classicTicksPerBeat}) =>
         dispatch(setMetronomeSetting({classicTicksPerMinute, classicTicksPerBeat}) )
     }
