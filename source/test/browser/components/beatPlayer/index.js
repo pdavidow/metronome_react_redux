@@ -6,10 +6,15 @@ import dom from 'cheerio';
 import reactDom from 'react-dom/server';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
-import TestUtils from 'react-addons-test-utils';
+import ReactTestUtils from 'react-addons-test-utils';
 
 import createBeatPlayer from '../../../../components/beatPlayer';
 import createMetronomeContainer from '../../../../containers/metronome';
+import combinedReducers from '../../../../store/reducers';
+import {
+  setBeat,
+  setMetronomeSetting
+} from '../../../../actions';
 ////////////////////////////////////
 
 const BeatPlayer = createBeatPlayer(React);
@@ -20,8 +25,7 @@ test('BeatPlayer component', nestOuter => {
     nestInner.test('......BeatPlayer should render an enabled button by default', assert => {
       const msg = 'Should be enabled';
 
-      const props = {onPlay: ()=>{}};
-      const el = <BeatPlayer {...props}/>;
+      const el = <BeatPlayer/>;
       const $ = dom.load(render(el));
       const output = $('#playButton').attr('disabled');
 
@@ -29,8 +33,8 @@ test('BeatPlayer component', nestOuter => {
       const expected = undefined;
 
       assert.equal(actual, expected, msg);
+      assert.end();
     });
-    /*
     nestInner.test('......Should be disabled during play', async(assert) => {
       const msg = 'Should be disabled';
 
@@ -49,17 +53,19 @@ test('BeatPlayer component', nestOuter => {
           </div>
         </Provider>;
 
-      const $$ = dom.load(render(el));
-      const playButton = $$('#playButton');
-      console.log("playButton", playButton);
-      //TestUtils.Simulate['click'](playButton[0]);
+      const $ = dom.load(render(el));
+      const playButton = $('#playButton');
+      const metronome = $('.metronome');
+      console.log("metronome.refs",metronome.refs);
+      ReactTestUtils.Simulate.click(metronome.refs.playButtonRef);
       await sleep(10);
+      //await sleep(3000);
 
       const actual = await Promise.resolve(playButton.attr('disabled'));
       const expected = 'disabled';
 
       assert.equal(actual, expected, msg);
+      assert.end();
     });
-    */
   });
 });

@@ -8,7 +8,8 @@ export default (React) => {
     BeatPlayer.propTypes = {
       onPlay: PropTypes.func.isRequired
     };
-    const {onPlay} = props;
+    //const {onPlay} = props;
+    const onPlay = ()=>console.log("CLICKED"); // todo temp
 
     return {
       componentDidMount () {
