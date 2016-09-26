@@ -3,10 +3,11 @@ import test from 'tape-async';
 import sleep from 'sleep-promise';
 import 'babel-polyfill'; // http://stackoverflow.com/questions/28976748/regeneratorruntime-is-not-defined
 import dom from 'cheerio';
-import reactDom from 'react-dom/server';
+import reactDom from 'react-dom';
+import reactDomServer from 'react-dom/server';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
-import ReactTestUtils from 'react-addons-test-utils';
+import TestUtils from 'react-addons-test-utils';
 
 import createBeatPlayer from '../../../../components/beatPlayer';
 import createMetronomeContainer from '../../../../containers/metronome';
@@ -18,10 +19,12 @@ import {
 ////////////////////////////////////
 
 const BeatPlayer = createBeatPlayer(React);
-const render = reactDom.renderToStaticMarkup;
+const render = reactDomServer.renderToStaticMarkup;
+const {renderIntoDocument, Simulate} = TestUtils;
 
 test('BeatPlayer component', nestOuter => {
   nestOuter.test('...Play button should disable during play', nestInner => {
+
     nestInner.test('......BeatPlayer should render an enabled button by default', assert => {
       const msg = 'Should be enabled';
 
@@ -53,15 +56,18 @@ test('BeatPlayer component', nestOuter => {
           </div>
         </Provider>;
 
-      const $ = dom.load(render(el));
-      const playButton = $('#playButton');
-      const metronome = $('.metronome');
-      console.log("metronome.refs",metronome.refs);
-      ReactTestUtils.Simulate.click(metronome.refs.playButtonRef);
-      await sleep(10);
-      //await sleep(3000);
+      const renderedComp = renderIntoDocument(el);
+      const domNode = reactDom.findDOMNode(renderedComp);
+      const playButton = domNode.querySelector('#playButton');
 
-      const actual = await Promise.resolve(playButton.attr('disabled'));
+      Simulate.click(playButton);
+      await sleep(10);
+      
+      const actual = await Promise.resolve({
+        then: function(onFulfill, onReject) {
+          onFulfill(playButton.getAttribute('disabled'));
+        }
+      });
       const expected = 'disabled';
 
       assert.equal(actual, expected, msg);
