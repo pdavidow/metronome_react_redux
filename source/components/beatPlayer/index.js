@@ -19,7 +19,7 @@ export default (React) => {
       render () {
         return (
           <div className="beatPlayer">
-            <button type="submit" id="playButton" onClick={onPlay}>=== Play Beat ===</button>
+            <button type="submit" id="playButton" ref="playButtonRef" onClick={onPlay}>=== Play Beat ===</button>
           </div>
         );
       }
