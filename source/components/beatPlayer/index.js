@@ -8,7 +8,7 @@ export default (React) => {
     BeatPlayer.propTypes = {
       onPlay: PropTypes.func.isRequired
     };
-    const {onPlay} = props;
+    const {onPlay, isPlaying} = props;
     //const onPlay = ()=>console.log("CLICKED"); // todo temp
 
     return {
@@ -19,7 +19,7 @@ export default (React) => {
       render () {
         return (
           <div className="beatPlayer">
-            <button type="submit" id="playButton" onClick={onPlay}>=== Play Beat ===</button>
+            <button type="submit" id="playButton" disabled={isPlaying ? "disabled" : ""} onClick={onPlay}>=== Play Beat ===</button>
           </div>
         );
       }

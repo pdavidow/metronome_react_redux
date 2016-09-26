@@ -22,6 +22,8 @@ const BeatPlayer = createBeatPlayer(React);
 const render = reactDomServer.renderToStaticMarkup;
 const {renderIntoDocument, Simulate} = TestUtils;
 
+//http://stackoverflow.com/questions/25995656/why-does-getattributedisabled-return-true-not-disabled
+
 test('BeatPlayer component', nestOuter => {
   nestOuter.test('...Play button should disable during play', nestInner => {
 
@@ -60,15 +62,19 @@ test('BeatPlayer component', nestOuter => {
       const domNode = reactDom.findDOMNode(renderedComp);
       const playButton = domNode.querySelector('#playButton');
 
+      let actual = playButton.getAttribute('disabled');
+      let expected = null;
+      assert.equal(actual, expected, 'default: enabled');
+
       Simulate.click(playButton);
-      await sleep(10);
-      
-      const actual = await Promise.resolve({
+      await sleep(100);
+
+      actual = await Promise.resolve({
         then: function(onFulfill, onReject) {
           onFulfill(playButton.getAttribute('disabled'));
         }
       });
-      const expected = 'disabled';
+      expected = 'true';
 
       assert.equal(actual, expected, msg);
       assert.end();

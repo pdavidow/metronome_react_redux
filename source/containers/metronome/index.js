@@ -23,6 +23,8 @@ import {
 } from '../../models/metronome';
 ////////////////////////////////////
 
+let isPlaying = false;
+
 export default (React) => {
   const Metronome = (props) => {
     const Beat = createBeat(React);
@@ -49,8 +51,11 @@ export default (React) => {
     const tickCount = calc_tickCount(beat);
     const rhTickIndices = calc_rhTickIndices(beat);
     const lhTickIndices = calc_lhTickIndices(beat);
-    const onEnded = () => console.log("ended");
-    const onPlay = () => play({beat, metronomeSetting, onEnded});
+    const onEnded = () => isPlaying = false;
+    const onPlay = () => {
+      isPlaying = true;
+      play({beat, metronomeSetting, onEnded});
+    };
 
     return {
       ...beat,
@@ -58,7 +63,8 @@ export default (React) => {
       tickCount,
       rhTickIndices,
       lhTickIndices,
-      onPlay
+      onPlay,
+      isPlaying
     };
   };
 
