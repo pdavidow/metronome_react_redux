@@ -1,11 +1,16 @@
-import {SET_BEAT} from '../constants/actionTypes';
-import {SET_METRONOME_SETTING} from '../constants/actionTypes';
+import {
+  SET_BEAT,
+  SET_METRONOME_SETTING,
+  SET_PLAYER
+} from '../constants/actionTypes';
 ////////////////////////////////////
 
 export const setBeat = ({rh, lh}) => {
   return {
     type: SET_BEAT,
-    payload: {rh, lh}
+    payload: {
+      rh,
+      lh}
   };
 };
 
@@ -18,3 +23,13 @@ export const setMetronomeSetting = ({classicTicksPerMinute, classicTicksPerBeat}
     }
   };
 };
+
+export const setPlayer = ({isPlaying}) => {
+  return {
+    type: SET_PLAYER,
+    payload: {
+      isPlaying
+    }
+  };
+};
+

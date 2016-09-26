@@ -12,7 +12,8 @@ import createBeatPlayer from '../../components/beatPlayer';
 import {play} from '../../models/metronome';
 import {
   setBeat,
-  setMetronomeSetting
+  setMetronomeSetting,
+  setPlayer
 } from '../../actions';
 import {
   calc_tickCount,
@@ -46,39 +47,37 @@ export default (React) => {
   const mapStateToProps = (state) => {
     const beat = state.beat;
     const metronomeSetting = state.metronomeSetting;
+    const player = state.player;
     const tickCount = calc_tickCount(beat);
     const rhTickIndices = calc_rhTickIndices(beat);
     const lhTickIndices = calc_lhTickIndices(beat);
-    const onEnded = () => {
-      isPlaying = false;
-      this.forceUpdate();
-    };
-    const onPlay = () => {
-      isPlaying = true;
-      play({beat, metronomeSetting, onEnded});
-      this.forceUpdate();
-    };
 
     return {
-      ...beat,
-      ...metronomeSetting,
+      beat,
+      metronomeSetting,
+      ...player,
       tickCount,
       rhTickIndices,
-      lhTickIndices,
-      onPlay,
-      isPlaying
+      lhTickIndices
     };
   };
 
-  const mapDispatchToProps = (dispatch) => (
-    {
-      onBeatSubmit: ({rh, lh}) =>
-        dispatch(setBeat({rh, lh}) ),
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      onBeatSubmit: (beat) =>
+        dispatch(setBeat(beat)),
 
-      onMetronomeSettingSubmit: ({classicTicksPerMinute, classicTicksPerBeat}) =>
-        dispatch(setMetronomeSetting({classicTicksPerMinute, classicTicksPerBeat}) )
+      onMetronomeSettingSubmit: (metronomeSetting) =>
+        dispatch(setMetronomeSetting(metronomeSetting)),
+
+      onPlay: ({beat, metronomeSetting}) => {
+        dispatch(setPlayer({isPlaying: true}));
+        //const onEnded = () => dispatch(setPlayer({isPlaying: false}));
+        //play({beat, metronomeSetting, onEnded});
+        play({beat, metronomeSetting});
+      }
     }
-  );
+  };
 
   return connect(
     mapStateToProps,

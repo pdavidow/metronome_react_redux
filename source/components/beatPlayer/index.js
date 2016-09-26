@@ -7,9 +7,16 @@ export default (React) => {
   const BeatPlayer = (props) => {
     BeatPlayer.propTypes = {
       onPlay: PropTypes.func.isRequired
+      // todo shape
+      /*
+       beat,
+       metronomeSetting,
+       */
     };
-    const {onPlay, isPlaying} = props;
+    const {onPlay, beat, metronomeSetting} = props;
     //const onPlay = ()=>console.log("CLICKED"); // todo temp
+
+    const onClickPlay = () => onPlay({beat, metronomeSetting});
 
     return {
       componentDidMount () {
@@ -19,7 +26,7 @@ export default (React) => {
       render () {
         return (
           <div className="beatPlayer">
-            <button type="submit" id="playButton" disabled={isPlaying ? "disabled" : ""} onClick={onPlay}>=== Play Beat ===</button>
+            <button type="submit" id="playButton" disabled={isPlaying ? "disabled" : ""} onClick={onPlay()}>=== Play Beat ===</button>
           </div>
         );
       }
