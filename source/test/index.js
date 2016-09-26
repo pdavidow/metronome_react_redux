@@ -1,11 +1,12 @@
-import '../test/App.js';
-import '../test/store/reducers/beat';
-import '../test/store/reducers/metronomeSetting';
-import '../test/models/metronome';
-import '../test/containers/metronome'
-import '../test/components/beat';
-import '../test/components/tickAssignment';
-import '../test/components/metronomeSetting';
+import './App.js';
+import './store/reducers/beat';
+import './store/reducers/metronomeSetting';
+import './models/metronome';
+import './containers/metronome'
+import './components/beat';
+import './components/beatPlayer';
+import './components/tickAssignment';
+import './components/metronomeSetting';
 
 
 

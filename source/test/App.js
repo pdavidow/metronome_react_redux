@@ -23,13 +23,22 @@ test('Metronome', assert => {
 
   const $ = dom.load(render(el));
   const beatClass = 'beat';
+  const beatPlayerClass = 'beatPlayer';
+  const metronomeSettingClass = 'metronomeSetting';
+  const tickAssignmentClass = 'tickAssignment';
 
   const actual = {
-    Beat: Boolean($(`.${ beatClass }`).html())
+    beat: Boolean($(`.${ beatClass }`).html()),
+    beatPlayer: Boolean($(`.${ beatPlayerClass }`).html()),
+    metronomeSetting: Boolean($(`.${ metronomeSettingClass }`).html()),
+    tickAssignment: Boolean($(`.${ tickAssignmentClass }`).html()),
   };
 
   const expected = {
-    Beat: true,
+    beat: true,
+    beatPlayer: true,
+    metronomeSetting: true,
+    tickAssignment: true,
   };
 
   assert.deepEqual(actual, expected, msg);

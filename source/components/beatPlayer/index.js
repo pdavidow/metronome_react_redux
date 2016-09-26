@@ -15,10 +15,10 @@ export default (React) => {
         initializeAudio();
       },
 
-      render () { // todo: disable button during play
+      render () {
         return (
-          <div>
-            <button type="submit" onClick={onPlay}>=== Play Beat ===</button>
+          <div className="beatPlayer">
+            <button type="submit" id="playButton" onClick={onPlay}>=== Play Beat ===</button>
           </div>
         );
       }

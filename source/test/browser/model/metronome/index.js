@@ -1,5 +1,3 @@
-// browserify -t babelify index.js | browser-run -p 3000
-
 import test from 'tape-async';
 import sleep from 'sleep-promise';
 import 'babel-polyfill'; // http://stackoverflow.com/questions/28976748/regeneratorruntime-is-not-defined
@@ -132,3 +130,37 @@ test('Metronome model', nestOuter => {
     });
   });
 });
+
+
+// todo
+/*
+ nest.test('audio', assert => {
+ const msg = 'Should detect something';
+ //https://medium.com/javascript-scene/why-i-use-tape-instead-of-mocha-so-should-you-6aa105d8eaf4#.jq102o9wc
+ //browserify -t babelify index.js | browser-run -p 3000
+
+ //https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API
+ //https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode
+ //https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/getByteTimeDomainData
+ var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+ var analyser = audioCtx.createAnalyser();
+ var oscillator = audioCtx.createOscillator();
+ oscillator.frequency.value = 800;
+ oscillator.connect(analyser);
+ var t= audioCtx.currentTime;
+ oscillator.start(t);
+ oscillator.stop(t + 0.05);
+
+ analyser.fftSize = 2048;
+ var bufferLength = analyser.frequencyBinCount;
+ var dataArray = new Uint8Array(bufferLength);
+ analyser.getByteTimeDomainData(dataArray);
+
+ const expected = true;
+ const actual = dataArray.length > 0;
+ console.log(dataArray);
+
+ assert.equal(actual, expected, msg);
+ assert.end();
+ });
+ */
