@@ -3,6 +3,7 @@ import './store/reducers/beat';
 import './store/reducers/metronomeSetting';
 import './store/reducers/player';
 import './models/metronome';
+import './models/tick';
 import './containers/metronome'
 import './components/beat';
 import './components/beatPlayer';

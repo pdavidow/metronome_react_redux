@@ -8,6 +8,13 @@ import {
   RH_LH_TICK_DURATION,
   BACKGROUND_TICK_DURATION
 } from '../../constants/audio';
+
+import {
+  isTick_Rh,
+  isTick_Lh,
+  isTick_RhLh,
+  isTick_Background
+} from '../tick';
 ////////////////////////////////////
 
 let audioContext;
@@ -28,13 +35,13 @@ const initialize = () => {
 const playTicks = ({
   ticks = []
 } = {}) => {
-  ticks.forEach(({isRH, isLH, startOffset, onEnded}) => {
-    // todo global rename: isRH -> isRh, isLH -> isLh
-    // encapsulate tick state: if (isBackgroundOnly), if (isRhOnly) ...?...
-    if (!isRH && !isLH) return playBackgroundTick({startOffset, onEnded});
-    if (isRH && !isLH) return playRhTick({startOffset, onEnded});
-    if (!isRH && isLH) return playLhTick({startOffset, onEnded});
-    if (isRH && isLH) return playRhLhTick({startOffset, onEnded});
+  ticks.forEach((tick) => {
+    const {startOffset, onEnded} = tick;
+
+    if (isTick_Background(tick)) return playBackgroundTick({startOffset, onEnded});
+    if (isTick_Rh(tick)) return playRhTick({startOffset, onEnded});
+    if (isTick_Lh(tick)) return playLhTick({startOffset, onEnded});
+    if (isTick_RhLh(tick)) return playRhLhTick({startOffset, onEnded});
     }
   )
 };
