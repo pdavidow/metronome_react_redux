@@ -18,7 +18,7 @@ const initialize = () => {
   // Http://cwilso.github.io/AudioContext-MonkeyPatch/AudioContextMonkeyPatch.js
   // TO WORK ON CURRENT CHROME!!  But this means our code can be properly
   // spec-compliant, and work on Chrome, Safari and Firefox.
-    audioContext = new AudioContext();
+    if (audioContext == undefined) audioContext = new AudioContext();
   }
   catch (e) {
     alert('Web Audio API is not supported in current browser');
