@@ -4,7 +4,7 @@ import 'babel-polyfill'; // http://stackoverflow.com/questions/28976748/regenera
 
 import {play} from '../../../../models/metronome';
 import {initialize as initializeAudio} from '../../../../models/audio';
-import {RH_LH_TICK_DURATION} from '../../../../constants/audio';
+import {TICK_DURATION_RH_LH} from '../../../../constants/audio';
 ////////////////////////////////////
 
 initializeAudio();
@@ -78,8 +78,8 @@ test('Metronome model', nestOuter => {
   });
   nestOuter.test('...OnEnded should only be called when last tick has ended', nestInner => {
     const delta_ms = 1; // want to wait until just after tone ends
-    const RH_LH_TICK_DURATION_ms = RH_LH_TICK_DURATION * 1000; // The only ticks to be used here are RH_LH
-    const waitOffset_ms = RH_LH_TICK_DURATION_ms + delta_ms;
+    const TICK_DURATION_RH_LH_ms = TICK_DURATION_RH_LH * 1000; // The only ticks to be used here are RH_LH
+    const waitOffset_ms = TICK_DURATION_RH_LH_ms + delta_ms;
     nestInner.test('......3 ticks, after 1st: do nothing', async(assert) => {
       const msg = 'Should not increment';
 

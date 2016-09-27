@@ -1,12 +1,12 @@
 import {
-  RH_AUDIO_FREQ,
-  LH_AUDIO_FREQ,
-  RH_LH_AUDIO_FREQ,
-  BACKGROUND_AUDIO_FREQ,
-  RH_TICK_DURATION,
-  LH_TICK_DURATION,
-  RH_LH_TICK_DURATION,
-  BACKGROUND_TICK_DURATION
+  AUDIO_FREQ_RH,
+  AUDIO_FREQ_LH,
+  AUDIO_FREQ_RH_LH,
+  AUDIO_FREQ_BACKGROUND,
+  TICK_DURATION_RH,
+  TICK_DURATION_LH,
+  TICK_DURATION_RH_LH,
+  TICK_DURATION_BACKGROUND
 } from '../../constants/audio';
 
 import {
@@ -38,32 +38,32 @@ const playTicks = ({
   ticks.forEach((tick) => {
     const {startOffset, onEnded} = tick;
 
-    if (isTick_Background(tick)) return playBackgroundTick({startOffset, onEnded});
-    if (isTick_Rh(tick)) return playRhTick({startOffset, onEnded});
-    if (isTick_Lh(tick)) return playLhTick({startOffset, onEnded});
-    if (isTick_RhLh(tick)) return playRhLhTick({startOffset, onEnded});
+    if (isTick_Background(tick)) return playTick_Background({startOffset, onEnded});
+    if (isTick_Rh(tick)) return playTick_Rh({startOffset, onEnded});
+    if (isTick_Lh(tick)) return playTick_Lh({startOffset, onEnded});
+    if (isTick_RhLh(tick)) return playTick_RhLh({startOffset, onEnded});
     }
   )
 };
 
-const playRhTick = ({startOffset, onEnded}) => {
-  const oscillator = rhOscillator();
-  const duration = RH_TICK_DURATION;
+const playTick_Rh = ({startOffset, onEnded}) => {
+  const oscillator = oscillator_Rh();
+  const duration = TICK_DURATION_RH;
   playOscillator({oscillator, startOffset, duration, onEnded});
 };
-const playLhTick = ({startOffset, onEnded}) => {
-  const oscillator = lhOscillator();
-  const duration = LH_TICK_DURATION;
+const playTick_Lh = ({startOffset, onEnded}) => {
+  const oscillator = oscillator_Lh();
+  const duration = TICK_DURATION_LH;
   playOscillator({oscillator, startOffset, duration, onEnded});
 };
-const playRhLhTick = ({startOffset, onEnded}) => {
-  const oscillator = rhLhOscillator();
-  const duration = RH_LH_TICK_DURATION;
+const playTick_RhLh = ({startOffset, onEnded}) => {
+  const oscillator = oscillator_RhLh();
+  const duration = TICK_DURATION_RH_LH;
   playOscillator({oscillator, startOffset, duration, onEnded});
 };
-const playBackgroundTick = ({startOffset, onEnded}) => {
-  const oscillator = backgroundOscillator();
-  const duration = BACKGROUND_TICK_DURATION;
+const playTick_Background = ({startOffset, onEnded}) => {
+  const oscillator = oscillator_Background();
+  const duration = TICK_DURATION_BACKGROUND;
   playOscillator({oscillator, startOffset, duration, onEnded});
 };
 
@@ -75,20 +75,20 @@ const playOscillator = ({oscillator, startOffset = 0, duration = 1, onEnded}) =>
   oscillator.stop(startTime + duration);
 };
 
-const rhOscillator = () => {
-  const freq = RH_AUDIO_FREQ;
+const oscillator_Rh = () => {
+  const freq = AUDIO_FREQ_RH;
   return oscillator({freq});
 };
-const lhOscillator = () => {
-  const freq = LH_AUDIO_FREQ;
+const oscillator_Lh = () => {
+  const freq = AUDIO_FREQ_LH;
   return oscillator({freq});
 };
-const rhLhOscillator = () => {
-  const freq = RH_LH_AUDIO_FREQ;
+const oscillator_RhLh = () => {
+  const freq = AUDIO_FREQ_RH_LH;
   return oscillator({freq});
 };
-const backgroundOscillator = () => {
-  const freq = BACKGROUND_AUDIO_FREQ;
+const oscillator_Background = () => {
+  const freq = AUDIO_FREQ_BACKGROUND;
   return oscillator({freq});
 };
 
