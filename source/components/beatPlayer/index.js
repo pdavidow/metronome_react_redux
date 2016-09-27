@@ -5,14 +5,19 @@ export default (React) => {
   const PropTypes = React.PropTypes;
 
   const BeatPlayer = (props) => {
-    // todo shape
     BeatPlayer.propTypes = {
-      onPlay: PropTypes.func.isRequired
-      /*
-       beat,
-       metronomeSetting,
-       player
-       */
+      onPlay: PropTypes.func.isRequired,
+      beat: React.PropTypes.shape({
+        rh: PropTypes.number.isRequired,
+        lh: PropTypes.number.isRequired
+      }),
+      metronomeSetting: React.PropTypes.shape({
+        classicTicksPerMinute: PropTypes.number.isRequired,
+        classicTicksPerBeat: PropTypes.number.isRequired
+      }),
+      player: React.PropTypes.shape({
+        isPlaying: PropTypes.bool.isRequired
+      }),
     };
     const {onPlay, beat, metronomeSetting, player} = props;
     const {isPlaying} = player;
