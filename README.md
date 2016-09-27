@@ -1,4 +1,5 @@
 todo
+- audio testing via ScriptProcessorNode
 - 'Stop' button
 - Animate ticks with sequence of vertical lines representing ticks, and dot on top/bottom for rh/lh; do highlights when played (see https://github.com/cwilso/metronome)
 - ReduxForm v6
