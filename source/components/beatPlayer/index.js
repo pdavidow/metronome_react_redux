@@ -21,7 +21,6 @@ export default (React) => {
     };
     const {onPlay, beat, metronomeSetting, player} = props;
     const {isPlaying} = player;
-    console.log("isPlaying", isPlaying);
 
     const onClick_Play = () => onPlay({beat, metronomeSetting});
 
@@ -31,6 +30,7 @@ export default (React) => {
       },
 
       render () {
+        console.log("isPlaying", isPlaying);
         return (
           <div className="beatPlayer">
             <button type="submit" id="playButton" disabled={isPlaying ? "disabled" : ""} onClick={onClick_Play}> PLAY </button>

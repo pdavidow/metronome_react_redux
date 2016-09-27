@@ -1,8 +1,3 @@
-// todo
-// - 'Stop' button
-// - Animate ticks with sequence of vertical lines representing ticks, and dot on top/bottom for rh/lh; do highlights when played
-// - ReduxForm v6
-
 import {connect} from 'react-redux';
 
 import createBeat from '../../components/beat';
