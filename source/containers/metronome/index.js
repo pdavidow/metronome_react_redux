@@ -33,10 +33,6 @@ export default (React) => {
 
     return (
       <div>
-        <BeatPlayer {...props}/>
-      </div>
-      /*
-      <div>
         <Beat {...props}/>
         <p>=========================</p>
         <TickAssignment {...props}/>
@@ -45,7 +41,6 @@ export default (React) => {
         <p>=========================</p>
         <BeatPlayer {...props}/>
       </div>
-      */
     );
    };
 
@@ -77,9 +72,8 @@ export default (React) => {
 
       onPlay: ({beat, metronomeSetting}) => {
         dispatch(setPlayer({isPlaying: true}));
-        //const onEnded = () => dispatch(setPlayer({isPlaying: false}));
-        //play({beat, metronomeSetting, onEnded});
-        play({beat, metronomeSetting});
+        const onEnded = () => dispatch(setPlayer({isPlaying: false}));
+        play({beat, metronomeSetting, onEnded});
       }
     }
   };

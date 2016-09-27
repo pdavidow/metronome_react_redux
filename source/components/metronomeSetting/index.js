@@ -2,12 +2,16 @@ export default (React) => {
   const PropTypes = React.PropTypes;
 
   const MetronomeSetting = (props) => {
+    // todo
+    /*
     MetronomeSetting.propTypes = {
       classicTicksPerMinute: PropTypes.number.isRequired,
       classicTicksPerBeat: PropTypes.number.isRequired,
       onMetronomeSettingSubmit: PropTypes.func.isRequired
     };
-    const {classicTicksPerMinute, classicTicksPerBeat, onMetronomeSettingSubmit} = props;
+    */
+    const {metronomeSetting, onMetronomeSettingSubmit} = props;
+    const {classicTicksPerMinute, classicTicksPerBeat} = metronomeSetting;
 
     let input_classicTicksPerMinute, input_classicTicksPerBeat;
 

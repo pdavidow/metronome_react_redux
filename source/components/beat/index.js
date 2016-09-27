@@ -2,12 +2,16 @@ export default (React) => {
   const PropTypes = React.PropTypes;
 
   const Beat = (props) => {
+    // todo
+    /*
     Beat.propTypes = {
       rh: PropTypes.number.isRequired,
       lh: PropTypes.number.isRequired,
       onBeatSubmit: PropTypes.func.isRequired
     };
-    const {rh, lh, onBeatSubmit} = props;
+    */
+    const {beat, onBeatSubmit} = props;
+    const {rh, lh} = beat;
 
     let input_rh, input_lh;
 

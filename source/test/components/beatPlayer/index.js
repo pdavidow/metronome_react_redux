@@ -13,7 +13,8 @@ test('BeatPlayer component', nest => {
   nest.test('custom class', assert => {
     const msg = 'Should have playButton id';
 
-    const el = <BeatPlayer />;
+    const props = {player: {isPlaying: false}};
+    const el = <BeatPlayer {...props}/>;
     const $ = dom.load(render(el));
 
     const actual = Boolean($('#playButton').html());

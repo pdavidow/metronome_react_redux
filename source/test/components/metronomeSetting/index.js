@@ -13,7 +13,8 @@ test('MetronomeSetting component', nest => {
   nest.test('classicTicksPerMinute, classicTicksPerBeat structure', assert => {
     const msg = 'Should have classicTicksPerMinute, classicTicksPerBeat classes';
 
-    const el = <MetronomeSetting/>;
+    const props = {metronomeSetting: {classicTicksPerMinute: 60, classicTicksPerBeat: 1}, onSubmit: (()=>{})};
+    const el = <MetronomeSetting {...props} />;
     const $ = dom.load(render(el));
 
     const actual = {
