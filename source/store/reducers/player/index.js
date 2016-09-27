@@ -1,7 +1,9 @@
 import {SET_PLAYER} from '../../../constants/actionTypes';
 ////////////////////////////////////
 
-const defaultState = {isPlaying: false};
+const defaultState = {
+  isPlaying: false
+};
 
 export default (state = defaultState, action = {}) => {
   const {type, payload} = action;

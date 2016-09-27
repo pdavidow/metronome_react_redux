@@ -33,6 +33,10 @@ export default (React) => {
 
     return (
       <div>
+        <BeatPlayer {...props}/>
+      </div>
+      /*
+      <div>
         <Beat {...props}/>
         <p>=========================</p>
         <TickAssignment {...props}/>
@@ -41,6 +45,7 @@ export default (React) => {
         <p>=========================</p>
         <BeatPlayer {...props}/>
       </div>
+      */
     );
    };
 
@@ -55,7 +60,7 @@ export default (React) => {
     return {
       beat,
       metronomeSetting,
-      ...player,
+      player,
       tickCount,
       rhTickIndices,
       lhTickIndices
