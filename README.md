@@ -1,9 +1,10 @@
 todo
+- ReduxForm v6
+- end to end testing, ensure correct ticks
 - audio testing via ScriptProcessorNode
 - 'Stop' button
 - Looping
 - Animate ticks with sequence of vertical lines representing ticks, and dot on top/bottom for rh/lh; do highlights when played (see https://github.com/cwilso/metronome)
-- ReduxForm v6
 - Instead of ticks, have actual notes option (use osclillator for now, and then actual 88 piano tone samples)
 
 ========

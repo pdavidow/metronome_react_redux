@@ -4,9 +4,15 @@ import {lcm} from 'mathjs';
 import {playTicks} from '../audio';
 ////////////////////////////////////
 
-const calc_tickCount = ({rh = 1, lh = 1} = {}) => lcm(rh, lh);
+const calc_tickCount = ({
+  rh = 1,
+  lh = 1
+} = {}) => lcm(rh, lh);
 
-const calc_tickIndices = ({focus} = 'rh', beat = {rh:1, lh:1}) => {
+const calc_tickIndices = ({
+  focus = 'rh',
+  beat = {rh:1, lh:1}
+} = {}) => {
   const noteCount = beat[focus];
   const tickCount = calc_tickCount(beat);
   const interval = tickCount / noteCount;
@@ -20,15 +26,20 @@ const calc_tickIndices = ({focus} = 'rh', beat = {rh:1, lh:1}) => {
   return indicies;
 };
 
-const calc_rhTickIndices = (beat = {rh:1, lh:1}) => calc_tickIndices({focus: 'rh'}, beat);
-const calc_lhTickIndices = (beat = {rh:1, lh:1}) => calc_tickIndices({focus: 'lh'}, beat);
+const calc_rhTickIndices = ({
+  beat = {rh:1, lh:1}
+} = {}) => calc_tickIndices({focus: 'rh', beat});
+
+const calc_lhTickIndices = ({
+  beat = {rh:1, lh:1}
+} = {}) => calc_tickIndices({focus: 'lh', beat});
 
 const calc_tickDuration = ({
   beat = {rh: 1, lh: 1},
   metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1}
 } = {}) => {
   const {classicTicksPerMinute, classicTicksPerBeat} = metronomeSetting;
-  const tickCount = calc_tickCount(beat);
+  const tickCount = calc_tickCount({...beat});
   const ticksPerSec = calc_ticksPerSec({classicTicksPerMinute});
 
   return classicTicksPerBeat / (tickCount * ticksPerSec);
@@ -39,7 +50,7 @@ const calc_tickStartTimeOffsets = ({
   metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1}
 } = {}) => {
   const tickDuration = calc_tickDuration({beat, metronomeSetting});
-  const tickCount = calc_tickCount(beat);
+  const tickCount = calc_tickCount({...beat});
   let offset = 0;
 
   return range(tickCount).map(() => {
@@ -49,7 +60,9 @@ const calc_tickStartTimeOffsets = ({
   });
 };
 
-const calc_ticksPerSec = ({classicTicksPerMinute = 1} = {}) => classicTicksPerMinute / 60;
+const calc_ticksPerSec = ({
+  classicTicksPerMinute = 1
+} = {}) => classicTicksPerMinute / 60;
 
 const calc_ticks = ({
   beat = {rh: 1, lh: 1},
@@ -57,8 +70,8 @@ const calc_ticks = ({
   onEnded
 } = {}) => {
   const tickStartTimeOffsets = calc_tickStartTimeOffsets({beat, metronomeSetting});
-  const rhTickIndices = calc_rhTickIndices(beat);
-  const lhTickIndices = calc_lhTickIndices(beat);
+  const rhTickIndices = calc_rhTickIndices({beat});
+  const lhTickIndices = calc_lhTickIndices({beat});
 
   const tick = (startOffset, index) => {
     const isRH = includes(rhTickIndices, index);

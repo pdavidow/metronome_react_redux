@@ -27,8 +27,8 @@ const getDomNode = () => {
   const beat = {rh: 4, lh: 1};
   const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 4};
 
-  store.dispatch(setBeat(beat));
-  store.dispatch(setMetronomeSetting(metronomeSetting));
+  store.dispatch(setBeat({...beat}));
+  store.dispatch(setMetronomeSetting({...metronomeSetting}));
 
   const MetronomeContainer = createMetronomeContainer(React);
 

@@ -22,13 +22,15 @@ test('Metronome Container', nest => {
     const actual = {
       beat: Boolean($('.beat').html()),
       tickAssignment: Boolean($('.tickAssignment').html()),
-      metronomeSetting: Boolean($('.metronomeSetting').html())
+      metronomeSetting: Boolean($('.metronomeSetting').html()),
+      beatPlayer: Boolean($('.beatPlayer').html())
     };
 
     const expected = {
       beat: true,
       tickAssignment: true,
-      metronomeSetting: true
+      metronomeSetting: true,
+      beatPlayer: true
     };
 
     assert.deepEqual(actual, expected, msg);

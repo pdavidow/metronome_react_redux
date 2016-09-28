@@ -92,7 +92,9 @@ const oscillator_Background = () => {
   return oscillator({freq});
 };
 
-const oscillator = ({freq = 0} = {}) => {
+const oscillator = ({
+  freq = 0
+} = {}) => {
   const oscillator = audioContext.createOscillator();
   oscillator.frequency.value = freq;
   return oscillator;

@@ -43,9 +43,9 @@ export default (React) => {
     const beat = state.beat;
     const metronomeSetting = state.metronomeSetting;
     const player = state.player;
-    const tickCount = calc_tickCount(beat);
-    const rhTickIndices = calc_rhTickIndices(beat);
-    const lhTickIndices = calc_lhTickIndices(beat);
+    const tickCount = calc_tickCount({beat});
+    const rhTickIndices = calc_rhTickIndices({beat});
+    const lhTickIndices = calc_lhTickIndices({beat});
 
     return {
       beat,
@@ -59,11 +59,11 @@ export default (React) => {
 
   const mapDispatchToProps = (dispatch) => {
     return {
-      onBeatSubmit: (beat) =>
-        dispatch(setBeat(beat)),
+      onBeatSubmit: ({rh, lh}) =>
+        dispatch(setBeat({rh, lh})),
 
-      onMetronomeSettingSubmit: (metronomeSetting) =>
-        dispatch(setMetronomeSetting(metronomeSetting)),
+      onMetronomeSettingSubmit: ({classicTicksPerMinute, classicTicksPerBeat}) =>
+        dispatch(setMetronomeSetting({classicTicksPerMinute, classicTicksPerBeat})),
 
       onPlay: ({beat, metronomeSetting}) => {
         dispatch(setPlayer({isPlaying: true}));
