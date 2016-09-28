@@ -34,6 +34,7 @@ export default (React) => {
         <div className='classicTicksPerMinute'>
           <label>Classic Ticks Per Minute: {classicTicksPerMinute}</label>
           <input
+            id="classicTicksPerMinuteInputField"
             type="number"
             min="1"
             ref={node => input_classicTicksPerMinute = node}
@@ -42,13 +43,14 @@ export default (React) => {
         <div className='classicTicksPerBeat'>
           <label>Classic Ticks Per Beat: {classicTicksPerBeat}</label>
           <input
+            id="classicTicksPerBeatInputField"
             type="number"
             min="1"
             ref={node => input_classicTicksPerBeat = node}
           />
         </div>
 
-        <button type="submit" onClick={submitButtonAction}>Submit</button>
+        <button type="submit" id="metronomeSettingSubmitButton" onClick={submitButtonAction}>Submit</button>
       </div>
     );
   };

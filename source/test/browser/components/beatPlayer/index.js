@@ -1,48 +1,21 @@
-import React from 'react';
 import test from 'tape-async';
 import sleep from 'sleep-promise';
 import 'babel-polyfill'; // http://stackoverflow.com/questions/28976748/regeneratorruntime-is-not-defined
-import reactDom from 'react-dom';
-import reactDomServer from 'react-dom/server';
-import {Provider} from 'react-redux';
-import {createStore} from 'redux';
-import {renderIntoDocument, Simulate as simulate} from 'react-addons-test-utils';
+import {Simulate as simulate} from 'react-addons-test-utils';
 
-import createBeatPlayer from '../../../../components/beatPlayer';
-import createMetronomeContainer from '../../../../containers/metronome';
-import combinedReducers from '../../../../store/reducers';
 import {
-  setBeat,
-  setMetronomeSetting
-} from '../../../../actions';
+  getDomNode,
+  setStore
+} from '../../utils';
 ////////////////////////////////////
 
-const BeatPlayer = createBeatPlayer(React);
-const render = reactDomServer.renderToStaticMarkup;
-
-const getDomNode = () => {
-  const store = createStore(combinedReducers);
-
+const store = setStore({
   // 4 ticks spaced half-second apart, for a total of 2 seconds of play
-  const beat = {rh: 4, lh: 1};
-  const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 4};
+  beat: {rh: 4, lh: 1},
+  metronomeSetting: {classicTicksPerMinute: 120, classicTicksPerBeat: 4}
+});
 
-  store.dispatch(setBeat({...beat}));
-  store.dispatch(setMetronomeSetting({...metronomeSetting}));
-
-  const MetronomeContainer = createMetronomeContainer(React);
-
-  const element =
-    <Provider store={store}>
-      <div>
-        <MetronomeContainer />
-      </div>
-    </Provider>;
-
-  const renderedComp = renderIntoDocument(element);
-
-  return reactDom.findDOMNode(renderedComp);
-};
+const loadedDomNode = () => getDomNode({store});
 
 // Careful: React may replace the element it is modifying, instead of changing it in place.
 // So always retreive the element, instead of keeping a pointer to it.
@@ -53,7 +26,7 @@ test('BeatPlayer component', nestOuter => {
     nestInner.test('......BeatPlayer should render an enabled button by default', assert => {
       const msg = 'Should be enabled';
 
-      const domNode = getDomNode();
+      const domNode = loadedDomNode();
 
       const actual = getPlayButton({domNode}).hasAttribute('disabled');
       const expected = false;
@@ -64,7 +37,7 @@ test('BeatPlayer component', nestOuter => {
     nestInner.test('......Should be disabled during play', async(assert) => {
       const msg = 'Should be disabled';
 
-      const domNode = getDomNode();
+      const domNode = loadedDomNode();
       simulate.click(getPlayButton({domNode}));
       await sleep(500);
 
@@ -81,7 +54,7 @@ test('BeatPlayer component', nestOuter => {
     nestInner.test('......Should be enabled after play', async(assert) => {
       const msg = 'Should be enabled';
 
-      const domNode = getDomNode();
+      const domNode = loadedDomNode();
 
       simulate.click(getPlayButton({domNode}));
       await sleep(2500);

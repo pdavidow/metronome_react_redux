@@ -33,6 +33,7 @@ export default (React) => {
         <div className='rh'>
           <label>Right Hand note count: {rh}</label>
           <input
+            id="rhInputField"
             type="number"
             min="1"
             ref={node => input_rh = node}
@@ -42,13 +43,14 @@ export default (React) => {
         <div className='lh'>
           <label>Left Hand note count: {lh}</label>
           <input
+            id="lhInputField"
             type="number"
             min="1"
             ref={node => input_lh = node}
           />
         </div>
 
-        <button type="submit" onClick={submitButtonAction}>Submit</button>
+        <button type="submit" id="beatSubmitButton" onClick={submitButtonAction}>Submit</button>
       </div>
     );
   };
