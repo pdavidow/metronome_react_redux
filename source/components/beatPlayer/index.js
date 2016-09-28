@@ -30,10 +30,9 @@ export default (React) => {
       },
 
       render () {
-        console.log("isPlaying", isPlaying);
         return (
           <div className="beatPlayer">
-            <button type="submit" id="playButton" disabled={isPlaying ? "disabled" : ""} onClick={onClick_Play}> PLAY </button>
+            <button type="submit" id="playButton" disabled={isPlaying ? "disabled" : ""} onClick={onClick_Play}>  P L A Y  </button>
           </div>
         );
       }

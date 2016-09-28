@@ -1,5 +1,3 @@
-//http://stackoverflow.com/questions/25995656/why-does-getattributedisabled-return-true-not-disabled
-
 import React from 'react';
 import test from 'tape-async';
 import sleep from 'sleep-promise';
@@ -8,7 +6,7 @@ import reactDom from 'react-dom';
 import reactDomServer from 'react-dom/server';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
-import TestUtils from 'react-addons-test-utils';
+import {renderIntoDocument, Simulate as simulate} from 'react-addons-test-utils';
 
 import createBeatPlayer from '../../../../components/beatPlayer';
 import createMetronomeContainer from '../../../../containers/metronome';
@@ -21,9 +19,8 @@ import {
 
 const BeatPlayer = createBeatPlayer(React);
 const render = reactDomServer.renderToStaticMarkup;
-const {renderIntoDocument, Simulate} = TestUtils;
 
-const getPlayButton = () => {
+const getDomNode = () => {
   const store = createStore(combinedReducers);
 
   // 4 ticks spaced half-second apart, for a total of 2 seconds of play
@@ -43,39 +40,40 @@ const getPlayButton = () => {
     </Provider>;
 
   const renderedComp = renderIntoDocument(element);
-  const domNode = reactDom.findDOMNode(renderedComp);
-  const playButton = domNode.querySelector('#playButton');
 
-  return playButton;
-}
+  return reactDom.findDOMNode(renderedComp);
+};
+
+// Careful: React may replace the element it is modifying, instead of changing it in place.
+// So always retreive the element, instead of keeping a pointer to it.
+const getPlayButton = ({domNode}) => domNode.querySelector('#playButton');
 
 test('BeatPlayer component', nestOuter => {
   nestOuter.test('...Play button should disable during play', nestInner => {
     nestInner.test('......BeatPlayer should render an enabled button by default', assert => {
       const msg = 'Should be enabled';
 
-      const playButton = getPlayButton();
+      const domNode = getDomNode();
 
-      const actual = playButton.getAttribute('disabled');
-      const expected = null;
+      const actual = getPlayButton({domNode}).hasAttribute('disabled');
+      const expected = false;
 
-      assert.equal(actual, expected, 'default: enabled');
+      assert.equal(actual, expected, msg);
       assert.end();
     });
     nestInner.test('......Should be disabled during play', async(assert) => {
       const msg = 'Should be disabled';
 
-      const playButton = getPlayButton();
-
-      Simulate.click(playButton);
-      await sleep(100);
+      const domNode = getDomNode();
+      simulate.click(getPlayButton({domNode}));
+      await sleep(500);
 
       const actual = await Promise.resolve({
         then: function(onFulfill, onReject) {
-          onFulfill(playButton.getAttribute('disabled'));
+          onFulfill(getPlayButton({domNode}).hasAttribute('disabled'));
         }
       });
-      const expected = 'true';
+      const expected = true;
 
       assert.equal(actual, expected, msg);
       assert.end();
@@ -83,17 +81,17 @@ test('BeatPlayer component', nestOuter => {
     nestInner.test('......Should be enabled after play', async(assert) => {
       const msg = 'Should be enabled';
 
-      const playButton = getPlayButton();
+      const domNode = getDomNode();
 
-      Simulate.click(playButton);
-      await sleep(2050);
+      simulate.click(getPlayButton({domNode}));
+      await sleep(2500);
 
       const actual = await Promise.resolve({
         then: function(onFulfill, onReject) {
-          onFulfill(playButton.getAttribute('disabled'));
+          onFulfill(getPlayButton({domNode}).hasAttribute('disabled'));
         }
       });
-      const expected = null;
+      const expected = false;
 
       assert.equal(actual, expected, msg);
       assert.end();
