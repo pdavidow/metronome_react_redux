@@ -5,6 +5,7 @@ import {Simulate as simulate} from 'react-addons-test-utils';
 
 import {
   getDomNode,
+  getElementBySelector,
   setStore
 } from '../../utils';
 ////////////////////////////////////
@@ -19,7 +20,7 @@ const loadedDomNode = () => getDomNode({store});
 
 // Careful: React may replace the element it is modifying, instead of changing it in place.
 // So always retreive the element, instead of keeping a pointer to it.
-const getPlayButton = ({domNode}) => domNode.querySelector('#playButton');
+const getPlayButton = ({domNode}) => getElementBySelector({domNode, selector: '#playButton'});
 
 test('BeatPlayer component', nestOuter => {
   nestOuter.test('...Play button should disable during play', nestInner => {

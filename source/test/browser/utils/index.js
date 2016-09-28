@@ -41,8 +41,11 @@ const getDomNode = ({
   return reactDom.findDOMNode(renderedComp);
 };
 
+  const getElementBySelector = ({domNode, selector}) => domNode.querySelector(selector);
+
 export {
   getDomNode,
+  getElementBySelector,
   defaultStore,
   setStore
 };

@@ -2,12 +2,16 @@ import test from 'tape';
 import 'babel-polyfill'; // http://stackoverflow.com/questions/28976748/regeneratorruntime-is-not-defined
 import {Simulate as simulate} from 'react-addons-test-utils';
 
-import {getDomNode, defaultStore} from '../../utils';
+import {
+  getDomNode,
+  getElementBySelector,
+  defaultStore
+} from '../../utils';
 ////////////////////////////////////
 
-const getClassicTicksPerMinuteInputField = ({domNode}) => domNode.querySelector('#classicTicksPerMinuteInputField');
-const getClassicTicksPerBeatInputField = ({domNode}) => domNode.querySelector('#classicTicksPerBeatInputField');
-const getSubmitButton = ({domNode}) => domNode.querySelector('#metronomeSettingSubmitButton');
+const getClassicTicksPerMinuteInputField = ({domNode}) => getElementBySelector({domNode, selector: '#classicTicksPerMinuteInputField'});
+const getClassicTicksPerBeatInputField = ({domNode}) => getElementBySelector({domNode, selector: '#classicTicksPerBeatInputField'});
+const getSubmitButton = ({domNode}) => getElementBySelector({domNode, selector: '#metronomeSettingSubmitButton'});
 
 test('MetronomeSetting component', nestOuter => {
   nestOuter.test('...Should set metronomeSetting state upon submit', assert => {

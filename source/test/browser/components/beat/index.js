@@ -2,12 +2,15 @@ import test from 'tape';
 import 'babel-polyfill'; // http://stackoverflow.com/questions/28976748/regeneratorruntime-is-not-defined
 import {Simulate as simulate} from 'react-addons-test-utils';
 
-import {getDomNode, defaultStore} from '../../utils';
+import {
+  getDomNode,
+  getElementBySelector,
+  defaultStore} from '../../utils';
 ////////////////////////////////////
 
-const getRhInputField = ({domNode}) => domNode.querySelector('#rhInputField');
-const getLhInputField = ({domNode}) => domNode.querySelector('#lhInputField');
-const getSubmitButton = ({domNode}) => domNode.querySelector('#beatSubmitButton');
+const getRhInputField = ({domNode}) => getElementBySelector({domNode, selector: '#rhInputField'});
+const getLhInputField = ({domNode}) => getElementBySelector({domNode, selector: '#lhInputField'});
+const getSubmitButton = ({domNode}) => getElementBySelector({domNode, selector: '#beatSubmitButton'});
 
 test('Beat component', nestOuter => {
   nestOuter.test('...Should set beat state upon submit', assert => {
