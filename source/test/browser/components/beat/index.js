@@ -21,8 +21,17 @@ test('Beat component', nestOuter => {
     const store = defaultStore();
     const domNode = getDomNode({store});
 
-    getRhInputField({domNode}).setAttribute("value", String(rh));
-    getLhInputField({domNode}).setAttribute("value", String(lh));
+    const rhInputField = getRhInputField({domNode});
+    const lhInputField = getLhInputField({domNode});
+
+    rhInputField.setAttribute("value", String(rh));
+    simulate.change(rhInputField);
+    simulate.blur(rhInputField);
+
+    lhInputField.setAttribute("value", String(lh));
+    simulate.change(lhInputField);
+    simulate.blur(lhInputField);
+
     simulate.click(getSubmitButton({domNode}));
 
     const actual = store.getState().beat;

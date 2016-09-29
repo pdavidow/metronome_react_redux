@@ -2,8 +2,11 @@ import React from 'react';
 import reactDom from 'react-dom/server';
 import test from 'tape';
 import dom from 'cheerio';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
 
 import createMetronomeSetting from '../../../components/metronomeSetting';
+import combinedReducers from '../../../store/reducers';
 ////////////////////////////////////
 
 const MetronomeSetting = createMetronomeSetting(React);
@@ -13,8 +16,12 @@ test('MetronomeSetting component', nest => {
   nest.test('classicTicksPerMinute, classicTicksPerBeat structure', assert => {
     const msg = 'Should have classicTicksPerMinute, classicTicksPerBeat classes';
 
-    const props = {metronomeSetting: {classicTicksPerMinute: 60, classicTicksPerBeat: 1}, onSubmit: (()=>{})};
-    const el = <MetronomeSetting {...props} />;
+    const store = createStore(combinedReducers);
+
+    const el =
+      <Provider store={store}>
+        <MetronomeSetting />
+      </Provider>;
     const $ = dom.load(render(el));
 
     const actual = {

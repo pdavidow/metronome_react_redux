@@ -23,13 +23,13 @@ export default (React) => {
         <h3>Beat</h3>
         <div className='rh'>
           <label>Right Hand note count</label>
-          <Field name="rh" component="input" type="number" min="1"/>
+          <Field id="rhInputField" name="rh" component="input" type="number" min="1"/>
         </div>
         <div className='lh'>
           <label>Left Hand note count</label>
-          <Field name="lh" component="input" type="number" min="1"/>
+          <Field id="lhInputField" name="lh" component="input" type="number" min="1"/>
         </div>
-        <button type="submit">Submit</button>
+        <button id="beatSubmitButton" type="submit">Submit</button>
       </form>
     );
   };

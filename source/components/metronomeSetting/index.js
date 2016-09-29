@@ -23,13 +23,13 @@ export default (React) => {
         <h3>MetronomeSetting</h3>
         <div className='classicTicksPerMinute'>
           <label>Classic Ticks Per Minute</label>
-          <Field name="classicTicksPerMinute" component="input" type="number" min="1"/>
+          <Field id="classicTicksPerMinuteInputField" name="classicTicksPerMinute" component="input" type="number" min="1"/>
         </div>
         <div className='classicTicksPerBeat'>
           <label>Classic Ticks Per Beat</label>
-          <Field name="classicTicksPerBeat" component="input" type="number" min="1"/>
+          <Field id="classicTicksPerBeatInputField" name="classicTicksPerBeat" component="input" type="number" min="1"/>
         </div>
-        <button type="submit">Submit</button>
+        <button id="metronomeSettingSubmitButton" type="submit">Submit</button>
       </form>
     );
   };

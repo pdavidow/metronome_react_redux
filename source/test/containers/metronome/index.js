@@ -20,16 +20,12 @@ test('Metronome Container', nest => {
     const $ = dom.load(render(el));
 
     const actual = {
-      beat: Boolean($('.beat').html()),
       tickAssignment: Boolean($('.tickAssignment').html()),
-      metronomeSetting: Boolean($('.metronomeSetting').html()),
       beatPlayer: Boolean($('.beatPlayer').html())
     };
 
     const expected = {
-      beat: true,
       tickAssignment: true,
-      metronomeSetting: true,
       beatPlayer: true
     };
 

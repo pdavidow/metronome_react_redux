@@ -4,7 +4,7 @@ import {createStore} from 'redux';
 import {renderIntoDocument} from 'react-addons-test-utils';
 import reactDom from 'react-dom';
 
-import createMetronomeContainer from '../../../containers/metronome';
+import createApp from '../../../App';
 import combinedReducers from '../../../store/reducers';
 import {
   setBeat,
@@ -28,13 +28,11 @@ const setStore = ({
 const getDomNode = ({
   store = defaultStore()
 } = {}) => {
-  const MetronomeContainer = createMetronomeContainer(React);
+  const App = createApp(React);
 
   const element =
     <Provider store={store}>
-      <div>
-        <MetronomeContainer />
-      </div>
+      <App />
     </Provider>;
 
   const renderedComp = renderIntoDocument(element);
