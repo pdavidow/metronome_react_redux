@@ -1,59 +1,61 @@
+import {Field, reduxForm} from 'redux-form';
+import {connect} from 'react-redux';
+
+import {setMetronomeSetting} from '../../actions';
+////////////////////////////////////
+
 export default (React) => {
   const PropTypes = React.PropTypes;
 
-  const MetronomeSetting = (props) => {
-    MetronomeSetting.propTypes = {
-     metronomeSetting: React.PropTypes.shape({
-       classicTicksPerMinute: PropTypes.number.isRequired,
-       classicTicksPerBeat: PropTypes.number.isRequired
-     }),
-      onMetronomeSettingSubmit: PropTypes.func.isRequired
+  let MetronomeSettingForm = (props) => {
+    MetronomeSettingForm.propTypes = {
+      initialValues: React.PropTypes.shape({
+        classicTicksPerMinute: PropTypes.number.isRequired,
+        classicTicksPerBeat: PropTypes.number.isRequired
+      }),
+      handleSubmit: PropTypes.func.isRequired
     };
 
-    const {metronomeSetting, onMetronomeSettingSubmit} = props;
-    const {classicTicksPerMinute, classicTicksPerBeat} = metronomeSetting;
-
-    let input_classicTicksPerMinute, input_classicTicksPerBeat;
-
-    const clearInputs = () => {
-      input_classicTicksPerMinute.value = '';
-      input_classicTicksPerBeat.value = '';
-    };
-
-    const submitButtonAction = () => {
-      const new_classicTicksPerMinute = Number(input_classicTicksPerMinute.value);
-      const new_classicTicksPerBeat = Number(input_classicTicksPerBeat.value);
-      onMetronomeSettingSubmit({classicTicksPerMinute: new_classicTicksPerMinute, classicTicksPerBeat: new_classicTicksPerBeat});
-      clearInputs();
-    };
+    const {handleSubmit} = props;
 
     return (
-      <div className='metronomeSetting'>
+      <form className='metronomeSetting' onSubmit={handleSubmit}>
         <h3>MetronomeSetting</h3>
-        <label>((waiting for ReduxForm))</label>
         <div className='classicTicksPerMinute'>
-          <label>Classic Ticks Per Minute: {classicTicksPerMinute}</label>
-          <input
-            id="classicTicksPerMinuteInputField"
-            type="number"
-            min="1"
-            ref={node => input_classicTicksPerMinute = node}
-          />
+          <label>Classic Ticks Per Minute</label>
+          <Field name="classicTicksPerMinute" component="input" type="number" min="1"/>
         </div>
         <div className='classicTicksPerBeat'>
-          <label>Classic Ticks Per Beat: {classicTicksPerBeat}</label>
-          <input
-            id="classicTicksPerBeatInputField"
-            type="number"
-            min="1"
-            ref={node => input_classicTicksPerBeat = node}
-          />
+          <label>Classic Ticks Per Beat</label>
+          <Field name="classicTicksPerBeat" component="input" type="number" min="1"/>
         </div>
-
-        <button type="submit" id="metronomeSettingSubmitButton" onClick={submitButtonAction}>Submit</button>
-      </div>
+        <button type="submit">Submit</button>
+      </form>
     );
   };
 
-  return MetronomeSetting;
+  MetronomeSettingForm = reduxForm({
+    form: 'metronomeSetting' // a unique identifier for this form
+  })(MetronomeSettingForm);
+
+  const mapStateToProps = (state) => {
+    return {
+      initialValues: state.metronomeSetting
+    }
+  };
+
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      // tricky: onSubmit turns into handleSubmit
+      onSubmit: ({classicTicksPerMinute, classicTicksPerBeat}) =>
+        dispatch(setMetronomeSetting({classicTicksPerMinute, classicTicksPerBeat})),
+    }
+  };
+
+  MetronomeSettingForm = connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(MetronomeSettingForm);
+
+  return MetronomeSettingForm;
 };
