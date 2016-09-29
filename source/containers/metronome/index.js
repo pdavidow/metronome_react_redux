@@ -1,12 +1,10 @@
 import {connect} from 'react-redux';
 
-import createBeat from '../../components/beat';
 import createTickAssignment from '../../components/tickAssignment';
 import createMetronomeSetting from '../../components/metronomeSetting';
 import createBeatPlayer from '../../components/beatPlayer';
 import {play} from '../../models/metronome';
 import {
-  setBeat,
   setMetronomeSetting,
   setPlayer
 } from '../../actions';
@@ -17,19 +15,14 @@ import {
 } from '../../models/metronome';
 ////////////////////////////////////
 
-let isPlaying = false;
-
 export default (React) => {
   const Metronome = (props) => {
-    const Beat = createBeat(React);
     const TickAssignment = createTickAssignment(React);
     const MetronomeSetting = createMetronomeSetting(React);
     const BeatPlayer = createBeatPlayer(React);
 
     return (
       <div>
-        <Beat {...props}/>
-        <p>=========================</p>
         <TickAssignment {...props}/>
         <p>=========================</p>
         <MetronomeSetting {...props}/>
@@ -59,9 +52,6 @@ export default (React) => {
 
   const mapDispatchToProps = (dispatch) => {
     return {
-      onBeatSubmit: ({rh, lh}) =>
-        dispatch(setBeat({rh, lh})),
-
       onMetronomeSettingSubmit: ({classicTicksPerMinute, classicTicksPerBeat}) =>
         dispatch(setMetronomeSetting({classicTicksPerMinute, classicTicksPerBeat})),
 

@@ -1,18 +1,22 @@
 import {Field, reduxForm} from 'redux-form';
+import {connect} from 'react-redux';
+
+import {setBeat} from '../../actions';
+////////////////////////////////////
 
 export default (React) => {
   const PropTypes = React.PropTypes;
 
-  const BeatFormBasis = (props) => {
+  let BeatForm = (props) => {
     BeatForm.propTypes = {
-      beat: React.PropTypes.shape({
+      initialValues: React.PropTypes.shape({
         rh: PropTypes.number.isRequired,
         lh: PropTypes.number.isRequired
       }),
-      onBeatSubmit: PropTypes.func.isRequired
+      handleSubmit: PropTypes.func.isRequired
     };
-    const {beat, onBeatSubmit} = props;
-    const {rh, lh} = beat;
+
+    const {handleSubmit} = props;
 
     return (
       <form className='beat' onSubmit={handleSubmit}>
@@ -30,9 +34,27 @@ export default (React) => {
     );
   };
 
-  const BeatForm = reduxForm({
-    form: 'beat' // a unique name for this form
-  })(BeatFormBasis);
+  BeatForm = reduxForm({
+    form: 'beat' // a unique identifier for this form
+  })(BeatForm);
 
-  export default BeatForm;
+  const mapStateToProps = (state) => {
+    return {
+      initialValues: state.beat
+    }
+  };
+
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      // tricky: onSubmit turns into handleSubmit
+      onSubmit: ({rh, lh}) => dispatch(setBeat({rh, lh}))
+    }
+  };
+
+  BeatForm = connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(BeatForm);
+
+  return BeatForm;
 };
