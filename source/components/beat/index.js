@@ -46,9 +46,12 @@ export default (React) => {
 
   const mapDispatchToProps = (dispatch) => {
     return {
-      // tricky: onSubmit turns into handleSubmit
-      onSubmit: ({rh, lh}) =>
+      // tricky: onSubmit turns into handleSubmit  todo
+      onSubmit: ({rh, lh}) => {
+        //debugger;
+        console.log("onSubmit: ({rh, lh})",{rh, lh});
         dispatch(setBeat({rh, lh}))
+      }
     }
   };
 
