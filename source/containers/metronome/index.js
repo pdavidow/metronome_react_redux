@@ -45,11 +45,12 @@ export default (React) => {
 
   const mapDispatchToProps = (dispatch) => {
     return {
-      onPlay: ({beat, metronomeSetting}) => {
+      onPlay: (({beat, metronomeSetting}) => {
         dispatch(setPlayer({isPlaying: true}));
         const onEnded = () => dispatch(setPlayer({isPlaying: false}));
         play({beat, metronomeSetting, onEnded});
-      }
+      }),
+      onStop: (() => dispatch(setPlayer({isPlaying: false})))
     }
   };
 

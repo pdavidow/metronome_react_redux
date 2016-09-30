@@ -5,6 +5,10 @@ import 'babel-polyfill'; // http://stackoverflow.com/questions/28976748/regenera
 import {play} from '../../../../models/metronome';
 import {initialize as initializeAudio} from '../../../../models/audio';
 import {TICK_DURATION_RH_LH} from '../../../../constants/audio';
+import {
+  audioTestStart,
+  audioTestEnd,
+} from '../../../../models/audio/destination';
 ////////////////////////////////////
 
 initializeAudio();
@@ -12,6 +16,7 @@ initializeAudio();
 test('Metronome model', nestOuter => {
   nestOuter.test('...onEnded should work for all 4 tick types', nestInner => {
     nestInner.test('......last tick isRH only', async(assert) => {
+      audioTestStart();
       const msg = 'Should increment by 1';
 
       const beat = {rh: 2, lh: 1};
@@ -26,8 +31,10 @@ test('Metronome model', nestOuter => {
 
       assert.equal(actual, expected, msg);
       assert.end();
+      audioTestEnd();
     });
     nestInner.test('......last tick isLH only', async(assert) => {
+      audioTestStart();
       const msg = 'Should increment by 1';
 
       const beat = {rh: 1, lh: 2};
@@ -42,8 +49,10 @@ test('Metronome model', nestOuter => {
 
       assert.equal(actual, expected, msg);
       assert.end();
+      audioTestEnd();
     });
     nestInner.test('......last tick isRH and isLH', async(assert) => {
+      audioTestStart();
       const msg = 'Should increment by 1';
 
       const beat = {rh: 1, lh: 1};
@@ -58,8 +67,10 @@ test('Metronome model', nestOuter => {
 
       assert.equal(actual, expected, msg);
       assert.end();
+      audioTestEnd();
     });
     nestInner.test('......last tick is background', async(assert) => {
+      audioTestStart();
       const msg = 'Should increment by 1';
 
       const beat = {rh: 2, lh: 3};
@@ -74,6 +85,7 @@ test('Metronome model', nestOuter => {
 
       assert.equal(actual, expected, msg);
       assert.end();
+      audioTestEnd();
     });
   });
   nestOuter.test('...OnEnded should only be called when last tick has ended', nestInner => {
@@ -81,6 +93,7 @@ test('Metronome model', nestOuter => {
     const TICK_DURATION_RH_LH_ms = TICK_DURATION_RH_LH * 1000; // The only ticks to be used here are RH_LH
     const waitOffset_ms = TICK_DURATION_RH_LH_ms + delta_ms;
     nestInner.test('......3 ticks, after 1st: do nothing', async(assert) => {
+      audioTestStart();
       const msg = 'Should not increment';
 
       const beat = {rh: 3, lh: 3};
@@ -95,8 +108,10 @@ test('Metronome model', nestOuter => {
 
       assert.equal(actual, expected, msg);
       assert.end();
+      audioTestEnd();
     });
     nestInner.test('......3 ticks, after 2nd: do nothing', async(assert) => {
+      audioTestStart();
       const msg = 'Should not increment';
 
       const beat = {rh: 3, lh: 3};
@@ -111,8 +126,10 @@ test('Metronome model', nestOuter => {
 
       assert.equal(actual, expected, msg);
       assert.end();
+      audioTestEnd();
     });
     nestInner.test('......3 ticks, after 3rd: do something', async(assert) => {
+      audioTestStart();
       const msg = 'Should increment';
 
       const beat = {rh: 3, lh: 3};
@@ -127,11 +144,12 @@ test('Metronome model', nestOuter => {
 
       assert.equal(actual, expected, msg);
       assert.end();
+      audioTestEnd();
     });
   });
 });
 
-
+//////////////////////////////////////////////
 // todo
 /*
  nest.test('audio', assert => {

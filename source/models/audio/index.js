@@ -15,6 +15,8 @@ import {
   isTick_RhLh,
   isTick_Background
 } from '../tick';
+
+import {getDestination} from './destination';
 ////////////////////////////////////
 
 let audioContext;
@@ -69,7 +71,9 @@ const playTick_Background = ({startOffset, onEnded}) => {
 
 const playOscillator = ({oscillator, startOffset = 0, duration = 1, onEnded}) => {
   const startTime = audioContext.currentTime + startOffset;
-  oscillator.connect(audioContext.destination);
+  const destination = getDestination({audioContext});
+
+  oscillator.connect(destination);
   if (onEnded != undefined) oscillator.onended = onEnded;
   oscillator.start(startTime);
   oscillator.stop(startTime + duration);
