@@ -188,4 +188,10 @@ test('BeatPlayer component', nestOuter => {
     assert.end();
     audioTestEnd();
   });
+  nestOuter.test('...Play button should actually start audio', async(assert) => {
+// todo
+  });
+  nestOuter.test('...Stop button should actually stop audio', async(assert) => {
+// todo
+  });
 });

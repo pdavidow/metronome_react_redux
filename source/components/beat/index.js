@@ -29,7 +29,7 @@ export default (React) => {
           <label>Left Hand note count</label>
           <Field id="lhInputField" name="lh" component="input" type="number" min="1"/>
         </div>
-        <button id="beatSubmitButton" type="submit">Submit</button>
+        <button type="submit">Submit</button>
       </form>
     );
   };
@@ -46,12 +46,8 @@ export default (React) => {
 
   const mapDispatchToProps = (dispatch) => {
     return {
-      // tricky: onSubmit turns into handleSubmit  todo
-      onSubmit: ({rh, lh}) => {
-        //debugger;
-        console.log("onSubmit: ({rh, lh})",{rh, lh});
-        dispatch(setBeat({rh, lh}))
-      }
+      // tricky: onSubmit turns into handleSubmit
+      onSubmit: ({rh, lh}) => dispatch(setBeat({rh, lh}))
     }
   };
 

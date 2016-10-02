@@ -29,7 +29,7 @@ export default (React) => {
           <label>Classic Ticks Per Beat</label>
           <Field id="classicTicksPerBeatInputField" name="classicTicksPerBeat" component="input" type="number" min="1"/>
         </div>
-        <button id="metronomeSettingSubmitButton" type="submit">Submit</button>
+        <button type="submit">Submit</button>
       </form>
     );
   };

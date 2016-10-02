@@ -50,7 +50,7 @@ export default (React) => {
         const onEnded = () => dispatch(setPlayer({isPlaying: false}));
         play({beat, metronomeSetting, onEnded});
       }),
-      onStop: (() => dispatch(setPlayer({isPlaying: false})))
+      onStop: (() => dispatch(setPlayer({isPlaying: false}))) // todo refactor here?...
     }
   };
 
