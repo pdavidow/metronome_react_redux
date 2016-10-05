@@ -1,3 +1,4 @@
+import {sum} from 'lodash';
 import test from 'tape-async';
 import sleep from 'sleep-promise';
 import 'babel-polyfill'; // http://stackoverflow.com/questions/28976748/regeneratorruntime-is-not-defined
@@ -11,6 +12,7 @@ import {
 import {
   audioTestStart,
   audioTestEnd,
+  embeddedAudioTest
 } from '../../../../models/audio/destination';
 ////////////////////////////////////
 
@@ -18,7 +20,6 @@ import {
 // So always retreive the element, instead of keeping a pointer to it.
 const getPlayButton = ({domNode}) => getElementBySelector({domNode, selector: '#playButton'});
 const getStopButton = ({domNode}) => getElementBySelector({domNode, selector: '#stopButton'});
-
 
 test('BeatPlayer component', nestOuter => {
   nestOuter.test('...Play button should disable during play', nestInner => {
@@ -166,7 +167,7 @@ test('BeatPlayer component', nestOuter => {
     const msg = 'Should be enabled';
 
     const store = setStore({
-      // 4 ticks spaced half-second apart, for a total of 3 seconds of play
+      // 4 ticks spaced half-second apart, for a total of 2 seconds of play
       beat: {rh: 4, lh: 1},
       metronomeSetting: {classicTicksPerMinute: 120, classicTicksPerBeat: 4}
     });
@@ -188,10 +189,83 @@ test('BeatPlayer component', nestOuter => {
     assert.end();
     audioTestEnd();
   });
-  nestOuter.test('...Play button should actually start audio', async(assert) => {
-// todo
+  nestOuter.test('...Play button should actually start audio', (assert) => {
+    const msg = 'Should show non-zero analyzer data after start play, but not prior';
+
+    embeddedAudioTest.audioTestPlay = async({audioContext, oscillator}) => {
+      const startTime = audioContext.currentTime;
+      const analyser = audioContext.createAnalyser();
+
+      analyser.fftSize = 2048;
+      const bufferLength = analyser.frequencyBinCount;
+
+      const isAnySound = () => {
+        const dataArray = new Uint8Array(bufferLength);
+        analyser.getByteFrequencyData(dataArray);
+        const result = sum(dataArray);
+        return result > 0;
+      };
+
+      oscillator.connect(analyser);
+      const actual = {};
+      actual.before = isAnySound();
+      oscillator.start(startTime);
+      oscillator.stop(startTime + 1);
+
+      await sleep(500);
+
+      await Promise.resolve({
+        then: function(onFulfill, onReject) {
+          onFulfill(actual.after = isAnySound());
+        }
+      });
+
+      const expected = {
+        before: false,
+        after: true
+      };
+
+      assert.deepEqual(actual, expected, msg);
+      assert.end();
+      embeddedAudioTest.audioTestPlay = null;
+    };
+
+    const domNode = getDomNode();
+    const playButton = getPlayButton({domNode});
+    simulate.click(playButton);
   });
   nestOuter.test('...Stop button should actually stop audio', async(assert) => {
-// todo
+    const msg = 'audioContext.currentTime on onended should be 1 second later than when started';
+
+    embeddedAudioTest.audioTestPlay = async({audioContext, oscillator}) => {
+      const startTime = audioContext.currentTime;
+      const analyser = audioContext.createAnalyser();
+      oscillator.connect(analyser);
+      const actual = {};
+      actual.before = isAnySound();
+      oscillator.start(startTime);
+      oscillator.stop(startTime + 1);
+
+      await sleep(500);
+
+      await Promise.resolve({
+        then: function(onFulfill, onReject) {
+          onFulfill(actual.after = isAnySound());
+        }
+      });
+
+      const expected = {
+        before: false,
+        after: true
+      };
+
+      //assert.deepEqual(actual, expected, msg);
+      //assert.end();
+      embeddedAudioTest.audioTestPlay = null;
+    };
+
+    const domNode = getDomNode();
+    const playButton = getPlayButton({domNode});
+    simulate.click(playButton);
   });
 });

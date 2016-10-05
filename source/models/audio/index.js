@@ -1,3 +1,5 @@
+import {sum} from 'lodash'; // todo temp
+
 import {
   AUDIO_FREQ_RH,
   AUDIO_FREQ_LH,
@@ -16,7 +18,10 @@ import {
   isTick_Background
 } from '../tick';
 
-import {getDestination} from './destination';
+import {
+  getDestination,
+  embeddedAudioTest
+} from './destination';
 ////////////////////////////////////
 
 let audioContext;
@@ -70,6 +75,9 @@ const playTick_Background = ({startOffset, onEnded}) => {
 };
 
 const playOscillator = ({oscillator, startOffset = 0, duration = 1, onEnded}) => {
+  if (embeddedAudioTest.audioTestPlay) return embeddedAudioTest.audioTestPlay({audioContext, oscillator}); // todo somehow remove in production
+  if (embeddedAudioTest.audioTestStop) return embeddedAudioTest.audioTestStop({audioContext, oscillator}); // todo somehow remove in production
+
   const startTime = audioContext.currentTime + startOffset;
   const destination = getDestination({audioContext});
 
@@ -77,6 +85,34 @@ const playOscillator = ({oscillator, startOffset = 0, duration = 1, onEnded}) =>
   if (onEnded != undefined) oscillator.onended = onEnded;
   oscillator.start(startTime);
   oscillator.stop(startTime + duration);
+};
+
+const playOscillatorTEST = ({oscillator, startOffset = 0, duration = 1, onEnded}) => {
+  const startTime = audioContext.currentTime + startOffset;
+  const analyser = audioContext.createAnalyser();
+
+  analyser.fftSize = 2048;
+  const bufferLength = analyser.frequencyBinCount;
+
+  const isAnySound = () => {
+    const dataArray = new Uint8Array(bufferLength);
+    analyser.getByteFrequencyData(dataArray);
+    const result = sum(dataArray);
+    return result > 0;
+  };
+
+  oscillator.onended = () => console.log("onended audioContext.currentTime", audioContext.currentTime);
+  console.log("start audioContext.currentTime", audioContext.currentTime);
+
+  oscillator.connect(analyser);
+  const actual = {};
+  actual.before = isAnySound();
+  oscillator.start(startTime);
+  setTimeout(()=>actual.after = isAnySound(), 500);
+  oscillator.stop(startTime + 2);
+
+  const stopNow = () => oscillator.stop(0);
+  setTimeout(stopNow, 1000);
 };
 
 const playOscillatorQ = ({oscillator, startOffset = 0, duration = 1, onEnded}) => {

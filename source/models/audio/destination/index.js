@@ -9,8 +9,11 @@ const testDestination = ({audioContext}) => audioContext.createAnalyser();
 const getDestination = ({audioContext}) => isTesting ?
   testDestination({audioContext}) : normalDestination({audioContext});
 
+const embeddedAudioTest = {};
+
 export {
   audioTestStart,
   audioTestEnd,
-  getDestination
+  getDestination,
+  embeddedAudioTest
 };
