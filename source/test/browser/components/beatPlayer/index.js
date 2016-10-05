@@ -53,8 +53,8 @@ test('BeatPlayer component', nestOuter => {
       const domNode = getDomNode({store});
 
       simulate.click(getPlayButton({domNode}));
-      await sleep(500);
 
+      await sleep(500);
       const actual = await Promise.resolve({
         then: function(onFulfill, onReject) {
           onFulfill(getPlayButton({domNode}).hasAttribute('disabled'));
@@ -78,8 +78,8 @@ test('BeatPlayer component', nestOuter => {
       const domNode = getDomNode({store});
 
       simulate.click(getPlayButton({domNode}));
-      await sleep(2500);
 
+      await sleep(2500);
       const actual = await Promise.resolve({
         then: function(onFulfill, onReject) {
           onFulfill(getPlayButton({domNode}).hasAttribute('disabled'));
@@ -123,8 +123,8 @@ test('BeatPlayer component', nestOuter => {
       const domNode = getDomNode({store});
 
       simulate.click(getPlayButton({domNode}));
-      await sleep(500);
 
+      await sleep(500);
       const actual = await Promise.resolve({
         then: function(onFulfill, onReject) {
           onFulfill(getStopButton({domNode}).hasAttribute('disabled'));
@@ -148,8 +148,8 @@ test('BeatPlayer component', nestOuter => {
       const domNode = getDomNode({store});
 
       simulate.click(getPlayButton({domNode}));
-      await sleep(2500);
 
+      await sleep(2500);
       const actual = await Promise.resolve({
         then: function(onFulfill, onReject) {
           onFulfill(getStopButton({domNode}).hasAttribute('disabled'));
@@ -174,8 +174,8 @@ test('BeatPlayer component', nestOuter => {
     const domNode = getDomNode({store});
 
     simulate.click(getPlayButton({domNode}));
-    await sleep(500);
 
+    await sleep(500);
     await Promise.resolve({
       then: function(onFulfill, onReject) {
         onFulfill(simulate.click(getStopButton({domNode})));
@@ -189,83 +189,99 @@ test('BeatPlayer component', nestOuter => {
     assert.end();
     audioTestEnd();
   });
-  nestOuter.test('...Play button should actually start audio', (assert) => {
+  nestOuter.test('...Play button should actually start audio', async(assert) => {
     const msg = 'Should show non-zero analyzer data after start play, but not prior';
+
+    const actual = {};
+    const domNode = getDomNode();
+    const playButton = getPlayButton({domNode});
 
     embeddedAudioTest.audioTestPlay = async({audioContext, oscillator}) => {
       const startTime = audioContext.currentTime;
-      const analyser = audioContext.createAnalyser();
 
+      const analyser = audioContext.createAnalyser();
+      analyser.smoothingTimeConstant = 0;
       analyser.fftSize = 2048;
       const bufferLength = analyser.frequencyBinCount;
 
       const isAnySound = () => {
         const dataArray = new Uint8Array(bufferLength);
         analyser.getByteFrequencyData(dataArray);
-        const result = sum(dataArray);
-        return result > 0;
+        return sum(dataArray) > 0;
       };
 
       oscillator.connect(analyser);
-      const actual = {};
       actual.before = isAnySound();
       oscillator.start(startTime);
       oscillator.stop(startTime + 1);
 
       await sleep(500);
-
-      await Promise.resolve({
+      actual.after = await Promise.resolve({
         then: function(onFulfill, onReject) {
-          onFulfill(actual.after = isAnySound());
+          onFulfill(isAnySound());
         }
       });
-
-      const expected = {
-        before: false,
-        after: true
-      };
-
-      assert.deepEqual(actual, expected, msg);
-      assert.end();
-      embeddedAudioTest.audioTestPlay = null;
     };
 
-    const domNode = getDomNode();
-    const playButton = getPlayButton({domNode});
     simulate.click(playButton);
+    embeddedAudioTest.audioTestPlay = null;
+
+    const expected = {
+      before: false,
+      after: true
+    };
+
+    await sleep(1000);
+    await Promise.resolve({
+      then: function(onFulfill, onReject) {
+        onFulfill(assert.deepEqual(actual, expected, msg));
+      }
+    });
+    assert.end();
   });
   nestOuter.test('...Stop button should actually stop audio', async(assert) => {
-    const msg = 'audioContext.currentTime on onended should be 1 second later than when started';
+    const msg = 'currentTime when onended should be 1 second later than startTime';
 
-    embeddedAudioTest.audioTestPlay = async({audioContext, oscillator}) => {
-      const startTime = audioContext.currentTime;
-      const analyser = audioContext.createAnalyser();
-      oscillator.connect(analyser);
-      const actual = {};
-      actual.before = isAnySound();
-      oscillator.start(startTime);
-      oscillator.stop(startTime + 1);
-
-      await sleep(500);
-
-      await Promise.resolve({
-        then: function(onFulfill, onReject) {
-          onFulfill(actual.after = isAnySound());
-        }
-      });
-
-      const expected = {
-        before: false,
-        after: true
-      };
-
-      //assert.deepEqual(actual, expected, msg);
-      //assert.end();
-      embeddedAudioTest.audioTestPlay = null;
-    };
+    // Testing for absence of sound after playing is very unreliable, so take different approach
 
     const domNode = getDomNode();
     const playButton = getPlayButton({domNode});
+    const stopButton = getStopButton({domNode});
+    let startTime, endTime;
+
+    embeddedAudioTest.audioTestStop = async({audioContext, oscillator}) => {
+      const analyser = audioContext.createAnalyser();
+      oscillator.onended = () => endTime = audioContext.currentTime;
+      oscillator.connect(analyser);
+
+      startTime = audioContext.currentTime;
+      oscillator.start(startTime);
+      oscillator.stop(startTime + 2);
+
+      await sleep(1000);
+      await Promise.resolve({
+        then: function(onFulfill, onReject) {
+          onFulfill(simulate.click(stopButton));
+        }
+      });
+    };
+
     simulate.click(playButton);
+    embeddedAudioTest.audioTestPlay = null;
+
+    const handleFulfill = () => {
+      const expected = true;
+      const actual = endTime ? ((endTime - startTime) < 1.5) : false;
+      assert.equal(actual, expected, msg);
+    };
+
+    await sleep(2500);
+    await Promise.resolve({
+      then: function(onFulfill, onReject) {
+        onFulfill(handleFulfill());
+      }
+    });
+
+    assert.end();
   });
 });
