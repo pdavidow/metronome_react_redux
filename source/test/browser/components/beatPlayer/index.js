@@ -272,7 +272,7 @@ test('BeatPlayer component', nestOuter => {
       assert.equal(actual, expected, msg);
     };
 
-    await sleep(2500);
+    await sleep(3000);
     await Promise.resolve({
       then: function(onFulfill, onReject) {
         onFulfill(handleFulfill());
