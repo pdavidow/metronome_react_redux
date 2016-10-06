@@ -1,7 +1,10 @@
 import test from 'tape';
 import deepFreeze from 'deep-freeze';
 
-import {setPlayer, setIsLooping} from '../../../../actions';
+import {
+  setIsPlaying,
+  setIsLooping
+} from '../../../../actions';
 import player from '../../../../store/reducers/player';
 ////////////////////////////////////
 
@@ -19,11 +22,11 @@ test('Player reducer', nestOuter => {
       assert.deepEqual(actual, expected, message);
       assert.end();
     });
-    nestInner.test('......SET_PLAYER', assert => {
+    nestInner.test('......SET_IS_PLAYING', assert => {
       const message = 'should set isPlaying to true';
 
       const stateBefore = {isPlaying: false};
-      const action = setPlayer({isPlaying: true});
+      const action = setIsPlaying({isPlaying: true});
       const expected = {isPlaying: true};
 
       deepFreeze(stateBefore);

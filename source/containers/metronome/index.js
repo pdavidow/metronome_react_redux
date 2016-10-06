@@ -6,7 +6,7 @@ import {
   play,
   stop
 } from '../../models/metronome';
-import {setPlayer} from '../../actions';
+import {setIsPlaying} from '../../actions';
 import {
   calc_tickCount,
   calc_rhTickIndices,
@@ -49,13 +49,13 @@ export default (React) => {
   const mapDispatchToProps = (dispatch) => {
     return {
       onPlay: (({beat, metronomeSetting}) => {
-        dispatch(setPlayer({isPlaying: true}));
-        const onEnded = () => dispatch(setPlayer({isPlaying: false}));
+        dispatch(setIsPlaying({isPlaying: true}));
+        const onEnded = () => dispatch(setIsPlaying({isPlaying: false}));
         play({beat, metronomeSetting, onEnded});
       }),
       onStop: (() => {
         stop();
-        dispatch(setPlayer({isPlaying: false}));
+        dispatch(setIsPlaying({isPlaying: false}));
       })
     }
   };

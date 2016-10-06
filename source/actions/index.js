@@ -1,7 +1,7 @@
 import {
   SET_BEAT,
   SET_METRONOME_SETTING,
-  SET_PLAYER,
+  SET_IS_PLAYING,
   SET_IS_LOOPING
 } from '../constants/actionTypes';
 ////////////////////////////////////
@@ -25,9 +25,9 @@ export const setMetronomeSetting = ({classicTicksPerMinute, classicTicksPerBeat}
   };
 };
 
-export const setPlayer = ({isPlaying}) => {
+export const setIsPlaying = ({isPlaying}) => {
   return {
-    type: SET_PLAYER,
+    type: SET_IS_PLAYING,
     payload: {
       isPlaying
     }

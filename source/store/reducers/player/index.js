@@ -1,5 +1,5 @@
 import {
-  SET_PLAYER,
+  SET_IS_PLAYING,
   SET_IS_LOOPING
 } from '../../../constants/actionTypes';
 ////////////////////////////////////
@@ -13,7 +13,7 @@ export default (state = defaultState, action = {}) => {
   const {type, payload} = action;
 
   switch (type) {
-    case SET_PLAYER: return {...state, ...payload};
+    case SET_IS_PLAYING: return {...state, ...payload};
     case SET_IS_LOOPING: return {...state, ...payload};
     default: return state;
   }
