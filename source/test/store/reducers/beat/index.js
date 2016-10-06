@@ -5,34 +5,35 @@ import {setBeat} from '../../../../actions';
 import beat from '../../../../store/reducers/beat';
 ////////////////////////////////////
 
-test('Set rh, lh', nest => {
-  nest.test('initial', assert => {
-    const message = `should set {rh: 1, lh: 1}`;
+test('Beat reducer', nestOuter => {
+  nestOuter.test('...Set rh, lh', nestInner => {
+    nestInner.test('......initial', assert => {
+      const message = `should set {rh: 1, lh: 1}`;
 
-    const expected = {
-      rh: 1,
-      lh: 1
-    };
+      const expected = {
+        rh: 1,
+        lh: 1
+      };
 
-    const actual = beat();
+      const actual = beat();
 
-    assert.deepEqual(actual, expected, message);
-    assert.end();
-  });
+      assert.deepEqual(actual, expected, message);
+      assert.end();
+    });
+    nestInner.test('......SET_BEAT', assert => {
+      const message = 'should set rh & lh';
 
-  nest.test('SET_BEAT', assert => {
-    const message = 'should set rh & lh';
+      const stateBefore = {rh: 1, lh: 1};
+      const action = setBeat({rh: 3, lh: 4});
+      const expected = {rh: 3, lh: 4};
 
-    const stateBefore = {rh: 1, lh: 1};
-    const action = setBeat({rh: 3, lh: 4});
-    const expected = {rh: 3, lh: 4};
+      deepFreeze(stateBefore);
+      deepFreeze(action);
 
-    deepFreeze(stateBefore);
-    deepFreeze(action);
+      const actual = beat(stateBefore, action);
 
-    const actual = beat(stateBefore, action);
-
-    assert.deepEqual(actual, expected, message);
-    assert.end();
+      assert.deepEqual(actual, expected, message);
+      assert.end();
+    });
   });
 });

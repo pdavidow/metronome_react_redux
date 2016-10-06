@@ -5,44 +5,46 @@ import {setMetronomeSetting} from '../../../../actions';
 import metronomeSetting from '../../../../store/reducers/metronomeSetting';
 ////////////////////////////////////
 
-test('Set classicTicksPerMinute, classicTicksPerBeat', nest => {
-  nest.test('initial', assert => {
-    const message = `should set {classicTicksPerMinute: 60, classicTicksPerBeat: 1}`;
+test('MetronomeSetting reducer', nestOuter => {
+  nestOuter.test('...Set classicTicksPerMinute, classicTicksPerBeat', nestInner => {
+    nestInner.test('......initial', assert => {
+      const message = `should set {classicTicksPerMinute: 60, classicTicksPerBeat: 1}`;
 
-    const expected = {
-      classicTicksPerMinute: 60,
-      classicTicksPerBeat: 1
-    };
+      const expected = {
+        classicTicksPerMinute: 60,
+        classicTicksPerBeat: 1
+      };
 
-    const actual = metronomeSetting();
+      const actual = metronomeSetting();
 
-    assert.deepEqual(actual, expected, message);
-    assert.end();
-  });
-  nest.test('SET_METRONOME_SETTING', assert => {
-    const message = 'should set classicTicksPerMinute & classicTicksPerBeat';
-
-    const stateBefore = {
-      classicTicksPerMinute: 60,
-      classicTicksPerBeat: 1
-    };
-
-    const action = setMetronomeSetting({
-      classicTicksPerMinute: 15,
-      classicTicksPerBeat: 3
+      assert.deepEqual(actual, expected, message);
+      assert.end();
     });
+    nestInner.test('......SET_METRONOME_SETTING', assert => {
+      const message = 'should set classicTicksPerMinute & classicTicksPerBeat';
 
-    const expected = {
-      classicTicksPerMinute: 15,
-      classicTicksPerBeat: 3
-    };
+      const stateBefore = {
+        classicTicksPerMinute: 60,
+        classicTicksPerBeat: 1
+      };
 
-    deepFreeze(stateBefore);
-    deepFreeze(action);
+      const action = setMetronomeSetting({
+        classicTicksPerMinute: 15,
+        classicTicksPerBeat: 3
+      });
 
-    const actual = metronomeSetting(stateBefore, action);
+      const expected = {
+        classicTicksPerMinute: 15,
+        classicTicksPerBeat: 3
+      };
 
-    assert.deepEqual(actual, expected, message);
-    assert.end();
+      deepFreeze(stateBefore);
+      deepFreeze(action);
+
+      const actual = metronomeSetting(stateBefore, action);
+
+      assert.deepEqual(actual, expected, message);
+      assert.end();
+    });
   });
 });

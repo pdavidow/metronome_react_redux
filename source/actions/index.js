@@ -1,7 +1,8 @@
 import {
   SET_BEAT,
   SET_METRONOME_SETTING,
-  SET_PLAYER
+  SET_PLAYER,
+  SET_IS_LOOPING
 } from '../constants/actionTypes';
 ////////////////////////////////////
 
@@ -33,3 +34,11 @@ export const setPlayer = ({isPlaying}) => {
   };
 };
 
+export const setIsLooping = ({isLooping}) => {
+  return {
+    type: SET_IS_LOOPING,
+    payload: {
+      isLooping
+    }
+  };
+};
