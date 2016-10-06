@@ -55,7 +55,7 @@ export default (React) => {
       }),
       onStop: (() => {
         stop();
-        dispatch(setPlayer({isPlaying: false})); // todo redundant...?
+        dispatch(setPlayer({isPlaying: false}));
       })
     }
   };
