@@ -196,6 +196,8 @@ test('BeatPlayer component', nestOuter => {
     const domNode = getDomNode();
 
     embeddedAudioTest.audioTestPlay = async({audioContext, oscillator}) => {
+      embeddedAudioTest.audioTestPlay = null;
+
       const startTime = audioContext.currentTime;
 
       const analyser = audioContext.createAnalyser();
@@ -223,7 +225,6 @@ test('BeatPlayer component', nestOuter => {
     };
 
     simulate.click(getPlayButton({domNode}));
-    embeddedAudioTest.audioTestPlay = null;
 
     const expected = {
       before: false,
@@ -247,6 +248,8 @@ test('BeatPlayer component', nestOuter => {
     let startTime, endTime;
 
     embeddedAudioTest.audioTestStop = async({audioContext, oscillator}) => {
+      embeddedAudioTest.audioTestStop = null;
+
       const analyser = audioContext.createAnalyser();
       oscillator.onended = () => endTime = audioContext.currentTime;
       oscillator.connect(analyser);
@@ -264,7 +267,6 @@ test('BeatPlayer component', nestOuter => {
     };
 
     simulate.click(getPlayButton({domNode}));
-    embeddedAudioTest.audioTestPlay = null;
 
     const handleFulfill = () => {
       const expected = true;
@@ -272,7 +274,7 @@ test('BeatPlayer component', nestOuter => {
       assert.equal(actual, expected, msg);
     };
 
-    await sleep(3000);
+    await sleep(1500);
     await Promise.resolve({
       then: function(onFulfill, onReject) {
         onFulfill(handleFulfill());

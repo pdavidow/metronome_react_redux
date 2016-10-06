@@ -36,6 +36,8 @@ export default (React) => {
           <div className="beatPlayer">
             <button type="submit" id="playButton" disabled={isPlaying ? "disabled" : ""} onClick={onClick_Play}>  P L A Y  </button>
             <button type="button" id="stopButton" disabled={isPlaying ? "" : "disabled"} onClick={onClick_Stop}>  S T O P  </button>
+            <br/><br/>
+            <label><input type="checkbox" id="loopCheckbox"/>Loop</label>
           </div>
         );
       }
