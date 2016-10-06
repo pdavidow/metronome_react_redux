@@ -89,7 +89,7 @@ test('Metronome model', nestOuter => {
     });
   });
   nestOuter.test('...OnEnded should only be called when last tick has ended', nestInner => {
-    const delta_ms = 1; // want to wait until just after tone ends
+    const delta_ms = 400; // leave room
     const TICK_DURATION_RH_LH_ms = TICK_DURATION_RH_LH * 1000; // The only ticks to be used here are RH_LH
     const waitOffset_ms = TICK_DURATION_RH_LH_ms + delta_ms;
     nestInner.test('......3 ticks, after 1st: do nothing', async(assert) => {
@@ -137,7 +137,7 @@ test('Metronome model', nestOuter => {
       let value = 0;
       const onEnded = () => value++;
       play({beat, metronomeSetting, onEnded});
-      await sleep((1 * 1000) + waitOffset_ms);
+      await sleep((1 * 1000) + 1000); // leave lots of room
 
       const expected = 1;
       const actual = await Promise.resolve(value);
@@ -148,37 +148,3 @@ test('Metronome model', nestOuter => {
     });
   });
 });
-
-//////////////////////////////////////////////
-// todo
-/*
- nest.test('audio', assert => {
- const msg = 'Should detect something';
- //https://medium.com/javascript-scene/why-i-use-tape-instead-of-mocha-so-should-you-6aa105d8eaf4#.jq102o9wc
- //browserify -t babelify index.js | browser-run -p 3000
-
- //https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API
- //https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode
- //https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/getByteTimeDomainData
- var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
- var analyser = audioCtx.createAnalyser();
- var oscillator = audioCtx.createOscillator();
- oscillator.frequency.value = 800;
- oscillator.connect(analyser);
- var t= audioCtx.currentTime;
- oscillator.start(t);
- oscillator.stop(t + 0.05);
-
- analyser.fftSize = 2048;
- var bufferLength = analyser.frequencyBinCount;
- var dataArray = new Uint8Array(bufferLength);
- analyser.getByteTimeDomainData(dataArray);
-
- const expected = true;
- const actual = dataArray.length > 0;
- console.log(dataArray);
-
- assert.equal(actual, expected, msg);
- assert.end();
- });
- */

@@ -1,5 +1,3 @@
-import {sum} from 'lodash'; // todo temp
-
 import {
   AUDIO_FREQ_RH,
   AUDIO_FREQ_LH,
@@ -25,6 +23,7 @@ import {
 ////////////////////////////////////
 
 let audioContext;
+let oscillators = [];
 
 const initialize = () => {
   try {
@@ -42,13 +41,14 @@ const initialize = () => {
 const playTicks = ({
   ticks = []
 } = {}) => {
-  ticks.forEach((tick) => {
-    const {startOffset, onEnded} = tick;
+  oscillators = [];
+  ticks.forEach((each) => {
+    const {startOffset, onEnded} = each;
 
-    if (isTick_Background(tick)) return playTick_Background({startOffset, onEnded});
-    if (isTick_Rh(tick)) return playTick_Rh({startOffset, onEnded});
-    if (isTick_Lh(tick)) return playTick_Lh({startOffset, onEnded});
-    if (isTick_RhLh(tick)) return playTick_RhLh({startOffset, onEnded});
+    if (isTick_Background(each)) return playTick_Background({startOffset, onEnded});
+    if (isTick_Rh(each)) return playTick_Rh({startOffset, onEnded});
+    if (isTick_Lh(each)) return playTick_Lh({startOffset, onEnded});
+    if (isTick_RhLh(each)) return playTick_RhLh({startOffset, onEnded});
     }
   )
 };
@@ -75,6 +75,8 @@ const playTick_Background = ({startOffset, onEnded}) => {
 };
 
 const playOscillator = ({oscillator, startOffset = 0, duration = 1, onEnded}) => {
+  oscillators.push(oscillator);
+
   if (embeddedAudioTest.audioTestPlay) return embeddedAudioTest.audioTestPlay({audioContext, oscillator}); // todo somehow remove in production
   if (embeddedAudioTest.audioTestStop) return embeddedAudioTest.audioTestStop({audioContext, oscillator}); // todo somehow remove in production
 
@@ -112,9 +114,12 @@ const oscillator = ({
   return oscillator;
 };
 
+const stopTicks = () => oscillators.forEach((each) => each.stop());
+
 export {
   initialize,
-  playTicks
+  playTicks,
+  stopTicks
 };
 
 

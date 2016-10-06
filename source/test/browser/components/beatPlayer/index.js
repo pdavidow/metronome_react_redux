@@ -194,7 +194,6 @@ test('BeatPlayer component', nestOuter => {
 
     const actual = {};
     const domNode = getDomNode();
-    const playButton = getPlayButton({domNode});
 
     embeddedAudioTest.audioTestPlay = async({audioContext, oscillator}) => {
       const startTime = audioContext.currentTime;
@@ -223,7 +222,7 @@ test('BeatPlayer component', nestOuter => {
       });
     };
 
-    simulate.click(playButton);
+    simulate.click(getPlayButton({domNode}));
     embeddedAudioTest.audioTestPlay = null;
 
     const expected = {
@@ -245,8 +244,6 @@ test('BeatPlayer component', nestOuter => {
     // Testing for absence of sound after playing is very unreliable, so take different approach
 
     const domNode = getDomNode();
-    const playButton = getPlayButton({domNode});
-    const stopButton = getStopButton({domNode});
     let startTime, endTime;
 
     embeddedAudioTest.audioTestStop = async({audioContext, oscillator}) => {
@@ -261,12 +258,12 @@ test('BeatPlayer component', nestOuter => {
       await sleep(1000);
       await Promise.resolve({
         then: function(onFulfill, onReject) {
-          onFulfill(simulate.click(stopButton));
+          onFulfill(simulate.click(getStopButton({domNode})));
         }
       });
     };
 
-    simulate.click(playButton);
+    simulate.click(getPlayButton({domNode}));
     embeddedAudioTest.audioTestPlay = null;
 
     const handleFulfill = () => {

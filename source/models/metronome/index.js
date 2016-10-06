@@ -1,7 +1,10 @@
 import {includes, last, range} from 'lodash';
 import {lcm} from 'mathjs';
 
-import {playTicks} from '../audio';
+import {
+  playTicks,
+  stopTicks
+} from '../audio';
 ////////////////////////////////////
 
 const calc_tickCount = ({
@@ -94,6 +97,8 @@ const play = ({
   playTicks({ticks});
 };
 
+const stop = () => stopTicks();
+
 export {
   calc_tickCount,
   calc_rhTickIndices,
@@ -101,5 +106,6 @@ export {
   calc_tickDuration,
   calc_tickStartTimeOffsets,
   calc_ticks,
-  play
+  play,
+  stop
 };

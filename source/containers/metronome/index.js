@@ -2,7 +2,10 @@ import {connect} from 'react-redux';
 
 import createTickAssignment from '../../components/tickAssignment';
 import createBeatPlayer from '../../components/beatPlayer';
-import {play} from '../../models/metronome';
+import {
+  play,
+  stop
+} from '../../models/metronome';
 import {setPlayer} from '../../actions';
 import {
   calc_tickCount,
@@ -50,7 +53,10 @@ export default (React) => {
         const onEnded = () => dispatch(setPlayer({isPlaying: false}));
         play({beat, metronomeSetting, onEnded});
       }),
-      onStop: (() => dispatch(setPlayer({isPlaying: false}))) // todo refactor here?...
+      onStop: (() => {
+        stop();
+        dispatch(setPlayer({isPlaying: false})); // todo redundant...?
+      })
     }
   };
 
