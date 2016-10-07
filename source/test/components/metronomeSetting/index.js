@@ -13,7 +13,7 @@ const MetronomeSetting = createMetronomeSetting(React);
 const render = reactDom.renderToStaticMarkup;
 
 test('MetronomeSetting component', nest => {
-  nest.test('classicTicksPerMinute, classicTicksPerBeat structure', assert => {
+  nest.test('Tags', assert => {
     const msg = 'Should have classicTicksPerMinute, classicTicksPerBeat classes';
 
     const store = createStore(combinedReducers);

@@ -30,6 +30,7 @@ test('Metronome', assert => {
   const actual = {
     beat: Boolean($(`.${ beatClass }`).html()),
     player: Boolean($(`.${ playerClass }`).html()),
+    // todo playerSetting here
     metronomeSetting: Boolean($(`.${ metronomeSettingClass }`).html()),
     tickAssignment: Boolean($(`.${ tickAssignmentClass }`).html()),
   };

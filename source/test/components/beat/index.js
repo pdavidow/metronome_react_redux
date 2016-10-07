@@ -13,7 +13,7 @@ const Beat = createBeat(React);
 const render = reactDom.renderToStaticMarkup;
 
 test('Beat component', nest => {
-  nest.test('rh, lh structure', assert => {
+  nest.test('Tags', assert => {
     const msg = 'Should have rh, lh classes';
 
     const store = createStore(combinedReducers);

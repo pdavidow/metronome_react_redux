@@ -39,18 +39,5 @@ test('Player component', nestOuter => {
       assert.equal(actual, expected, msg);
       assert.end();
     });
-    nestInner.test('......Loop', assert => {
-      const msg = 'Should have loop checkbox id';
-
-      const props = {player: {isPlaying: false}};
-      const el = <Player {...props}/>;
-      const $ = dom.load(render(el));
-
-      const actual = Boolean($('#loopCheckbox').attr('id'));
-      const expected = true;
-
-      assert.equal(actual, expected, msg);
-      assert.end();
-    });
   });
 });
