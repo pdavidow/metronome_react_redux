@@ -21,12 +21,12 @@ test('Metronome Container', nest => {
 
     const actual = {
       tickAssignment: Boolean($('.tickAssignment').html()),
-      beatPlayer: Boolean($('.beatPlayer').html())
+      player: Boolean($('.player').html())
     };
 
     const expected = {
       tickAssignment: true,
-      beatPlayer: true
+      player: true
     };
 
     assert.deepEqual(actual, expected, msg);

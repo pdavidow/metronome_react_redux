@@ -1,7 +1,7 @@
 import {connect} from 'react-redux';
 
 import createTickAssignment from '../../components/tickAssignment';
-import createBeatPlayer from '../../components/beatPlayer';
+import createPlayer from '../../components/player';
 import {
   play,
   stop
@@ -17,13 +17,13 @@ import {
 export default (React) => {
   const Metronome = (props) => {
     const TickAssignment = createTickAssignment(React);
-    const BeatPlayer = createBeatPlayer(React);
+    const Player = createPlayer(React);
 
     return (
       <div>
         <TickAssignment {...props}/>
         <p>=========================</p>
-        <BeatPlayer {...props}/>
+        <Player {...props}/>
       </div>
     );
    };

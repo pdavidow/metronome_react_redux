@@ -6,7 +6,7 @@ import './models/metronome';
 import './models/tick';
 import './containers/metronome'
 import './components/beat';
-import './components/beatPlayer';
+import './components/player';
 import './components/tickAssignment';
 import './components/metronomeSetting';
 

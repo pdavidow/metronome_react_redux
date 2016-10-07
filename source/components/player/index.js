@@ -4,8 +4,8 @@ import {initialize as initializeAudio} from '../../models/audio';
 export default (React) => {
   const PropTypes = React.PropTypes;
 
-  const BeatPlayer = (props) => {
-    BeatPlayer.propTypes = {
+  const Player = (props) => {
+    Player.propTypes = {
       onPlay: PropTypes.func.isRequired,
       onStop: PropTypes.func.isRequired,
       beat: React.PropTypes.shape({
@@ -33,7 +33,7 @@ export default (React) => {
 
       render () {
         return (
-          <div className="beatPlayer">
+          <div className="player">
             <button type="submit" id="playButton" disabled={isPlaying ? "disabled" : ""} onClick={onClick_Play}>  P L A Y  </button>
             <button type="button" id="stopButton" disabled={isPlaying ? "" : "disabled"} onClick={onClick_Stop}>  S T O P  </button>
             <br/><br/>
@@ -43,7 +43,7 @@ export default (React) => {
       }
     };
   };
-  return BeatPlayer;
+  return Player;
 };
 
 

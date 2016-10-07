@@ -3,19 +3,19 @@ import reactDom from 'react-dom/server';
 import test from 'tape';
 import dom from 'cheerio';
 
-import createBeatPlayer from '../../../components/beatPlayer';
+import createPlayer from '../../../components/player';
 ////////////////////////////////////
 
-const BeatPlayer = createBeatPlayer(React);
+const Player = createPlayer(React);
 const render = reactDom.renderToStaticMarkup;
 
-test('BeatPlayer component', nestOuter => {
+test('Player component', nestOuter => {
   nestOuter.test('...Tags', nestInner => {
     nestInner.test('......Play', assert => {
       const msg = 'Should have playButton id';
 
       const props = {player: {isPlaying: false}};
-      const el = <BeatPlayer {...props}/>;
+      const el = <Player {...props}/>;
       const $ = dom.load(render(el));
 
       const actual = Boolean($('#playButton').html());
@@ -29,7 +29,7 @@ test('BeatPlayer component', nestOuter => {
       const msg = 'Should have stopButton id';
 
       const props = {player: {isPlaying: false}};
-      const el = <BeatPlayer {...props}/>;
+      const el = <Player {...props}/>;
       const $ = dom.load(render(el));
 
       const actual = Boolean($('#stopButton').html());
@@ -43,7 +43,7 @@ test('BeatPlayer component', nestOuter => {
       const msg = 'Should have loop checkbox id';
 
       const props = {player: {isPlaying: false}};
-      const el = <BeatPlayer {...props}/>;
+      const el = <Player {...props}/>;
       const $ = dom.load(render(el));
 
       const actual = Boolean($('#loopCheckbox').attr('id'));

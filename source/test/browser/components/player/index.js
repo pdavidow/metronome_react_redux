@@ -7,21 +7,24 @@ import {Simulate as simulate} from 'react-addons-test-utils';
 import {
   getDomNode,
   getElementBySelector,
-  setStore
+  setStore,
+  defaultStore
 } from '../../utils';
 import {
   audioTestStart,
   audioTestEnd,
   embeddedAudioTest
 } from '../../../../models/audio/destination';
+import {setIsLooping} from '../../../../actions'; // todo
 ////////////////////////////////////
 
 // Careful: React may replace the element it is modifying, instead of changing it in place.
 // So always retreive the element, instead of keeping a pointer to it.
 const getPlayButton = ({domNode}) => getElementBySelector({domNode, selector: '#playButton'});
 const getStopButton = ({domNode}) => getElementBySelector({domNode, selector: '#stopButton'});
+const getLoopCheckbox = ({domNode}) => getElementBySelector({domNode, selector: '#loopCheckbox'});
 
-test('BeatPlayer component', nestOuter => {
+test('Player component', nestOuter => {
   nestOuter.test('...Play button should disable during play', nestInner => {
     nestInner.test('......Should render an enabled Play button by default', assert => {
       audioTestStart();
@@ -196,7 +199,7 @@ test('BeatPlayer component', nestOuter => {
     const domNode = getDomNode();
 
     embeddedAudioTest.audioTestPlay = async({audioContext, oscillator}) => {
-      embeddedAudioTest.audioTestPlay = null;
+      embeddedAudioTest.audioTestPlay = null; // do this here (ASAP) to avoid confusing non-asynch code
 
       const startTime = audioContext.currentTime;
 
@@ -248,7 +251,7 @@ test('BeatPlayer component', nestOuter => {
     let startTime, endTime;
 
     embeddedAudioTest.audioTestStop = async({audioContext, oscillator}) => {
-      embeddedAudioTest.audioTestStop = null;
+      embeddedAudioTest.audioTestStop = null; // do this here (ASAP) to avoid confusing non-asynch code
 
       const analyser = audioContext.createAnalyser();
       oscillator.onended = () => endTime = audioContext.currentTime;
@@ -274,7 +277,7 @@ test('BeatPlayer component', nestOuter => {
       assert.equal(actual, expected, msg);
     };
 
-    await sleep(1500);
+    await sleep(4000);
     await Promise.resolve({
       then: function(onFulfill, onReject) {
         onFulfill(handleFulfill());
@@ -283,4 +286,37 @@ test('BeatPlayer component', nestOuter => {
 
     assert.end();
   });
+  /* // todo
+  nestOuter.test('......Should set isLooping true upon checking loop', nestInner => {
+    nestInner.test('......Should be unchecked by default', assert => {
+      audioTestStart();
+      const msg = 'Should be unchecked';
+
+      const domNode = getDomNode();
+
+      const actual = getLoopCheckbox({domNode}).hasAttribute('checked');
+      const expected = false;
+
+      assert.equal(actual, expected, msg);
+      assert.end();
+      audioTestEnd();
+    });
+    nestInner.test('......Should be checked because state so dictates', assert => {
+      audioTestStart();
+      const msg = 'Should be checked';
+
+      const store = defaultStore();
+      store.dispatch(setIsLooping({isLooping: true}));
+      const domNode = getDomNode({store});
+
+      const actual = getLoopCheckbox({domNode}).hasAttribute('checked');
+      console.log("getLoopCheckbox({domNode})",getLoopCheckbox({domNode}));
+      const expected = true;
+
+      assert.equal(actual, expected, msg);
+      assert.end();
+      audioTestEnd();
+    });
+  });
+  */
 });

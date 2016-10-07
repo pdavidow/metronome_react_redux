@@ -2,5 +2,5 @@
 
 import './components/beat';
 import './components/metronomeSetting';
-import './components/beatPlayer';
+import './components/player';
 import './model/metronome';
