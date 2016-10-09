@@ -293,7 +293,7 @@ const isolate = async() => {
   await sleep(1000);
   await Promise.resolve({then: (onFulfill) => onFulfill(test1())});
 
-  await sleep(3500);
+  await sleep(2500);
   await Promise.resolve({then: (onFulfill) => onFulfill(test2())});
 };
 isolate();

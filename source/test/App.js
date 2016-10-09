@@ -24,13 +24,14 @@ test('Metronome', assert => {
   const $ = dom.load(render(el));
   const beatClass = 'beat';
   const playerClass = 'player';
+  const playerSettingClass = 'playerSetting';
   const metronomeSettingClass = 'metronomeSetting';
   const tickAssignmentClass = 'tickAssignment';
 
   const actual = {
     beat: Boolean($(`.${ beatClass }`).html()),
     player: Boolean($(`.${ playerClass }`).html()),
-    // todo playerSetting here
+    playerSetting: Boolean($(`.${ playerSettingClass }`).html()),
     metronomeSetting: Boolean($(`.${ metronomeSettingClass }`).html()),
     tickAssignment: Boolean($(`.${ tickAssignmentClass }`).html()),
   };
@@ -38,6 +39,7 @@ test('Metronome', assert => {
   const expected = {
     beat: true,
     player: true,
+    playerSetting: true,
     metronomeSetting: true,
     tickAssignment: true,
   };
