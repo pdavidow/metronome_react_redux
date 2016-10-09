@@ -39,7 +39,6 @@ test('Metronome model', nestOuter => {
       assert.end();
     });
   });
-
   nestOuter.test('...Right Hand tick indices', nestInner => {
     const msg = 'Right Hand should know its tick indices';
     nestInner.test('......Test #1', assert => {
@@ -71,7 +70,6 @@ test('Metronome model', nestOuter => {
       assert.end();
     });
   });
-
   nestOuter.test('...Left Hand tick indices', nestInner => {
     const msg = 'Left Hand should know its tick indices';
     nestInner.test('......Test #1', assert => {
@@ -103,7 +101,6 @@ test('Metronome model', nestOuter => {
       assert.end();
     });
   });
-
   nestOuter.test('...Tick duration (sec)', nestInner => {
     nestInner.test('......Test #1', assert => {
       const msg = '1 tick every 1 sec';
@@ -236,7 +233,6 @@ test('Metronome model', nestOuter => {
       assert.end();
     });
   });
-
   nestOuter.test('...Tick start-time offsets (sec)', nestInner => {
     nestInner.test('......Test #1', assert => {
       const msg = '12 ticks, 1 tick every 1 sec, for 12 sec';
@@ -330,9 +326,8 @@ test('Metronome model', nestOuter => {
       assert.end();
     });
   });
-
-  nestOuter.test('...All Ticks', nestInner => {
-    const msg = 'All ticks';
+  nestOuter.test('...Calculate Ticks', nestInner => {
+    const msg = 'All tick details must be correct';
     nestInner.test('......Test #1', assert => {
       const tickDuration = 1;
 
@@ -541,81 +536,66 @@ test('Metronome model', nestOuter => {
       assert.end();
     });
   });
+  nestOuter.test('...Defaults for calc_tickCount', assert => {
+    const msg = "calc_tickCount for default {rh:1, lh:1} should be 1";
 
-  nestOuter.test('...Defaults for calc_tickCount', nestInner => {
-    const msg = "{rh:1, lh:1}";
-    nestInner.test('......Test #1', assert => {
-      const actual = calc_tickCount();
-      const expected = 1;
+    const actual = calc_tickCount();
+    const expected = 1;
 
-      assert.equal(actual, expected, msg);
-      assert.end();
-    });
-
+    assert.equal(actual, expected, msg);
+    assert.end();
   });
+  nestOuter.test('...Defaults for calc_rhTickIndices', assert => {
+    const msg = "calc_rhTickIndices for default {rh:1, lh:1} should be [0]";
 
-  nestOuter.test('...Defaults for calc_rhTickIndices', nestInner => {
-    const msg = "beat = {rh:1, lh:1}";
-    nestInner.test('......Test #1', assert => {
-      const actual = calc_rhTickIndices();
-      const expected = [0];
+    const actual = calc_rhTickIndices();
+    const expected = [0];
 
-      assert.deepEqual(actual, expected, msg);
-      assert.end();
-    });
-
+    assert.deepEqual(actual, expected, msg);
+    assert.end();
   });
+  nestOuter.test('...Defaults for calc_lhTickIndices', assert => {
+    const msg = "calc_lhTickIndices for default {rh:1, lh:1} should be [0]";
 
-  nestOuter.test('...Defaults for calc_lhTickIndices', nestInner => {
-    const msg = "beat = {rh:1, lh:1}";
-    nestInner.test('......Test #1', assert => {
-      const actual = calc_lhTickIndices();
-      const expected = [0];
+    const actual = calc_lhTickIndices();
+    const expected = [0];
 
-      assert.deepEqual(actual, expected, msg);
-      assert.end();
-    });
-
+    assert.deepEqual(actual, expected, msg);
+    assert.end();
   });
+  nestOuter.test('...Defaults for calc_tickDuration', assert => {
+    const msg = "calc_tickDuration for default {rh: 1, lh: 1}, classicTicksPerMinute = 60, classicTicksPerBeat = 1, should be 1";
 
-  nestOuter.test('...Defaults for calc_tickDuration', nestInner => {
-    const msg = "beat = {rh: 1, lh: 1}, classicTicksPerMinute = 60, classicTicksPerBeat = 1";
-    nestInner.test('......Test #1', assert => {
-      const actual = calc_tickDuration();
-      const expected = 1;
+    const actual = calc_tickDuration();
+    const expected = 1;
 
-      assert.equal(actual, expected, msg);
-      assert.end();
-    });
+    assert.equal(actual, expected, msg);
+    assert.end();
   });
+  nestOuter.test('...Defaults for calc_tickStartTimeOffsets', assert => {
+    const msg = "calc_tickStartTimeOffsets for default {rh: 1, lh: 1}, classicTicksPerMinute = 60, classicTicksPerBeat = 1, should be [0]";
 
-  nestOuter.test('...Defaults for calc_tickStartTimeOffsets', nestInner => {
-    const msg = "beat = {rh: 1, lh: 1}, classicTicksPerMinute = 60, classicTicksPerBeat = 1";
-    nestInner.test('......Test #1', assert => {
-      const actual = calc_tickStartTimeOffsets();
-      const expected = [0];
+    const actual = calc_tickStartTimeOffsets();
+    const expected = [0];
 
-      assert.deepEqual(actual, expected, msg);
-      assert.end();
-    });
+    assert.deepEqual(actual, expected, msg);
+    assert.end();
   });
+  nestOuter.test('...Defaults for calc_ticks', assert => {
+    const msg = "calc_ticks for default {rh: 1, lh: 1}, classicTicksPerMinute = 60, classicTicksPerBeat = 1, should be 1 RhLh tick at time 0";
 
-  nestOuter.test('...Defaults for calc_ticks', nestInner => {
-    const msg = "beat = {rh: 1, lh: 1}, classicTicksPerMinute = 60, classicTicksPerBeat = 1";
-    nestInner.test('......Test #1', assert => {
-      const actual = calc_ticks();
+    const actual = calc_ticks();
 
-      const expected = [
-        {
-          isRH: true,
-          isLH: true,
-          startOffset: 0
-        }
-      ];
+    const expected = [
+      {
+        isRH: true,
+        isLH: true,
+        startOffset: 0
+      }
+    ];
 
-      assert.deepEqual(actual, expected, msg);
-      assert.end();
-    });
+    assert.deepEqual(actual, expected, msg);
+    assert.end();
   });
 });
 
