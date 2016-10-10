@@ -3,6 +3,7 @@ import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import {renderIntoDocument} from 'react-addons-test-utils';
 import reactDom from 'react-dom';
+import {forOwn} from 'lodash';
 
 import createApp from '../../../App';
 import combinedReducers from '../../../store/reducers';
@@ -51,22 +52,17 @@ const embeddedAudioTest = {};
 const audioTest = ({audioContext, oscillator}) => {
   // if (production) return false; // todo
 
-  let test;
+  let result = false;
 
-  const doIt = (myTest, {audioContext, oscillator}) => {
-    myTest({audioContext, oscillator});
-    return true;
-  };
-//todo refactor: embeddedAudioTest keysDo...
-  if (test = embeddedAudioTest.playButtonStartsAudio) return doIt(test, {audioContext, oscillator});
-  if (test = embeddedAudioTest.stopButtonStopsAudio) return doIt(test, {audioContext, oscillator});
-  if (test = embeddedAudioTest.playButtonDisabledDuringPlay) return doIt(test, {audioContext, oscillator});
-  if (test = embeddedAudioTest.playButtonEnabledAfterPlay) return doIt(test, {audioContext, oscillator});
-  if (test = embeddedAudioTest.stopButtonEnabledDuringPlay) return doIt(test, {audioContext, oscillator});
-  if (test = embeddedAudioTest.stopButtonDisabledAfterPlay) return doIt(test, {audioContext, oscillator});
-  if (test = embeddedAudioTest.playButtonReenableMidplay) return doIt(test, {audioContext, oscillator});
+  forOwn(embeddedAudioTest, ((test) => { // only one test should be defined at any given time
+    if (test) {
+      test({audioContext, oscillator});
+      result = true;
+      return false; // exit iteration early by explicitly returning false. https://lodash.com/docs/4.16.4#forOwn
+    };
+  }));
 
-  return false
+  return result;
 };
 
 export {

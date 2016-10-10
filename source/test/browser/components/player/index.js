@@ -185,8 +185,6 @@ test('Player component', nestOuter => {
     embeddedAudioTest.playButtonStartsAudio = async({audioContext, oscillator}) => {
       embeddedAudioTest.playButtonStartsAudio = null;
 
-      const startTime = audioContext.currentTime;
-
       const analyser = audioContext.createAnalyser();
       analyser.smoothingTimeConstant = 0;
       analyser.fftSize = 2048;
@@ -200,8 +198,9 @@ test('Player component', nestOuter => {
 
       oscillator.connect(analyser);
       actual.prior = isAnySound();
+      const startTime = audioContext.currentTime;
       oscillator.start(startTime);
-      oscillator.stop(startTime + 1); // sec
+      oscillator.stop(startTime + 2); // sec
 
       const waitTime = 0.5; // sec
       waitInAudioTime({waitTime, audioContext, startTime});
@@ -219,7 +218,7 @@ test('Player component', nestOuter => {
     simulate.click(getPlayButton({domNode}));
   });
   nestOuter.test('...Stop button should actually stop audio', (assert) => {
-    const msg = 'currentTime when onended should be 1 second later than startTime';
+    const msg = 'currentTime when onended should be 1 second (approx) later than startTime';
 
     const store = setStore({beat: {rh: 1, lh: 1}}); // just 1 tick
     const domNode = getDomNode({store});
@@ -231,7 +230,7 @@ test('Player component', nestOuter => {
       oscillator.onended = () => {
         const endTime = audioContext.currentTime;
         const delta = endTime - startTime;
-        const actual = (delta >= 1) && (delta <= 1.3);
+        const actual = (delta >= 1) && (delta <= 1.5);
         const expected = true;
         assert.equal(actual, expected, msg);
         assert.end();
@@ -250,6 +249,55 @@ test('Player component', nestOuter => {
     };
     simulate.click(getPlayButton({domNode}));
   });
+  // nestOuter.test('...Stop button should actually stop audio', (assert) => {
+  //   const msg = 'Should show non-zero analyzer data during play, but not after stopped';
+  //
+  //   const actual = {};
+  //
+  //   const store = setStore({beat: {rh: 1, lh: 1}}); // just 1 tick
+  //   const domNode = getDomNode({store});
+  //
+  //   embeddedAudioTest.stopButtonStopsAudio = async({audioContext, oscillator}) => {
+  //     embeddedAudioTest.stopButtonStopsAudio = null;
+  //
+  //     const analyser = audioContext.createAnalyser();
+  //     analyser.smoothingTimeConstant = 0;
+  //     analyser.fftSize = 2048;
+  //     const bufferLength = analyser.frequencyBinCount;
+  //
+  //     const isAnySound = () => {
+  //       const dataArray = new Uint8Array(bufferLength);
+  //       analyser.getByteFrequencyData(dataArray);
+  //       return sum(dataArray) > 0;
+  //     };
+  //
+  //     oscillator.connect(analyser);
+  //     const startTime = audioContext.currentTime;
+  //     oscillator.start(startTime);
+  //     oscillator.stop(startTime + 2); // sec
+  //
+  //     const waitTime_during = 0.5; // sec
+  //     waitInAudioTime({waitTime_during, audioContext, startTime});
+  //     await sleep(1) /* msec */; // for some reason, must sleep something
+  //     actual.during = isAnySound();
+  //
+  //     simulate.click(getStopButton({domNode}));
+  //
+  //     const waitTime_after = 0.5; // sec
+  //     waitInAudioTime({waitTime_after, audioContext, startTime});
+  //     await sleep(1) /* msec */; // for some reason, must sleep something
+  //     actual.after = isAnySound();
+  //
+  //     const expected = {
+  //       during: true,
+  //       after: false
+  //     };
+  //
+  //     assert.deepEqual(actual, expected, msg);
+  //     assert.end();
+  //   };
+  //   simulate.click(getPlayButton({domNode}));
+  // });
 });
 
 
