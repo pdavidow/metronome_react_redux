@@ -3,33 +3,45 @@ import sleep from 'sleep-promise';
 import 'babel-polyfill'; // http://stackoverflow.com/questions/28976748/regeneratorruntime-is-not-defined
 
 import {play} from '../../../../models/metronome';
-import {initialize as initializeAudio} from '../../../../models/audio';
+import {initializedAudioContext} from '../../../../models/audio';
 import {TICK_DURATION_RH_LH} from '../../../../constants/audio';
 import {
   audioTestStart,
   audioTestEnd,
 } from '../../../../models/audio/destination';
+import {waitInAudioTime} from '../../../browser/utils';
 ////////////////////////////////////
 
-initializeAudio();
-// todo redo all
+const audioContext = initializedAudioContext();
+
 test('Metronome model', nestOuter => {
   nestOuter.test('...onEnded should work for all 4 tick types', nestInner => {
     nestInner.test('......last tick isRH only', async(assert) => {
       audioTestStart();
       const msg = 'Should increment by 1';
 
+      // 2 ticks at 1/4 second each, for total of 1/2 second
       const beat = {rh: 2, lh: 1};
       const metronomeSetting = {classicTicksPerMinute: 240, classicTicksPerBeat: 2};
       let value = 0;
       const onEnded = () => value++;
+
+      const startTime = audioContext.currentTime; // approx
       play({beat, metronomeSetting, onEnded});
-      await sleep(1000);
 
+      const waitTime = 0.3 /* sec */; // Tick sound itself is very short, and last one ends just after 1/4 sec
+      waitInAudioTime({waitTime, audioContext, startTime});
+      await sleep(1); // msec. For some reason, must sleep something
+/* todo
+      const expected = {
+        tickType:
+        value: 1
+      };
+      */
       const expected = 1;
-      const actual = await Promise.resolve(value);
+      const actual = value;
 
-      assert.equal(actual, expected, msg);
+      assert.deepEqual(actual, expected, msg);
       assert.end();
       audioTestEnd();
     });
@@ -37,15 +49,21 @@ test('Metronome model', nestOuter => {
       audioTestStart();
       const msg = 'Should increment by 1';
 
+      // 2 ticks at 1/4 second each, for total of 1/2 second
       const beat = {rh: 1, lh: 2};
       const metronomeSetting = {classicTicksPerMinute: 240, classicTicksPerBeat: 2};
       let value = 0;
       const onEnded = () => value++;
+
+      const startTime = audioContext.currentTime; // approx
       play({beat, metronomeSetting, onEnded});
-      await sleep(1000);
+
+      const waitTime = 0.3 /* sec */; // Tick sound itself is very short, and last one ends just after 1/4 sec
+      waitInAudioTime({waitTime, audioContext, startTime});
+      await sleep(1); // msec. For some reason, must sleep something
 
       const expected = 1;
-      const actual = await Promise.resolve(value);
+      const actual = value;
 
       assert.equal(actual, expected, msg);
       assert.end();
@@ -55,15 +73,21 @@ test('Metronome model', nestOuter => {
       audioTestStart();
       const msg = 'Should increment by 1';
 
-      const beat = {rh: 1, lh: 1};
-      const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 1};
+      // 2 ticks at 1/4 second each, for total of 1/2 second
+      const beat = {rh: 2, lh: 2};
+      const metronomeSetting = {classicTicksPerMinute: 240, classicTicksPerBeat: 2};
       let value = 0;
       const onEnded = () => value++;
+
+      const startTime = audioContext.currentTime; // approx
       play({beat, metronomeSetting, onEnded});
-      await sleep(1000);
+
+      const waitTime = 0.3 /* sec */; // Tick sound itself is very short, and last one ends just after 1/4 sec
+      waitInAudioTime({waitTime, audioContext, startTime});
+      await sleep(1); // msec. For some reason, must sleep something
 
       const expected = 1;
-      const actual = await Promise.resolve(value);
+      const actual = value;
 
       assert.equal(actual, expected, msg);
       assert.end();
@@ -73,15 +97,21 @@ test('Metronome model', nestOuter => {
       audioTestStart();
       const msg = 'Should increment by 1';
 
+      // 6 ticks at 1/2 second each, for total of 3 second
       const beat = {rh: 2, lh: 3};
-      const metronomeSetting = {classicTicksPerMinute: 480, classicTicksPerBeat: 6};
+      const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 6};
       let value = 0;
       const onEnded = () => value++;
+
+      const startTime = audioContext.currentTime; // approx
       play({beat, metronomeSetting, onEnded});
-      await sleep(1000);
+
+      const waitTime = 2.6 /* sec */; // Tick sound itself is very short, and last one ends just after 2.5 sec
+      waitInAudioTime({waitTime, audioContext, startTime});
+      await sleep(1); // msec. For some reason, must sleep something
 
       const expected = 1;
-      const actual = await Promise.resolve(value);
+      const actual = value;
 
       assert.equal(actual, expected, msg);
       assert.end();

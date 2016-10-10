@@ -37,6 +37,11 @@ const initialize = () => {
   };
 };
 
+const initializedAudioContext = () => {
+  initialize();
+  return audioContext;
+};
+
 const playTicks = ({
   ticks = []
 } = {}) => {
@@ -116,6 +121,7 @@ const stopTicks = () => oscillators.forEach((each) => each.stop());
 
 export {
   initialize,
+  initializedAudioContext,
   playTicks,
   stopTicks
 };
