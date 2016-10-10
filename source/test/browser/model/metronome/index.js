@@ -233,19 +233,33 @@ test('Metronome model', nestOuter => {
     audioTestStart();
     const msg = 'Should not increment value until 2 seconds';
 
+    const expected = {};
+    const actual = {};
+
     // 1 tick, at 2 seconds per tick
     const beat = {rh: 1, lh: 1};
     const metronomeSetting = {classicTicksPerMinute: 30, classicTicksPerBeat: 1};
 
     let value = 0;
     const onEnded = () => value++;
+    const startTime = audioContext.currentTime; // approx
     play({beat, metronomeSetting, onEnded});
-    await sleep(1000);
 
-    const expected = 0;
-    const actual = await Promise.resolve(value);
+    const waitTime = 0.3; // sec
+    waitInAudioTime({waitTime, audioContext, startTime});
+    await sleep(1) /* msec */; // for some reason, must sleep something
 
-    //assert.equal(actual, expected, msg);
+    expected.during = 0;
+    actual.during = value;
+
+    const waitTime_more = 2; // sec
+    waitInAudioTime({waitTime_more, audioContext, startTime});
+    await sleep(1) /* msec */; // for some reason, must sleep something
+
+    expected.after = 1;
+    actual.after = value;
+
+    assert.deepEqual(actual, expected, msg);
     assert.end();
     audioTestEnd();
   });
