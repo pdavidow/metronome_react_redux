@@ -43,7 +43,7 @@ const getElementBySelector = ({domNode, selector}) => domNode.querySelector(sele
 
 const waitInAudioTime = ({waitTime, audioContext, startTime}) => {
   // all times in seconds
-  while ((audioContext.currentTime - startTime) < waitTime) {/* do nothing */};
+  while ((audioContext.currentTime - startTime) <= waitTime) {/* do nothing */};
 };
 
 const embeddedAudioTest = {};
