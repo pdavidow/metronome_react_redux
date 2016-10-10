@@ -231,7 +231,7 @@ test('Player component', nestOuter => {
       oscillator.onended = () => {
         const endTime = audioContext.currentTime;
         const delta = endTime - startTime;
-        const actual = (delta >= 1) && (delta <= 1.2);
+        const actual = (delta >= 1) && (delta <= 1.3);
         const expected = true;
         assert.equal(actual, expected, msg);
         assert.end();

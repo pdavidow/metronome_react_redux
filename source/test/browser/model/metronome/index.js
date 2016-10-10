@@ -5,7 +5,7 @@ import {last} from 'lodash';
 
 import {
   calc_ticks,
-  play, // todo
+  play,
   playTicks
 } from '../../../../models/metronome';
 import {
@@ -15,7 +15,6 @@ import {
   isTick_Background
 } from '../../../../models/tick';
 import {initializedAudioContext} from '../../../../models/audio';
-import {TICK_DURATION_RH_LH} from '../../../../constants/audio';
 import {
   audioTestStart,
   audioTestEnd,
@@ -41,7 +40,7 @@ test('Metronome model', nestOuter => {
       const startTime = audioContext.currentTime; // approx
       playTicks({ticks});
 
-      const waitTime = 0.4 /* sec */; // Tick sound itself is very short, and last one ends just after 1/4 sec
+      const waitTime = 0.4 /* sec */; // Tick sound itself is very short ~ 50 msec
       waitInAudioTime({waitTime, audioContext, startTime});
       await sleep(1) /* msec */; // for some reason, must sleep something
 
@@ -73,7 +72,7 @@ test('Metronome model', nestOuter => {
       const startTime = audioContext.currentTime; // approx
       playTicks({ticks});
 
-      const waitTime = 0.4 /* sec */; // Tick sound itself is very short, and last one ends just after 1/4 sec
+      const waitTime = 0.4 /* sec */; // Tick sound itself is very short ~ 50 msec
       waitInAudioTime({waitTime, audioContext, startTime});
       await sleep(1) /* msec */; // for some reason, must sleep something
 
@@ -105,7 +104,7 @@ test('Metronome model', nestOuter => {
       const startTime = audioContext.currentTime; // approx
       playTicks({ticks});
 
-      const waitTime = 0.4 /* sec */; // Tick sound itself is very short, and last one ends just after 1/4 sec
+      const waitTime = 0.4 /* sec */; // Tick sound itself is very short ~ 50 msec
       waitInAudioTime({waitTime, audioContext, startTime});
       await sleep(1) /* msec */; // for some reason, must sleep something
 
@@ -137,7 +136,7 @@ test('Metronome model', nestOuter => {
       const startTime = audioContext.currentTime; // approx
       playTicks({ticks});
 
-      const waitTime = 2.8 /* sec */; // Tick sound itself is very short, and last one ends just after 2.5 sec
+      const waitTime = 2.8 /* sec */; // Tick sound itself is very short ~ 50 msec
       waitInAudioTime({waitTime, audioContext, startTime});
       await sleep(1) /* msec */; // for some reason, must sleep something
 
@@ -157,22 +156,25 @@ test('Metronome model', nestOuter => {
     });
   });
   nestOuter.test('...onEnded should only be called when last tick has ended', nestInner => {
-    const delta_ms = 400; // leave room
-    const TICK_DURATION_RH_LH_ms = TICK_DURATION_RH_LH * 1000; // The only ticks to be used here are RH_LH
-    const waitOffset_ms = TICK_DURATION_RH_LH_ms + delta_ms;
     nestInner.test('......3 ticks, after 1st: do nothing', async(assert) => {
       audioTestStart();
       const msg = 'Should not increment';
 
+      // 3 ticks at 1/2 second each, for total of 1.5 sec
       const beat = {rh: 3, lh: 3};
       const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 3};
+
       let value = 0;
       const onEnded = () => value++;
+      const startTime = audioContext.currentTime; // approx
       play({beat, metronomeSetting, onEnded});
-      await sleep((0 * 1000) + waitOffset_ms);
+
+      const waitTime = 0.2 /* sec */; // Tick sound itself is very short ~ 50 msec
+      waitInAudioTime({waitTime, audioContext, startTime});
+      await sleep(1) /* msec */; // for some reason, must sleep something
 
       const expected = 0;
-      const actual = await Promise.resolve(value);
+      const actual = value;
 
       assert.equal(actual, expected, msg);
       assert.end();
@@ -182,15 +184,21 @@ test('Metronome model', nestOuter => {
       audioTestStart();
       const msg = 'Should not increment';
 
+      // 3 ticks at 1/2 second each, for total of 1.5 sec
       const beat = {rh: 3, lh: 3};
       const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 3};
+
       let value = 0;
       const onEnded = () => value++;
+      const startTime = audioContext.currentTime; // approx
       play({beat, metronomeSetting, onEnded});
-      await sleep((0.5 * 1000) + waitOffset_ms);
+
+      const waitTime = 0.7 /* sec */; // Tick sound itself is very short ~ 50 msec
+      waitInAudioTime({waitTime, audioContext, startTime});
+      await sleep(1) /* msec */; // for some reason, must sleep something
 
       const expected = 0;
-      const actual = await Promise.resolve(value);
+      const actual = value;
 
       assert.equal(actual, expected, msg);
       assert.end();
@@ -200,15 +208,21 @@ test('Metronome model', nestOuter => {
       audioTestStart();
       const msg = 'Should increment';
 
+      // 3 ticks at 1/2 second each, for total of 1.5 sec
       const beat = {rh: 3, lh: 3};
       const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 3};
+
       let value = 0;
       const onEnded = () => value++;
+      const startTime = audioContext.currentTime; // approx
       play({beat, metronomeSetting, onEnded});
-      await sleep((1 * 1000) + 1000); // leave lots of room
+
+      const waitTime = 1.2 /* sec */; // Tick sound itself is very short ~ 50 msec
+      waitInAudioTime({waitTime, audioContext, startTime});
+      await sleep(1) /* msec */; // for some reason, must sleep something
 
       const expected = 1;
-      const actual = await Promise.resolve(value);
+      const actual = value;
 
       assert.equal(actual, expected, msg);
       assert.end();

@@ -1,5 +1,3 @@
-// todo still needed?
-
 let isTesting = false;
 
 const audioTestStart = () => isTesting = true;
