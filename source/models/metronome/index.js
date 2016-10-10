@@ -1,4 +1,8 @@
-import {includes, last, range} from 'lodash';
+import {
+  includes,
+  last,
+  range
+} from 'lodash';
 import {lcm} from 'mathjs';
 
 import {
@@ -107,5 +111,6 @@ export {
   calc_tickStartTimeOffsets,
   calc_ticks,
   play,
+  playTicks,
   stop
 };

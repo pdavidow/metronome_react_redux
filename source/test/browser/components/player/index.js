@@ -46,7 +46,7 @@ test('Player component', nestOuter => {
 
         const waitTime = 0.1; // sec
         waitInAudioTime({waitTime, audioContext, startTime});
-        await sleep(1); // msec. For some reason, must sleep something
+        await sleep(1) /* msec */; // for some reason, must sleep something
 
         const actual = getPlayButton({domNode}).hasAttribute('disabled');
         const expected = true;
@@ -72,7 +72,7 @@ test('Player component', nestOuter => {
 
         const waitTime = 0.6; // sec
         waitInAudioTime({waitTime, audioContext, startTime});
-        await sleep(1); // msec. For some reason, must sleep something
+        await sleep(1) /* msec */; // for some reason, must sleep something
 
         const actual = getPlayButton({domNode}).hasAttribute('disabled');
         const expected = false;
@@ -110,7 +110,7 @@ test('Player component', nestOuter => {
 
         const waitTime = 0.1; // sec
         waitInAudioTime({waitTime, audioContext, startTime});
-        await sleep(1); // msec. For some reason, must sleep something
+        await sleep(1) /* msec */; // for some reason, must sleep something
 
         const actual = getStopButton({domNode}).hasAttribute('disabled');
         const expected = false;
@@ -136,7 +136,7 @@ test('Player component', nestOuter => {
 
         const waitTime = 0.6; // sec
         waitInAudioTime({waitTime, audioContext, startTime});
-        await sleep(1); // msec. For some reason, must sleep something
+        await sleep(1) /* msec */; // for some reason, must sleep something
 
         const actual = getStopButton({domNode}).hasAttribute('disabled');
         const expected = true;
@@ -162,7 +162,7 @@ test('Player component', nestOuter => {
 
       const waitTime = 0.5; // sec
       waitInAudioTime({waitTime, audioContext, startTime});
-      await sleep(1); // msec. For some reason, must sleep something
+      await sleep(1) /* msec */; // for some reason, must sleep something
 
       simulate.click(getStopButton({domNode}));
 
@@ -205,7 +205,7 @@ test('Player component', nestOuter => {
 
       const waitTime = 0.5; // sec
       waitInAudioTime({waitTime, audioContext, startTime});
-      await sleep(1); // msec. For some reason, must sleep something
+      await sleep(1) /* msec */; // for some reason, must sleep something
       actual.during = isAnySound();
 
       const expected = {
@@ -244,7 +244,7 @@ test('Player component', nestOuter => {
 
       const waitTime = 1; // sec
       waitInAudioTime({waitTime, audioContext, startTime});
-      await sleep(1); // msec. For some reason, must sleep something
+      await sleep(1) /* msec */; // for some reason, must sleep something
 
       simulate.click(getStopButton({domNode}));
     };

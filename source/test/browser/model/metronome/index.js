@@ -1,8 +1,19 @@
 import test from 'tape-async';
 import sleep from 'sleep-promise';
 import 'babel-polyfill'; // http://stackoverflow.com/questions/28976748/regeneratorruntime-is-not-defined
+import {last} from 'lodash';
 
-import {play} from '../../../../models/metronome';
+import {
+  calc_ticks,
+  play, // todo
+  playTicks
+} from '../../../../models/metronome';
+import {
+  isTick_Rh,
+  isTick_Lh,
+  isTick_RhLh,
+  isTick_Background
+} from '../../../../models/tick';
 import {initializedAudioContext} from '../../../../models/audio';
 import {TICK_DURATION_RH_LH} from '../../../../constants/audio';
 import {
@@ -16,7 +27,7 @@ const audioContext = initializedAudioContext();
 
 test('Metronome model', nestOuter => {
   nestOuter.test('...onEnded should work for all 4 tick types', nestInner => {
-    nestInner.test('......last tick isRH only', async(assert) => {
+    nestInner.test('......last tick isRh only', async(assert) => {
       audioTestStart();
       const msg = 'Should increment by 1';
 
@@ -26,26 +37,29 @@ test('Metronome model', nestOuter => {
       let value = 0;
       const onEnded = () => value++;
 
+      const ticks = calc_ticks({beat, metronomeSetting, onEnded});
       const startTime = audioContext.currentTime; // approx
-      play({beat, metronomeSetting, onEnded});
+      playTicks({ticks});
 
-      const waitTime = 0.3 /* sec */; // Tick sound itself is very short, and last one ends just after 1/4 sec
+      const waitTime = 0.4 /* sec */; // Tick sound itself is very short, and last one ends just after 1/4 sec
       waitInAudioTime({waitTime, audioContext, startTime});
-      await sleep(1); // msec. For some reason, must sleep something
-/* todo
+      await sleep(1) /* msec */; // for some reason, must sleep something
+
       const expected = {
-        tickType:
+        typeMatch: true,
         value: 1
       };
-      */
-      const expected = 1;
-      const actual = value;
+
+      const actual = {
+        typeMatch: isTick_Rh(last(ticks)),
+        value
+      };
 
       assert.deepEqual(actual, expected, msg);
       assert.end();
       audioTestEnd();
     });
-    nestInner.test('......last tick isLH only', async(assert) => {
+    nestInner.test('......last tick isLh only', async(assert) => {
       audioTestStart();
       const msg = 'Should increment by 1';
 
@@ -55,21 +69,29 @@ test('Metronome model', nestOuter => {
       let value = 0;
       const onEnded = () => value++;
 
+      const ticks = calc_ticks({beat, metronomeSetting, onEnded});
       const startTime = audioContext.currentTime; // approx
-      play({beat, metronomeSetting, onEnded});
+      playTicks({ticks});
 
-      const waitTime = 0.3 /* sec */; // Tick sound itself is very short, and last one ends just after 1/4 sec
+      const waitTime = 0.4 /* sec */; // Tick sound itself is very short, and last one ends just after 1/4 sec
       waitInAudioTime({waitTime, audioContext, startTime});
-      await sleep(1); // msec. For some reason, must sleep something
+      await sleep(1) /* msec */; // for some reason, must sleep something
 
-      const expected = 1;
-      const actual = value;
+      const expected = {
+        typeMatch: true,
+        value: 1
+      };
 
-      assert.equal(actual, expected, msg);
+      const actual = {
+        typeMatch: isTick_Lh(last(ticks)),
+        value
+      };
+
+      assert.deepEqual(actual, expected, msg);
       assert.end();
       audioTestEnd();
     });
-    nestInner.test('......last tick isRH and isLH', async(assert) => {
+    nestInner.test('......last tick isRh and isLh', async(assert) => {
       audioTestStart();
       const msg = 'Should increment by 1';
 
@@ -79,17 +101,25 @@ test('Metronome model', nestOuter => {
       let value = 0;
       const onEnded = () => value++;
 
+      const ticks = calc_ticks({beat, metronomeSetting, onEnded});
       const startTime = audioContext.currentTime; // approx
-      play({beat, metronomeSetting, onEnded});
+      playTicks({ticks});
 
-      const waitTime = 0.3 /* sec */; // Tick sound itself is very short, and last one ends just after 1/4 sec
+      const waitTime = 0.4 /* sec */; // Tick sound itself is very short, and last one ends just after 1/4 sec
       waitInAudioTime({waitTime, audioContext, startTime});
-      await sleep(1); // msec. For some reason, must sleep something
+      await sleep(1) /* msec */; // for some reason, must sleep something
 
-      const expected = 1;
-      const actual = value;
+      const expected = {
+        typeMatch: true,
+        value: 1
+      };
 
-      assert.equal(actual, expected, msg);
+      const actual = {
+        typeMatch: isTick_RhLh(last(ticks)),
+        value
+      };
+
+      assert.deepEqual(actual, expected, msg);
       assert.end();
       audioTestEnd();
     });
@@ -103,22 +133,30 @@ test('Metronome model', nestOuter => {
       let value = 0;
       const onEnded = () => value++;
 
+      const ticks = calc_ticks({beat, metronomeSetting, onEnded});
       const startTime = audioContext.currentTime; // approx
-      play({beat, metronomeSetting, onEnded});
+      playTicks({ticks});
 
-      const waitTime = 2.6 /* sec */; // Tick sound itself is very short, and last one ends just after 2.5 sec
+      const waitTime = 2.8 /* sec */; // Tick sound itself is very short, and last one ends just after 2.5 sec
       waitInAudioTime({waitTime, audioContext, startTime});
-      await sleep(1); // msec. For some reason, must sleep something
+      await sleep(1) /* msec */; // for some reason, must sleep something
 
-      const expected = 1;
-      const actual = value;
+      const expected = {
+        typeMatch: true,
+        value: 1
+      };
 
-      assert.equal(actual, expected, msg);
+      const actual = {
+        typeMatch: isTick_Background(last(ticks)),
+        value
+      };
+
+      assert.deepEqual(actual, expected, msg);
       assert.end();
       audioTestEnd();
     });
   });
-  nestOuter.test('...OnEnded should only be called when last tick has ended', nestInner => {
+  nestOuter.test('...onEnded should only be called when last tick has ended', nestInner => {
     const delta_ms = 400; // leave room
     const TICK_DURATION_RH_LH_ms = TICK_DURATION_RH_LH * 1000; // The only ticks to be used here are RH_LH
     const waitOffset_ms = TICK_DURATION_RH_LH_ms + delta_ms;
