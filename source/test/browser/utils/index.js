@@ -58,13 +58,13 @@ const audioTest = ({audioContext, oscillator}) => {
     return true;
   };
 //todo refactor: embeddedAudioTest keysDo...
-  if (test = embeddedAudioTest.audioTestPlayButtonStartsAudio) return doIt(test, {audioContext, oscillator});
-  if (test = embeddedAudioTest.audioTestStopButtonStopsAudio) return doIt(test, {audioContext, oscillator});
-  if (test = embeddedAudioTest.audioTestPlayButtonDisabledDuringPlay) return doIt(test, {audioContext, oscillator});
-  if (test = embeddedAudioTest.audioTestPlayButtonEnabledAfterPlay) return doIt(test, {audioContext, oscillator});
-  if (test = embeddedAudioTest.audioTestStopButtonEnabledDuringPlay) return doIt(test, {audioContext, oscillator});
-  if (test = embeddedAudioTest.audioTestStopButtonDisabledAfterPlay) return doIt(test, {audioContext, oscillator});
-  if (test = embeddedAudioTest.audioTestPlayButtonReEnableMidPlay) return doIt(test, {audioContext, oscillator});
+  if (test = embeddedAudioTest.playButtonStartsAudio) return doIt(test, {audioContext, oscillator});
+  if (test = embeddedAudioTest.stopButtonStopsAudio) return doIt(test, {audioContext, oscillator});
+  if (test = embeddedAudioTest.playButtonDisabledDuringPlay) return doIt(test, {audioContext, oscillator});
+  if (test = embeddedAudioTest.playButtonEnabledAfterPlay) return doIt(test, {audioContext, oscillator});
+  if (test = embeddedAudioTest.stopButtonEnabledDuringPlay) return doIt(test, {audioContext, oscillator});
+  if (test = embeddedAudioTest.stopButtonDisabledAfterPlay) return doIt(test, {audioContext, oscillator});
+  if (test = embeddedAudioTest.playButtonReenableMidplay) return doIt(test, {audioContext, oscillator});
 
   return false
 };
