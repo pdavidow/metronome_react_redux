@@ -39,11 +39,42 @@ const getDomNode = ({
   return reactDom.findDOMNode(renderedComp);
 };
 
-  const getElementBySelector = ({domNode, selector}) => domNode.querySelector(selector);
+const getElementBySelector = ({domNode, selector}) => domNode.querySelector(selector);
+
+const waitInAudioTime = ({waitTime, audioContext, startTime}) => {
+  // all times in seconds
+  while ((audioContext.currentTime - startTime) < waitTime) {/* do nothing */};
+};
+
+const embeddedAudioTest = {};
+
+const audioTest = ({audioContext, oscillator}) => {
+  // if (production) return false; // todo
+
+  let test;
+
+  const doIt = (myTest, {audioContext, oscillator}) => {
+    myTest({audioContext, oscillator});
+    return true;
+  };
+//todo refactor: embeddedAudioTest keysDo...
+  if (test = embeddedAudioTest.audioTestPlayButtonStartsAudio) return doIt(test, {audioContext, oscillator});
+  if (test = embeddedAudioTest.audioTestStopButtonStopsAudio) return doIt(test, {audioContext, oscillator});
+  if (test = embeddedAudioTest.audioTestPlayButtonDisabledDuringPlay) return doIt(test, {audioContext, oscillator});
+  if (test = embeddedAudioTest.audioTestPlayButtonEnabledAfterPlay) return doIt(test, {audioContext, oscillator});
+  if (test = embeddedAudioTest.audioTestStopButtonEnabledDuringPlay) return doIt(test, {audioContext, oscillator});
+  if (test = embeddedAudioTest.audioTestStopButtonDisabledAfterPlay) return doIt(test, {audioContext, oscillator});
+  if (test = embeddedAudioTest.audioTestPlayButtonReEnableMidPlay) return doIt(test, {audioContext, oscillator});
+
+  return false
+};
 
 export {
   getDomNode,
   getElementBySelector,
   defaultStore,
-  setStore
+  setStore,
+  waitInAudioTime,
+  embeddedAudioTest,
+  audioTest
 };

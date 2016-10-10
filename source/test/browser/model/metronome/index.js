@@ -12,7 +12,7 @@ import {
 ////////////////////////////////////
 
 initializeAudio();
-
+// todo redo all
 test('Metronome model', nestOuter => {
   nestOuter.test('...onEnded should work for all 4 tick types', nestInner => {
     nestInner.test('......last tick isRH only', async(assert) => {
@@ -146,5 +146,25 @@ test('Metronome model', nestOuter => {
       assert.end();
       audioTestEnd();
     });
+  });
+  nestOuter.test('...onEnded should signal actual end of the beat itself, not necessarily the end of the last sound in the beat', async(assert) => {
+    audioTestStart();
+    const msg = 'Should not increment value until 2 seconds';
+
+    // 1 tick, at 2 seconds per tick
+    const beat = {rh: 1, lh: 1};
+    const metronomeSetting = {classicTicksPerMinute: 30, classicTicksPerBeat: 1};
+
+    let value = 0;
+    const onEnded = () => value++;
+    play({beat, metronomeSetting, onEnded});
+    await sleep(1000);
+
+    const expected = 0;
+    const actual = await Promise.resolve(value);
+
+    //assert.equal(actual, expected, msg);
+    assert.end();
+    audioTestEnd();
   });
 });

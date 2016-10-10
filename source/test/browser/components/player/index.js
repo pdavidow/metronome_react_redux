@@ -8,12 +8,13 @@ import {
   getDomNode,
   getElementBySelector,
   setStore,
-  defaultStore
+  defaultStore,
+  waitInAudioTime,
+  embeddedAudioTest
 } from '../../utils';
 import {
   audioTestStart,
   audioTestEnd,
-  embeddedAudioTest
 } from '../../../../models/audio/destination';
 import {setIsLooping} from '../../../../actions'; // todo
 ////////////////////////////////////
@@ -30,12 +31,7 @@ test('Player component', nestOuter => {
       audioTestStart();
       const msg = 'Should be enabled';
 
-      const store = setStore({
-        // 4 ticks spaced half-second apart, for a total of 2 seconds of play
-        beat: {rh: 4, lh: 1},
-        metronomeSetting: {classicTicksPerMinute: 120, classicTicksPerBeat: 4}
-      });
-      const domNode = getDomNode({store});
+      const domNode = getDomNode();
 
       const actual = getPlayButton({domNode}).hasAttribute('disabled');
       const expected = false;
@@ -44,47 +40,56 @@ test('Player component', nestOuter => {
       assert.end();
       audioTestEnd();
     });
-    nestInner.test('......Play button should be disabled during play', async(assert) => {
-      audioTestStart();
+    nestInner.test('......Play button should be disabled during play', (assert) => {
       const msg = 'Should be disabled';
 
-      const store = setStore({
-        // 4 ticks spaced half-second apart, for a total of 2 seconds of play
-        beat: {rh: 4, lh: 1},
-        metronomeSetting: {classicTicksPerMinute: 120, classicTicksPerBeat: 4}
-      });
+      const store = setStore({beat: {rh: 1, lh: 1}}); // just 1 tick
       const domNode = getDomNode({store});
 
+      embeddedAudioTest.audioTestPlayButtonDisabledDuringPlay = async({audioContext, oscillator}) => {
+        embeddedAudioTest.audioTestPlayButtonDisabledDuringPlay = null;
+
+        const startTime = audioContext.currentTime;
+        oscillator.start(startTime);
+        oscillator.stop(startTime + 0.5); // sec
+
+        const waitTime = 0.1; // sec
+        waitInAudioTime({waitTime, audioContext, startTime});
+        await sleep(1); // msec. For some reason, must sleep something
+
+        const actual = getPlayButton({domNode}).hasAttribute('disabled');
+        const expected = true;
+
+        assert.equal(actual, expected, msg);
+        assert.end();
+      };
       simulate.click(getPlayButton({domNode}));
-
-      await sleep(500);
-      const actual = await Promise.resolve({then: (onFulfill) => onFulfill(getPlayButton({domNode}).hasAttribute('disabled'))});
-      const expected = true;
-
-      assert.equal(actual, expected, msg);
-      assert.end();
-      audioTestEnd();
     });
-    nestInner.test('......Play button should be enabled after play', async(assert) => {
-      audioTestStart();
+    nestInner.test('......Play button should be enabled after play', (assert) => {
       const msg = 'Should be enabled';
 
-      const store = setStore({
-        // 4 ticks spaced half-second apart, for a total of 2 seconds of play
-        beat: {rh: 4, lh: 1},
-        metronomeSetting: {classicTicksPerMinute: 120, classicTicksPerBeat: 4}
-      });
+      const store = setStore({beat: {rh: 1, lh: 1}}); // just 1 tick
       const domNode = getDomNode({store});
 
+      embeddedAudioTest.audioTestPlayButtonEnabledAfterPlay = async({audioContext, oscillator}) => {
+        embeddedAudioTest.audioTestPlayButtonEnabledAfterPlay = null;
+
+        oscillator.connect(audioContext.createAnalyser());
+        const startTime = audioContext.currentTime;
+        oscillator.start(startTime);
+        oscillator.stop(startTime + 0.5); // sec
+
+        const waitTime = 0.6; // sec
+        waitInAudioTime({waitTime, audioContext, startTime});
+        await sleep(1); // msec. For some reason, must sleep something
+
+        const actual = getPlayButton({domNode}).hasAttribute('disabled');
+        const expected = false;
+
+        assert.equal(actual, expected, msg);
+        assert.end();
+      };
       simulate.click(getPlayButton({domNode}));
-
-      await sleep(2500);
-      const actual = await Promise.resolve({then: (onFulfill) => onFulfill(getPlayButton({domNode}).hasAttribute('disabled'))});
-      const expected = false;
-
-      assert.equal(actual, expected, msg);
-      assert.end();
-      audioTestEnd();
     });
   });
   nestOuter.test('...Stop button should enable during play', nestInner => {
@@ -92,12 +97,7 @@ test('Player component', nestOuter => {
       audioTestStart();
       const msg = 'Should be disabled';
 
-      const store = setStore({
-        // 4 ticks spaced half-second apart, for a total of 2 seconds of play
-        beat: {rh: 4, lh: 1},
-        metronomeSetting: {classicTicksPerMinute: 120, classicTicksPerBeat: 4}
-      });
-      const domNode = getDomNode({store});
+      const domNode = getDomNode();
 
       const actual = getStopButton({domNode}).hasAttribute('disabled');
       const expected = true;
@@ -106,115 +106,95 @@ test('Player component', nestOuter => {
       assert.end();
       audioTestEnd();
     });
-    nestInner.test('......Stop button should be enabled during play', async(assert) => {
-      audioTestStart();
+    nestInner.test('......Stop button should be enabled during play', (assert) => {
       const msg = 'Should be enabled';
 
-      const store = setStore({
-        // 4 ticks spaced half-second apart, for a total of 2 seconds of play
-        beat: {rh: 4, lh: 1},
-        metronomeSetting: {classicTicksPerMinute: 120, classicTicksPerBeat: 4}
-      });
+      const store = setStore({beat: {rh: 1, lh: 1}}); // just 1 tick
       const domNode = getDomNode({store});
 
+      embeddedAudioTest.audioTestStopButtonEnabledDuringPlay = async({audioContext, oscillator}) => {
+        embeddedAudioTest.audioTestStopButtonEnabledDuringPlay = null;
+
+        const startTime = audioContext.currentTime;
+        oscillator.start(startTime);
+        oscillator.stop(startTime + 0.5); // sec
+
+        const waitTime = 0.1; // sec
+        waitInAudioTime({waitTime, audioContext, startTime});
+        await sleep(1); // msec. For some reason, must sleep something
+
+        const actual = getStopButton({domNode}).hasAttribute('disabled');
+        const expected = false;
+
+        assert.equal(actual, expected, msg);
+        assert.end();
+      };
       simulate.click(getPlayButton({domNode}));
-
-      await sleep(500);
-      const actual = await Promise.resolve({then: (onFulfill) => onFulfill(getStopButton({domNode}).hasAttribute('disabled'))});
-      const expected = false;
-
-      assert.equal(actual, expected, msg);
-      assert.end();
-      audioTestEnd();
     });
-    nestInner.test('......Stop button should be disabled after play', async(assert) => {
-      audioTestStart();
+    nestInner.test('......Stop button should be disabled after play', (assert) => {
       const msg = 'Should be disabled';
 
-      const store = setStore({
-        // 4 ticks spaced half-second apart, for a total of 2 seconds of play
-        beat: {rh: 4, lh: 1},
-        metronomeSetting: {classicTicksPerMinute: 120, classicTicksPerBeat: 4}
-      });
+      const store = setStore({beat: {rh: 1, lh: 1}}); // just 1 tick
       const domNode = getDomNode({store});
 
+      embeddedAudioTest.audioTestStopButtonDisabledAfterPlay = async({audioContext, oscillator}) => {
+        embeddedAudioTest.audioTestStopButtonDisabledAfterPlay = null;
+
+        oscillator.connect(audioContext.createAnalyser());
+        const startTime = audioContext.currentTime;
+        oscillator.start(startTime);
+        oscillator.stop(startTime + 0.5); // sec
+
+        const waitTime = 0.6; // sec
+        waitInAudioTime({waitTime, audioContext, startTime});
+        await sleep(1); // msec. For some reason, must sleep something
+
+        const actual = getStopButton({domNode}).hasAttribute('disabled');
+        const expected = true;
+
+        assert.equal(actual, expected, msg);
+        assert.end();
+      };
       simulate.click(getPlayButton({domNode}));
-
-      await sleep(2500);
-      const actual = await Promise.resolve({then: (onFulfill) => onFulfill(getStopButton({domNode}).hasAttribute('disabled'))});
-      const expected = true;
-
-      assert.equal(actual, expected, msg);
-      assert.end();
-      audioTestEnd();
     });
   });
-  /* // todo
-  nestOuter.test('......Should set isLooping true upon checking loop', nestInner => {
-    nestInner.test('......Should be unchecked by default', assert => {
-      audioTestStart();
-      const msg = 'Should be unchecked';
+  nestOuter.test('...Play button should re-enable if Stop button clicked mid-play', async(assert) => {
+    const msg = 'Should be enabled';
 
-      const domNode = getDomNode();
+    const store = setStore({beat: {rh: 1, lh: 1}}); // just 1 tick
+    const domNode = getDomNode({store});
 
-      const actual = getLoopCheckbox({domNode}).hasAttribute('checked');
+    embeddedAudioTest.audioTestPlayButtonReEnableMidPlay = async({audioContext, oscillator}) => {
+      embeddedAudioTest.audioTestPlayButtonReEnableMidPlay = null;
+
+      const startTime = audioContext.currentTime;
+      oscillator.start(startTime);
+      oscillator.stop(startTime + 2); // sec
+
+      const waitTime = 0.5; // sec
+      waitInAudioTime({waitTime, audioContext, startTime});
+      await sleep(1); // msec. For some reason, must sleep something
+
+      simulate.click(getStopButton({domNode}));
+
+      const actual = getPlayButton({domNode}).hasAttribute('disabled');
       const expected = false;
 
       assert.equal(actual, expected, msg);
       assert.end();
-      audioTestEnd();
-    });
-    nestInner.test('......Should be checked because state so dictates', assert => {
-      audioTestStart();
-      const msg = 'Should be checked';
-
-      const store = defaultStore();
-      store.dispatch(setIsLooping({isLooping: true}));
-      const domNode = getDomNode({store});
-
-      const actual = getLoopCheckbox({domNode}).hasAttribute('checked');
-      console.log("getLoopCheckbox({domNode})",getLoopCheckbox({domNode}));
-      const expected = true;
-
-      assert.equal(actual, expected, msg);
-      assert.end();
-      audioTestEnd();
-    });
-  });
-  */
-});
-
-const isolate = async() => {
-  const test0 = test('...Play button should re-enable if Stop button clicked mid-play', async(assert) => {
-    audioTestStart();
-    const msg = 'Should be enabled';
-
-    const store = setStore({
-      // 4 ticks spaced half-second apart, for a total of 2 seconds of play
-      beat: {rh: 4, lh: 1},
-      metronomeSetting: {classicTicksPerMinute: 120, classicTicksPerBeat: 4}
-    });
-    const domNode = getDomNode({store});
-
+    };
     simulate.click(getPlayButton({domNode}));
-
-    await sleep(500);
-    await Promise.resolve({then: (onFulfill) => onFulfill(simulate.click(getStopButton({domNode})))});
-    const actual = getPlayButton({domNode}).hasAttribute('disabled');
-    const expected = false;
-
-    assert.equal(actual, expected, msg);
-    assert.end();
-    audioTestEnd();
   });
-  const test1 = test('...Play button should actually start audio', async(assert) => {
-    const msg = 'Should show non-zero analyzer data after start play, but not prior';
+  nestOuter.test('...Play button should actually start audio', async(assert) => {
+    const msg = 'Should show non-zero analyzer data during play, but not prior';
 
     const actual = {};
-    const domNode = getDomNode();
 
-    embeddedAudioTest.audioTestPlay = async({audioContext, oscillator}) => {
-      embeddedAudioTest.audioTestPlay = null; // do this here (ASAP) to avoid confusing non-asynch code
+    const store = setStore({beat: {rh: 1, lh: 1}}); // just 1 tick
+    const domNode = getDomNode({store});
+
+    embeddedAudioTest.audioTestPlayButtonStartsAudio = async({audioContext, oscillator}) => {
+      embeddedAudioTest.audioTestPlayButtonStartsAudio = null;
 
       const startTime = audioContext.currentTime;
 
@@ -230,70 +210,57 @@ const isolate = async() => {
       };
 
       oscillator.connect(analyser);
-      actual.before = isAnySound();
+      actual.prior = isAnySound();
       oscillator.start(startTime);
-      oscillator.stop(startTime + 1);
+      oscillator.stop(startTime + 1); // sec
 
-      await sleep(500);
-      actual.after = await Promise.resolve({then: (onFulfill) => onFulfill(isAnySound())});
+      const waitTime = 0.5; // sec
+      waitInAudioTime({waitTime, audioContext, startTime});
+      await sleep(1); // msec. For some reason, must sleep something
+      actual.during = isAnySound();
+
+      const expected = {
+        prior: false,
+        during: true
+      };
+
+      assert.deepEqual(actual, expected, msg);
+      assert.end();
     };
-
     simulate.click(getPlayButton({domNode}));
-
-    const expected = {
-      before: false,
-      after: true
-    };
-
-    await sleep(1000);
-    await Promise.resolve({then: (onFulfill) => onFulfill(assert.deepEqual(actual, expected, msg))});
-
-    assert.end();
   });
-  const test2 = test('...Stop button should actually stop audio', async(assert) => {
+  nestOuter.test('...Stop button should actually stop audio', (assert) => {
     const msg = 'currentTime when onended should be 1 second later than startTime';
 
-    // Testing for absence of sound after playing is very unreliable, so take different approach
+    const store = setStore({beat: {rh: 1, lh: 1}}); // just 1 tick
+    const domNode = getDomNode({store});
 
-    const domNode = getDomNode();
-    let startTime, endTime;
-
-    embeddedAudioTest.audioTestStop = async({audioContext, oscillator}) => {
-      embeddedAudioTest.audioTestStop = null; // do this here (ASAP) to avoid confusing non-asynch code
+    embeddedAudioTest.audioTestStopButtonStopsAudio = async({audioContext, oscillator}) => {
+      embeddedAudioTest.audioTestStopButtonStopsAudio = null;
 
       const analyser = audioContext.createAnalyser();
-      oscillator.onended = () => endTime = audioContext.currentTime;
+      oscillator.onended = () => {
+        const endTime = audioContext.currentTime;
+        const delta = endTime - startTime;
+        const actual = (delta >= 1) && (delta <= 1.1);
+        const expected = true;
+        assert.equal(actual, expected, msg);
+        assert.end();
+      };
       oscillator.connect(analyser);
 
-      startTime = audioContext.currentTime;
+      const startTime = audioContext.currentTime;
       oscillator.start(startTime);
-      oscillator.stop(startTime + 2);
+      oscillator.stop(startTime + 3); // sec
 
-      await sleep(1000);
-      await Promise.resolve({then: (onFulfill) => onFulfill(simulate.click(getStopButton({domNode})))});
+      const waitTime = 1; // sec
+      waitInAudioTime({waitTime, audioContext, startTime});
+      await sleep(1); // msec. For some reason, must sleep something
 
+      simulate.click(getStopButton({domNode}));
     };
-
     simulate.click(getPlayButton({domNode}));
-
-    const handleFulfill = () => {
-      const expected = true;
-      const actual = endTime ? ((endTime - startTime) < 1.5) : false;
-      assert.equal(actual, expected, msg);
-    };
-
-    await sleep(1500);
-    await Promise.resolve({then: (onFulfill) => onFulfill(handleFulfill())});
-
-    assert.end();
   });
+});
 
-  test0();
 
-  await sleep(1000);
-  await Promise.resolve({then: (onFulfill) => onFulfill(test1())});
-
-  await sleep(2500);
-  await Promise.resolve({then: (onFulfill) => onFulfill(test2())});
-};
-isolate();

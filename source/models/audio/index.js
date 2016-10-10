@@ -16,10 +16,9 @@ import {
   isTick_Background
 } from '../tick';
 
-import {
-  getDestination,
-  embeddedAudioTest
-} from './destination';
+import {getDestination} from './destination'; // todo ...
+
+import {audioTest} from '../../test/browser/utils';
 ////////////////////////////////////
 
 let audioContext;
@@ -76,15 +75,14 @@ const playTick_Background = ({startOffset, onEnded}) => {
 
 const playOscillator = ({oscillator, startOffset = 0, duration = 1, onEnded}) => {
   oscillators.push(oscillator);
+  if (onEnded != undefined) oscillator.onended = onEnded;
 
-  if (embeddedAudioTest.audioTestPlay) return embeddedAudioTest.audioTestPlay({audioContext, oscillator}); // todo somehow remove in production
-  if (embeddedAudioTest.audioTestStop) return embeddedAudioTest.audioTestStop({audioContext, oscillator}); // todo somehow remove in production
+  if (audioTest({audioContext, oscillator})) return; //////////////////////////
 
   const startTime = audioContext.currentTime + startOffset;
-  const destination = getDestination({audioContext});
+  const destination = getDestination({audioContext}); // todo still needed?
 
   oscillator.connect(destination);
-  if (onEnded != undefined) oscillator.onended = onEnded;
   oscillator.start(startTime);
   oscillator.stop(startTime + duration);
 };

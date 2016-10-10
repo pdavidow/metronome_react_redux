@@ -1,3 +1,5 @@
+// todo still needed?
+
 let isTesting = false;
 
 const audioTestStart = () => isTesting = true;
@@ -9,11 +11,8 @@ const testDestination = ({audioContext}) => audioContext.createAnalyser();
 const getDestination = ({audioContext}) => isTesting ?
   testDestination({audioContext}) : normalDestination({audioContext});
 
-const embeddedAudioTest = {};
-
 export {
   audioTestStart,
   audioTestEnd,
-  getDestination,
-  embeddedAudioTest
+  getDestination
 };
