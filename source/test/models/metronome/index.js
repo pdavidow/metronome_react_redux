@@ -396,6 +396,12 @@ test('Metronome model', nestOuter => {
           isRH: false,
           isLH: false,
           startOffset: 11 * tickDuration
+        },
+        { duration: 1,
+          isLH: false,
+          isRH: false,
+          isSpacer: true,
+          startOffset: 11 * tickDuration
         }
       ];
 
@@ -530,6 +536,13 @@ test('Metronome model', nestOuter => {
           isRH: false,
           isLH: false,
           startOffset: 23 * tickDuration
+        },
+        {
+          duration: 2,
+          isLH: false,
+          isRH: false,
+          isSpacer: true,
+          startOffset: 23 * tickDuration
         }
       ];
       assert.deepEqual(actual, expected, msg);
@@ -590,6 +603,13 @@ test('Metronome model', nestOuter => {
       {
         isRH: true,
         isLH: true,
+        startOffset: 0
+      },
+      {
+        duration: 1,
+        isLH: true,
+        isRH: true,
+        isSpacer: true,
         startOffset: 0
       }
     ];

@@ -87,7 +87,10 @@ const calc_ticks = ({
   };
 
   const ticks =  tickStartTimeOffsets.map(tick);
-  if (onEnded != undefined) last(ticks).onEnded = onEnded;
+
+  let spacerTick = {...last(ticks), isSpacer: true, duration: calc_tickDuration({beat, metronomeSetting})};
+  if (onEnded != undefined) spacerTick.onEnded = onEnded;
+  ticks.push(spacerTick);
 
   return ticks;
 };

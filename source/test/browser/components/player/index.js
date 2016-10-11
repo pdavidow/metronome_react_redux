@@ -34,7 +34,7 @@ test('Player component', nestOuter => {
     nestInner.test('......Play button should be disabled during play', (assert) => {
       const msg = 'Should be disabled';
 
-      const store = setStore({beat: {rh: 1, lh: 1}}); // just 1 tick
+      const store = setStore({beat: {rh: 1, lh: 1}});
       const domNode = getDomNode({store});
 
       embeddedAudioTest.playButtonDisabledDuringPlay = async({audioContext, oscillator}) => {
@@ -59,10 +59,11 @@ test('Player component', nestOuter => {
     nestInner.test('......Play button should be enabled after play', (assert) => {
       const msg = 'Should be enabled';
 
-      const store = setStore({beat: {rh: 1, lh: 1}}); // just 1 tick
+      const store = setStore({beat: {rh: 1, lh: 1}});
       const domNode = getDomNode({store});
 
       embeddedAudioTest.playButtonEnabledAfterPlay = async({audioContext, oscillator}) => {
+        if (oscillator.onended == undefined) return; // want the spacer
         embeddedAudioTest.playButtonEnabledAfterPlay = null;
 
         oscillator.connect(audioContext.createAnalyser());
@@ -98,7 +99,7 @@ test('Player component', nestOuter => {
     nestInner.test('......Stop button should be enabled during play', (assert) => {
       const msg = 'Should be enabled';
 
-      const store = setStore({beat: {rh: 1, lh: 1}}); // just 1 tick
+      const store = setStore({beat: {rh: 1, lh: 1}});
       const domNode = getDomNode({store});
 
       embeddedAudioTest.stopButtonEnabledDuringPlay = async({audioContext, oscillator}) => {
@@ -123,10 +124,11 @@ test('Player component', nestOuter => {
     nestInner.test('......Stop button should be disabled after play', (assert) => {
       const msg = 'Should be disabled';
 
-      const store = setStore({beat: {rh: 1, lh: 1}}); // just 1 tick
+      const store = setStore({beat: {rh: 1, lh: 1}});
       const domNode = getDomNode({store});
 
       embeddedAudioTest.stopButtonDisabledAfterPlay = async({audioContext, oscillator}) => {
+        if (oscillator.onended == undefined) return; // want the spacer
         embeddedAudioTest.stopButtonDisabledAfterPlay = null;
 
         oscillator.connect(audioContext.createAnalyser());
@@ -249,6 +251,7 @@ test('Player component', nestOuter => {
     };
     simulate.click(getPlayButton({domNode}));
   });
+  // todo delete
   // nestOuter.test('...Stop button should actually stop audio', (assert) => {
   //   const msg = 'Should show non-zero analyzer data during play, but not after stopped';
   //

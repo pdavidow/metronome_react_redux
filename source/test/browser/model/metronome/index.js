@@ -40,7 +40,7 @@ test('Metronome model', nestOuter => {
       const startTime = audioContext.currentTime; // approx
       playTicks({ticks});
 
-      const waitTime = 0.4 /* sec */; // Tick sound itself is very short ~ 50 msec
+      const waitTime = 0.6 ; // sec
       waitInAudioTime({waitTime, audioContext, startTime});
       await sleep(1) /* msec */; // for some reason, must sleep something
 
@@ -72,7 +72,7 @@ test('Metronome model', nestOuter => {
       const startTime = audioContext.currentTime; // approx
       playTicks({ticks});
 
-      const waitTime = 0.4 /* sec */; // Tick sound itself is very short ~ 50 msec
+      const waitTime = 0.6 ; // sec
       waitInAudioTime({waitTime, audioContext, startTime});
       await sleep(1) /* msec */; // for some reason, must sleep something
 
@@ -104,7 +104,7 @@ test('Metronome model', nestOuter => {
       const startTime = audioContext.currentTime; // approx
       playTicks({ticks});
 
-      const waitTime = 0.4 /* sec */; // Tick sound itself is very short ~ 50 msec
+      const waitTime = 0.6 ; // sec
       waitInAudioTime({waitTime, audioContext, startTime});
       await sleep(1) /* msec */; // for some reason, must sleep something
 
@@ -136,7 +136,7 @@ test('Metronome model', nestOuter => {
       const startTime = audioContext.currentTime; // approx
       playTicks({ticks});
 
-      const waitTime = 2.8 /* sec */; // Tick sound itself is very short ~ 50 msec
+      const waitTime = 3.2 ; // sec
       waitInAudioTime({waitTime, audioContext, startTime});
       await sleep(1) /* msec */; // for some reason, must sleep something
 
@@ -169,7 +169,7 @@ test('Metronome model', nestOuter => {
       const startTime = audioContext.currentTime; // approx
       play({beat, metronomeSetting, onEnded});
 
-      const waitTime = 0.2 /* sec */; // Tick sound itself is very short ~ 50 msec
+      const waitTime = 0.2 ; // sec
       waitInAudioTime({waitTime, audioContext, startTime});
       await sleep(1) /* msec */; // for some reason, must sleep something
 
@@ -193,7 +193,7 @@ test('Metronome model', nestOuter => {
       const startTime = audioContext.currentTime; // approx
       play({beat, metronomeSetting, onEnded});
 
-      const waitTime = 0.7 /* sec */; // Tick sound itself is very short ~ 50 msec
+      const waitTime = 0.7 ; // sec
       waitInAudioTime({waitTime, audioContext, startTime});
       await sleep(1) /* msec */; // for some reason, must sleep something
 
@@ -217,7 +217,7 @@ test('Metronome model', nestOuter => {
       const startTime = audioContext.currentTime; // approx
       play({beat, metronomeSetting, onEnded});
 
-      const waitTime = 1.2 /* sec */; // Tick sound itself is very short ~ 50 msec
+      const waitTime = 1.7 ; // sec
       waitInAudioTime({waitTime, audioContext, startTime});
       await sleep(1) /* msec */; // for some reason, must sleep something
 
@@ -229,38 +229,31 @@ test('Metronome model', nestOuter => {
       audioTestEnd();
     });
   });
-  nestOuter.test('...onEnded should signal actual end of the beat itself, not necessarily the end of the last sound in the beat', async(assert) => {
-    audioTestStart();
-    const msg = 'Should not increment value until 2 seconds';
+  nestOuter.test('...onEnded should signal actual end of the beat itself, not necessarily the end of the last sound in the beat', (nestInner) => {
+    nestInner.test('......Should yes increment value if beat is finished', async(assert) => {
+      audioTestStart();
+      const msg = 'Should increment value at 2 seconds';
 
-    const expected = {};
-    const actual = {};
+      // 1 tick, at 2 seconds per tick
+      const beat = {rh: 1, lh: 1};
+      const metronomeSetting = {classicTicksPerMinute: 30, classicTicksPerBeat: 1};
 
-    // 1 tick, at 2 seconds per tick
-    const beat = {rh: 1, lh: 1};
-    const metronomeSetting = {classicTicksPerMinute: 30, classicTicksPerBeat: 1};
+      let value = 0;
+      const onEnded = () => value++;
 
-    let value = 0;
-    const onEnded = () => value++;
-    const startTime = audioContext.currentTime; // approx
-    play({beat, metronomeSetting, onEnded});
+      const startTime = audioContext.currentTime;
+      play({beat, metronomeSetting, onEnded});
 
-    const waitTime = 0.3; // sec
-    waitInAudioTime({waitTime, audioContext, startTime});
-    await sleep(1) /* msec */; // for some reason, must sleep something
+      const waitTime = 2.2; // sec
+      waitInAudioTime({waitTime, audioContext, startTime});
+      await sleep(1) /* msec */; // for some reason, must sleep something
 
-    expected.during = 0;
-    actual.during = value;
+      const expected = true;
+      const actual = (value == 1);
 
-    const waitTime_more = 2; // sec
-    waitInAudioTime({waitTime_more, audioContext, startTime});
-    await sleep(1) /* msec */; // for some reason, must sleep something
-
-    expected.after = 1;
-    actual.after = value;
-
-    assert.deepEqual(actual, expected, msg);
-    assert.end();
-    audioTestEnd();
+      assert.equal(actual, expected, msg);
+      assert.end();
+      audioTestEnd();
+    });
   });
 });

@@ -21,8 +21,8 @@ const setStore = ({
   metronomeSetting
 }) => {
   const newStore = {...store};
-  newStore.dispatch(setBeat({...beat}));
-  newStore.dispatch(setMetronomeSetting({...metronomeSetting}));
+  if (beat != undefined) newStore.dispatch(setBeat({...beat}));
+  if (metronomeSetting != undefined) newStore.dispatch(setMetronomeSetting({...metronomeSetting}));
   return newStore;
 };
 

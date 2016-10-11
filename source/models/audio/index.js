@@ -3,6 +3,8 @@ import {
   AUDIO_FREQ_LH,
   AUDIO_FREQ_RH_LH,
   AUDIO_FREQ_BACKGROUND,
+  AUDIO_FREQ_SILENT,
+
   TICK_DURATION_RH,
   TICK_DURATION_LH,
   TICK_DURATION_RH_LH,
@@ -47,14 +49,20 @@ const playTicks = ({
 } = {}) => {
   oscillators = [];
   ticks.forEach((each) => {
-    const {startOffset, onEnded} = each;
+    const {startOffset, onEnded} = each; // todo no need, just pass each
+
+    if (each.isSpacer) return playTick_Spacer(each);
 
     if (isTick_Background(each)) return playTick_Background({startOffset, onEnded});
     if (isTick_Rh(each)) return playTick_Rh({startOffset, onEnded});
     if (isTick_Lh(each)) return playTick_Lh({startOffset, onEnded});
     if (isTick_RhLh(each)) return playTick_RhLh({startOffset, onEnded});
-    }
-  )
+  })
+};
+
+const playTick_Spacer = ({startOffset, onEnded, duration}) => {
+  const oscillator = oscillator_Spacer();
+  playOscillator({oscillator, startOffset, duration, onEnded});
 };
 
 const playTick_Rh = ({startOffset, onEnded}) => {
@@ -82,16 +90,20 @@ const playOscillator = ({oscillator, startOffset = 0, duration = 1, onEnded}) =>
   oscillators.push(oscillator);
   if (onEnded != undefined) oscillator.onended = onEnded;
 
-  if (audioTest({audioContext, oscillator})) return; //////////////////////////
+  if (audioTest({audioContext, oscillator})) return;
 
   const startTime = audioContext.currentTime + startOffset;
-  const destination = getDestination({audioContext}); // todo still needed?
+  const destination = getDestination({audioContext});
 
   oscillator.connect(destination);
   oscillator.start(startTime);
   oscillator.stop(startTime + duration);
 };
 
+const oscillator_Spacer = () => {
+  const freq = AUDIO_FREQ_SILENT;
+  return oscillator({freq});
+};
 const oscillator_Rh = () => {
   const freq = AUDIO_FREQ_RH;
   return oscillator({freq});
