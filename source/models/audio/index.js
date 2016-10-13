@@ -15,10 +15,11 @@ import {
   isTick_Rh,
   isTick_Lh,
   isTick_RhLh,
-  isTick_Background
+  isTick_Background,
+  isTick_Spacer
 } from '../tick';
 
-import {getDestination} from './destination'; // todo ...
+import {getDestination} from './destination';
 
 import {audioTest} from '../../test/browser/utils';
 ////////////////////////////////////
@@ -48,42 +49,39 @@ const playTicks = ({
   ticks = []
 } = {}) => {
   oscillators = [];
-  ticks.forEach((each) => {
-    const {startOffset, onEnded} = each; // todo no need, just pass each
-
-    if (each.isSpacer) return playTick_Spacer(each);
-
-    if (isTick_Background(each)) return playTick_Background({startOffset, onEnded});
-    if (isTick_Rh(each)) return playTick_Rh({startOffset, onEnded});
-    if (isTick_Lh(each)) return playTick_Lh({startOffset, onEnded});
-    if (isTick_RhLh(each)) return playTick_RhLh({startOffset, onEnded});
+  ticks.forEach((tick) => {
+    playTick({tick});
+    if (tick.isSpacer) playTickAsSpacer({tick});
   })
 };
 
-const playTick_Spacer = ({startOffset, onEnded, duration}) => {
-  const oscillator = oscillator_Spacer();
+const playTick = ({tick}) => {
+  const {startOffset, onEnded} = tick;
+  const oscillator = oscillatorForTick({tick});
+  const duration = durationForTick({tick});
   playOscillator({oscillator, startOffset, duration, onEnded});
 };
 
-const playTick_Rh = ({startOffset, onEnded}) => {
-  const oscillator = oscillator_Rh();
-  const duration = TICK_DURATION_RH;
+const playTickAsSpacer = ({tick}) => {
+  const {startOffset, spacerDuration, spacerOnEnded} = tick;
+  const oscillator = oscillator_Spacer();
+  const duration = spacerDuration;
+  const onEnded = spacerOnEnded;
   playOscillator({oscillator, startOffset, duration, onEnded});
 };
-const playTick_Lh = ({startOffset, onEnded}) => {
-  const oscillator = oscillator_Lh();
-  const duration = TICK_DURATION_LH;
-  playOscillator({oscillator, startOffset, duration, onEnded});
+
+const oscillatorForTick = ({tick}) => {
+  if (isTick_Rh({...tick})) return oscillator_Rh();
+  if (isTick_Lh({...tick})) return oscillator_Lh();
+  if (isTick_RhLh({...tick})) return oscillator_RhLh();
+  if (isTick_Background({...tick})) return oscillator_Background();
 };
-const playTick_RhLh = ({startOffset, onEnded}) => {
-  const oscillator = oscillator_RhLh();
-  const duration = TICK_DURATION_RH_LH;
-  playOscillator({oscillator, startOffset, duration, onEnded});
-};
-const playTick_Background = ({startOffset, onEnded}) => {
-  const oscillator = oscillator_Background();
-  const duration = TICK_DURATION_BACKGROUND;
-  playOscillator({oscillator, startOffset, duration, onEnded});
+
+const durationForTick = ({tick}) => {
+  if (isTick_Rh({...tick})) return TICK_DURATION_RH;
+  if (isTick_Lh({...tick})) return TICK_DURATION_LH;
+  if (isTick_RhLh({...tick})) return TICK_DURATION_RH_LH;
+  if (isTick_Background({...tick})) return TICK_DURATION_BACKGROUND;
 };
 
 const playOscillator = ({oscillator, startOffset = 0, duration = 1, onEnded}) => {

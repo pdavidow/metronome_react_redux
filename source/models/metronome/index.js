@@ -1,4 +1,5 @@
 import {
+  dropRight,
   includes,
   last,
   range
@@ -87,12 +88,18 @@ const calc_ticks = ({
   };
 
   const ticks =  tickStartTimeOffsets.map(tick);
+  const spacerTick = asSpacer({tick: last(ticks), beat, metronomeSetting, onEnded});
+  const ticksWithSpacer = dropRight(ticks);
+  ticksWithSpacer.push(spacerTick);
+  return ticksWithSpacer;
+};
 
-  let spacerTick = {...last(ticks), isSpacer: true, duration: calc_tickDuration({beat, metronomeSetting})};
-  if (onEnded != undefined) spacerTick.onEnded = onEnded;
-  ticks.push(spacerTick);
+const asSpacer = ({tick, beat, metronomeSetting, onEnded}) => {
+  const spacerDuration = calc_tickDuration({beat, metronomeSetting});
 
-  return ticks;
+  const extra = {isSpacer: true, spacerDuration};
+  if (onEnded != undefined) extra.spacerOnEnded = onEnded;
+  return {...tick, ...extra};
 };
 
 const play = ({

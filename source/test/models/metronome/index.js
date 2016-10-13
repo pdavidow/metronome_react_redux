@@ -395,12 +395,8 @@ test('Metronome model', nestOuter => {
         {
           isRH: false,
           isLH: false,
-          startOffset: 11 * tickDuration
-        },
-        { duration: 1,
-          isLH: false,
-          isRH: false,
           isSpacer: true,
+          spacerDuration: 1,
           startOffset: 11 * tickDuration
         }
       ];
@@ -535,13 +531,8 @@ test('Metronome model', nestOuter => {
         {
           isRH: false,
           isLH: false,
-          startOffset: 23 * tickDuration
-        },
-        {
-          duration: 2,
-          isLH: false,
-          isRH: false,
           isSpacer: true,
+          spacerDuration: 2,
           startOffset: 23 * tickDuration
         }
       ];
@@ -601,15 +592,10 @@ test('Metronome model', nestOuter => {
 
     const expected = [
       {
-        isRH: true,
-        isLH: true,
-        startOffset: 0
-      },
-      {
-        duration: 1,
         isLH: true,
         isRH: true,
         isSpacer: true,
+        spacerDuration: 1,
         startOffset: 0
       }
     ];
