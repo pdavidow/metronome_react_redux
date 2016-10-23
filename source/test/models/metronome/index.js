@@ -237,11 +237,13 @@ test('Metronome model', nestOuter => {
     nestInner.test('......Test #1', assert => {
       const msg = '12 ticks, 1 tick every 1 sec, for 12 sec';
 
-      const actual = calc_tickStartTimeOffsets({
-        beat: {rh: 3, lh: 4},
-        metronomeSetting: {classicTicksPerMinute: 60, classicTicksPerBeat: 12}
-      });
+      const beat = {rh: 3, lh: 4};
+      const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 12};
 
+      const tickCount = calc_tickCount({...beat});
+      const duration = calc_tickDuration({beat, metronomeSetting});
+
+      const actual = calc_tickStartTimeOffsets({tickCount, duration});
       const expected = range(0, 12, 1);
 
       assert.deepEqual(actual, expected, msg);
@@ -250,11 +252,13 @@ test('Metronome model', nestOuter => {
     nestInner.test('......Test #2', assert => {
       const msg = '12 ticks, 1 tick every 2 sec, for 24 sec';
 
-      const actual = calc_tickStartTimeOffsets({
-        beat: {rh: 3, lh: 4},
-        metronomeSetting: {classicTicksPerMinute: 30, classicTicksPerBeat: 12}
-      });
+      const beat = {rh: 3, lh: 4};
+      const metronomeSetting = {classicTicksPerMinute: 30, classicTicksPerBeat: 12};
 
+      const tickCount = calc_tickCount({...beat});
+      const duration = calc_tickDuration({beat, metronomeSetting});
+
+      const actual = calc_tickStartTimeOffsets({tickCount, duration});
       const expected = range(0, 24, 2);
 
       assert.deepEqual(actual, expected, msg);
@@ -263,11 +267,13 @@ test('Metronome model', nestOuter => {
     nestInner.test('......Test #3', assert => {
       const msg = '12 ticks, 1 tick every 1/2 sec, for 6 sec';
 
-      const actual = calc_tickStartTimeOffsets({
-        beat: {rh: 3, lh: 4},
-        metronomeSetting: {classicTicksPerMinute: 120, classicTicksPerBeat: 12}
-      });
+      const beat = {rh: 3, lh: 4};
+      const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 12};
 
+      const tickCount = calc_tickCount({...beat});
+      const duration = calc_tickDuration({beat, metronomeSetting});
+
+      const actual = calc_tickStartTimeOffsets({tickCount, duration});
       const expected = range(0, 6, 1/2);
 
       assert.deepEqual(actual, expected, msg);
@@ -276,11 +282,13 @@ test('Metronome model', nestOuter => {
     nestInner.test('......Test #4', assert => {
       const msg = '12 ticks, 1 tick every 2 sec, for 24 sec';
 
-      const actual = calc_tickStartTimeOffsets({
-        beat: {rh: 3, lh: 4},
-        metronomeSetting: {classicTicksPerMinute: 60, classicTicksPerBeat: 24}
-      });
+      const beat = {rh: 3, lh: 4};
+      const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 24};
 
+      const tickCount = calc_tickCount({...beat});
+      const duration = calc_tickDuration({beat, metronomeSetting});
+
+      const actual = calc_tickStartTimeOffsets({tickCount, duration});
       const expected = range(0, 24, 2);
 
       assert.deepEqual(actual, expected, msg);
@@ -289,11 +297,13 @@ test('Metronome model', nestOuter => {
     nestInner.test('......Test #5', assert => {
       const msg = '12 ticks, 1 tick every 1/2 sec, for 6 sec';
 
-      const actual = calc_tickStartTimeOffsets({
-        beat: {rh: 3, lh: 4},
-        metronomeSetting: {classicTicksPerMinute: 60, classicTicksPerBeat: 6}
-      });
+      const beat = {rh: 3, lh: 4};
+      const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 6};
 
+      const tickCount = calc_tickCount({...beat});
+      const duration = calc_tickDuration({beat, metronomeSetting});
+
+      const actual = calc_tickStartTimeOffsets({tickCount, duration});
       const expected = range(0, 6, 1/2);
 
       assert.deepEqual(actual, expected, msg);
@@ -302,11 +312,13 @@ test('Metronome model', nestOuter => {
     nestInner.test('......Test #6', assert => {
       const msg = '12 ticks, 1 tick every 1/6 sec, for 2 sec';
 
-      const actual = calc_tickStartTimeOffsets({
-        beat: {rh: 3, lh: 4},
-        metronomeSetting: {classicTicksPerMinute: 120, classicTicksPerBeat: 4}
-      });
+      const beat = {rh: 3, lh: 4};
+      const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 4};
 
+      const tickCount = calc_tickCount({...beat});
+      const duration = calc_tickDuration({beat, metronomeSetting});
+
+      const actual = calc_tickStartTimeOffsets({tickCount, duration});
       const expected = range(0, 2, 1/6);
 
       assert.deepEqual(actual, expected, msg);
@@ -315,11 +327,13 @@ test('Metronome model', nestOuter => {
     nestInner.test('......Test #7', assert => {
       const msg = '24 ticks, 1 tick every 2 sec, for 48 sec';
 
-      const actual = calc_tickStartTimeOffsets({
-        beat: {rh: 8, lh: 6},
-        metronomeSetting: {classicTicksPerMinute: 15, classicTicksPerBeat: 12}
-      });
+      const beat = {rh: 8, lh: 6};
+      const metronomeSetting = {classicTicksPerMinute: 15, classicTicksPerBeat: 12};
 
+      const tickCount = calc_tickCount({...beat});
+      const duration = calc_tickDuration({beat, metronomeSetting});
+
+      const actual = calc_tickStartTimeOffsets({tickCount, duration});
       const expected = range(0, 48, 2);
 
       assert.deepEqual(actual, expected, msg);
@@ -340,64 +354,75 @@ test('Metronome model', nestOuter => {
         {
           isRH: true,
           isLH: true,
-          startOffset: 0 * tickDuration
+          startOffset: 0 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: false,
-          startOffset: 1 * tickDuration
+          startOffset: 1 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: false,
-          startOffset: 2 * tickDuration
+          startOffset: 2 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: true,
-          startOffset: 3 * tickDuration
+          startOffset: 3 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: true,
           isLH: false,
-          startOffset: 4 * tickDuration
+          startOffset: 4 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: false,
-          startOffset: 5 * tickDuration
+          startOffset: 5 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: true,
-          startOffset: 6 * tickDuration
+          startOffset: 6 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: false,
-          startOffset: 7 * tickDuration
+          startOffset: 7 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: true,
           isLH: false,
-          startOffset: 8 * tickDuration
+          startOffset: 8 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: true,
-          startOffset: 9 * tickDuration
+          startOffset: 9 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: false,
-          startOffset: 10 * tickDuration
+          startOffset: 10 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: false,
           isSpacer: true,
-          spacerDuration: 1,
-          startOffset: 11 * tickDuration
+          startOffset: 11 * tickDuration,
+          duration: tickDuration
         }
       ];
 
@@ -416,124 +441,147 @@ test('Metronome model', nestOuter => {
         {
           isRH: true,
           isLH: true,
-          startOffset: 0 * tickDuration
+          startOffset: 0 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: false,
-          startOffset: 1 * tickDuration
+          startOffset: 1 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: false,
-          startOffset: 2 * tickDuration
+          startOffset: 2 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: true,
           isLH: false,
-          startOffset: 3 * tickDuration
+          startOffset: 3 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: true,
-          startOffset: 4 * tickDuration
+          startOffset: 4 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: false,
-          startOffset: 5 * tickDuration
+          startOffset: 5 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: true,
           isLH: false,
-          startOffset: 6 * tickDuration
+          startOffset: 6 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: false,
-          startOffset: 7 * tickDuration
+          startOffset: 7 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: true,
-          startOffset: 8 * tickDuration
+          startOffset: 8 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: true,
           isLH: false,
-          startOffset: 9 * tickDuration
+          startOffset: 9 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: false,
-          startOffset: 10 * tickDuration
+          startOffset: 10 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: false,
-          startOffset: 11 * tickDuration
+          startOffset: 11 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: true,
           isLH: true,
-          startOffset: 12 * tickDuration
+          startOffset: 12 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: false,
-          startOffset: 13 * tickDuration
+          startOffset: 13 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: false,
-          startOffset: 14 * tickDuration
+          startOffset: 14 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: true,
           isLH: false,
-          startOffset: 15 * tickDuration
+          startOffset: 15 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: true,
-          startOffset: 16 * tickDuration
+          startOffset: 16 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: false,
-          startOffset: 17 * tickDuration
+          startOffset: 17 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: true,
           isLH: false,
-          startOffset: 18 * tickDuration
+          startOffset: 18 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: false,
-          startOffset: 19 * tickDuration
+          startOffset: 19 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: true,
-          startOffset: 20 * tickDuration
+          startOffset: 20 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: true,
           isLH: false,
-          startOffset: 21 * tickDuration
+          startOffset: 21 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: false,
-          startOffset: 22 * tickDuration
+          startOffset: 22 * tickDuration,
+          duration: tickDuration
         },
         {
           isRH: false,
           isLH: false,
           isSpacer: true,
-          spacerDuration: 2,
-          startOffset: 23 * tickDuration
+          startOffset: 23 * tickDuration,
+          duration: tickDuration
         }
       ];
       assert.deepEqual(actual, expected, msg);
@@ -595,7 +643,7 @@ test('Metronome model', nestOuter => {
         isLH: true,
         isRH: true,
         isSpacer: true,
-        spacerDuration: 1,
+        duration: 1,
         startOffset: 0
       }
     ];

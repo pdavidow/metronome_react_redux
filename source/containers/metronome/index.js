@@ -31,6 +31,7 @@ export default (React) => {
   const mapStateToProps = (state) => {
     const beat = state.beat;
     const metronomeSetting = state.metronomeSetting;
+    const playerSetting = state.playerSetting;
     const player = state.player;
     const tickCount = calc_tickCount({beat});
     const rhTickIndices = calc_rhTickIndices({beat});
@@ -39,6 +40,7 @@ export default (React) => {
     return {
       beat,
       metronomeSetting,
+      playerSetting,
       player,
       tickCount,
       rhTickIndices,
@@ -48,10 +50,10 @@ export default (React) => {
 
   const mapDispatchToProps = (dispatch) => {
     return {
-      onPlay: (({beat, metronomeSetting}) => {
+      onPlay: (({beat, metronomeSetting, isLooping}) => {
         dispatch(setIsPlaying({isPlaying: true}));
         const onEnded = () => dispatch(setIsPlaying({isPlaying: false}));
-        play({beat, metronomeSetting, onEnded});
+        play({beat, metronomeSetting, isLooping, onEnded});
       }),
       onStop: (() => {
         stop();

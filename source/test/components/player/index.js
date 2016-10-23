@@ -14,7 +14,10 @@ test('Player component', nestOuter => {
     nestInner.test('......Play', assert => {
       const msg = 'Should have playButton id';
 
-      const props = {player: {isPlaying: false}};
+      const props = {
+        player: {isPlaying: false},
+        playerSetting: {isLooping: false}
+      };
       const el = <Player {...props}/>;
       const $ = dom.load(render(el));
 
@@ -28,7 +31,10 @@ test('Player component', nestOuter => {
     nestInner.test('......Stop', assert => {
       const msg = 'Should have stopButton id';
 
-      const props = {player: {isPlaying: false}};
+      const props = {
+        player: {isPlaying: false},
+        playerSetting: {isLooping: false}
+      };
       const el = <Player {...props}/>;
       const $ = dom.load(render(el));
 

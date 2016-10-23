@@ -1,7 +1,7 @@
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 
-import {setIsLooping} from '../../actions';
+import {setPlayerSetting} from '../../actions';
 ////////////////////////////////////
 
 export default (React) => {
@@ -42,7 +42,7 @@ export default (React) => {
   const mapDispatchToProps = (dispatch) => {
     return {
       // tricky: onSubmit turns into handleSubmit
-      onSubmit: ({isLooping}) => dispatch(setIsLooping({isLooping}))
+      onSubmit: ({isLooping}) => dispatch(setPlayerSetting({isLooping}))
     }
   };
 

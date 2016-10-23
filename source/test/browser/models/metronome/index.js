@@ -2,6 +2,7 @@ import test from 'tape-async';
 import sleep from 'sleep-promise';
 import 'babel-polyfill'; // http://stackoverflow.com/questions/28976748/regeneratorruntime-is-not-defined
 import {last} from 'lodash';
+import {Simulate as simulate} from 'react-addons-test-utils';
 
 import {
   calc_ticks,
@@ -19,10 +20,21 @@ import {
   audioTestStart,
   audioTestEnd,
 } from '../../../../models/audio/destination';
-import {waitInAudioTime} from '../../../browser/utils';
+import {
+  getDomNode,
+  getElementBySelector,
+  setStore,
+  waitInAudioTime,
+  embeddedAudioTest
+} from '../../../browser/utils';
 ////////////////////////////////////
 
 const audioContext = initializedAudioContext();
+
+// Careful: React may replace the element it is modifying, instead of changing it in place.
+// So always retreive the element, instead of keeping a pointer to it.
+const getPlayButton = ({domNode}) => getElementBySelector({domNode, selector: '#playButton'});
+const getStopButton = ({domNode}) => getElementBySelector({domNode, selector: '#stopButton'});
 
 test('Metronome model', nestOuter => {
   nestOuter.test('...onEnded should work for all 4 tick types', nestInner => {
@@ -36,7 +48,7 @@ test('Metronome model', nestOuter => {
       let value = 0;
       const onEnded = () => value++;
 
-      const ticks = calc_ticks({beat, metronomeSetting, onEnded});
+      const ticks = calc_ticks({beat, metronomeSetting, onEndedWithLoop: onEnded});
       const startTime = audioContext.currentTime; // approx
       playTicks({ticks});
 
@@ -68,7 +80,7 @@ test('Metronome model', nestOuter => {
       let value = 0;
       const onEnded = () => value++;
 
-      const ticks = calc_ticks({beat, metronomeSetting, onEnded});
+      const ticks = calc_ticks({beat, metronomeSetting, onEndedWithLoop: onEnded});
       const startTime = audioContext.currentTime; // approx
       playTicks({ticks});
 
@@ -100,7 +112,7 @@ test('Metronome model', nestOuter => {
       let value = 0;
       const onEnded = () => value++;
 
-      const ticks = calc_ticks({beat, metronomeSetting, onEnded});
+      const ticks = calc_ticks({beat, metronomeSetting, onEndedWithLoop: onEnded});
       const startTime = audioContext.currentTime; // approx
       playTicks({ticks});
 
@@ -132,7 +144,7 @@ test('Metronome model', nestOuter => {
       let value = 0;
       const onEnded = () => value++;
 
-      const ticks = calc_ticks({beat, metronomeSetting, onEnded});
+      const ticks = calc_ticks({beat, metronomeSetting, onEndedWithLoop: onEnded});
       const startTime = audioContext.currentTime; // approx
       playTicks({ticks});
 
@@ -255,5 +267,42 @@ test('Metronome model', nestOuter => {
       assert.end();
       audioTestEnd();
     });
+  });
+  nestOuter.test('...Loop should repeat ticks, until stopped', async(assert) => {
+    const msg = 'Should have 4 iterations';
+
+    // 1 tick, at 1 second duration per tick
+    const beat = {rh: 1, lh: 1};
+    const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1};
+    const playerSetting = {isLooping: true};
+    const store = setStore({beat, metronomeSetting, playerSetting});
+    const domNode = getDomNode({store});
+    let iterationCount = 0;
+
+    embeddedAudioTest.loopRepeatTicksUntilStopped = ({audioContext, oscillator, startOffset, playDuration}) => {
+      if (playDuration == 1) iterationCount++; // only want spacer
+      const destination = audioContext.createAnalyser();
+      const startTime = audioContext.currentTime + startOffset;
+
+      oscillator.connect(destination);
+      oscillator.start(startTime);
+      oscillator.stop(startTime + playDuration);
+
+      if (audioContext.currentTime > endTime) {
+        embeddedAudioTest.loopRepeatTicksUntilStopped = null;
+        simulate.click(getStopButton({domNode}));
+
+        const expected = 4;
+        const actual = iterationCount;
+
+        assert.equal(actual, expected, msg);
+        assert.end();
+      };
+    };
+    const waitTime = 3.5; // sec
+    const startTime = audioContext.currentTime; // approx
+    const endTime = startTime + waitTime; // approx
+    simulate.click(getPlayButton({domNode}));
+    await sleep(16000) /* msec */; // slows down audio clock by about 1/3
   });
 });

@@ -3,4 +3,4 @@
 import './components/beat';
 import './components/metronomeSetting';
 import './components/player';
-import './model/metronome';
+import './models/metronome';

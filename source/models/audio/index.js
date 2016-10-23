@@ -57,17 +57,17 @@ const playTicks = ({
 
 const playTick = ({tick}) => {
   const {startOffset, onEnded} = tick;
+  const playDuration = playDurationForTick({tick});
   const oscillator = oscillatorForTick({tick});
-  const duration = durationForTick({tick});
-  playOscillator({oscillator, startOffset, duration, onEnded});
+  playOscillator({oscillator, startOffset, playDuration, onEnded});
 };
 
 const playTickAsSpacer = ({tick}) => {
-  const {startOffset, spacerDuration, spacerOnEnded} = tick;
+  const {startOffset, duration, spacerOnEnded} = tick;
+  const playDuration = duration;
   const oscillator = oscillator_Spacer();
-  const duration = spacerDuration;
   const onEnded = spacerOnEnded;
-  playOscillator({oscillator, startOffset, duration, onEnded});
+  playOscillator({oscillator, startOffset, playDuration, onEnded});
 };
 
 const oscillatorForTick = ({tick}) => {
@@ -77,25 +77,25 @@ const oscillatorForTick = ({tick}) => {
   if (isTick_Background({...tick})) return oscillator_Background();
 };
 
-const durationForTick = ({tick}) => {
+const playDurationForTick = ({tick}) => {
   if (isTick_Rh({...tick})) return TICK_DURATION_RH;
   if (isTick_Lh({...tick})) return TICK_DURATION_LH;
   if (isTick_RhLh({...tick})) return TICK_DURATION_RH_LH;
   if (isTick_Background({...tick})) return TICK_DURATION_BACKGROUND;
 };
 
-const playOscillator = ({oscillator, startOffset = 0, duration = 1, onEnded}) => {
+const playOscillator = ({oscillator, startOffset = 0, playDuration = 1, onEnded}) => {
   oscillators.push(oscillator);
   if (onEnded != undefined) oscillator.onended = onEnded;
 
-  if (audioTest({audioContext, oscillator})) return;
+  if (audioTest({audioContext, oscillator, startOffset, playDuration})) return;
 
   const startTime = audioContext.currentTime + startOffset;
   const destination = getDestination({audioContext});
 
   oscillator.connect(destination);
   oscillator.start(startTime);
-  oscillator.stop(startTime + duration);
+  oscillator.stop(startTime + playDuration);
 };
 
 const oscillator_Spacer = () => {
