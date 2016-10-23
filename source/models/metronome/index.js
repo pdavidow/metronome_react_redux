@@ -15,7 +15,6 @@ import {
 ////////////////////////////////////
 
 let isStopped = true;
-let ticks;
 
 const calc_tickCount = ({
   rh = 1,
@@ -122,15 +121,16 @@ const play = ({
   onEnded
 } = {}) => {
   isStopped = false;
-  const onEndedWithLoop = createOnEndedWithLoop({isLooping, onEnded});
-  ticks = calc_ticks({beat, metronomeSetting, onEndedWithLoop});
+  const getTicks = () => ticks;
+  const onEndedWithLoop = createOnEndedWithLoop({isLooping, onEnded, getTicks});
+  const ticks = calc_ticks({beat, metronomeSetting, onEndedWithLoop});
   playTicks({ticks});
 };
 
-const createOnEndedWithLoop = ({isLooping, onEnded}) => {
+const createOnEndedWithLoop = ({isLooping, onEnded, getTicks}) => {
   return () => {
     if (!isLooping || isStopped) return onEnded();
-    playTicks({ticks});
+    playTicks({ticks: getTicks()});
   };
 };
 
