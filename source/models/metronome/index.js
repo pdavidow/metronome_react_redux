@@ -108,6 +108,11 @@ const calc_ticks = ({
   return ticksWithSpacer;
 };
 
+const addTicks = ({ticks, beat, metronomeSetting, onEndedWithLoop}) => {
+  const contents = calc_ticks({beat, metronomeSetting, onEndedWithLoop});
+  Array.prototype.push.apply(ticks, contents);
+};
+
 const asSpacer = ({tick, onEndedWithLoop}) => {
   const extra = {isSpacer: true};
   if (onEndedWithLoop != undefined) extra.spacerOnEnded = onEndedWithLoop;
@@ -121,16 +126,16 @@ const play = ({
   onEnded
 } = {}) => {
   isStopped = false;
-  const getTicks = () => ticks;
-  const onEndedWithLoop = createOnEndedWithLoop({isLooping, onEnded, getTicks});
-  const ticks = calc_ticks({beat, metronomeSetting, onEndedWithLoop});
+  const ticks = [];
+  const onEndedWithLoop = createOnEndedWithLoop({isLooping, onEnded, ticks});
+  addTicks({ticks, beat, metronomeSetting, onEndedWithLoop});
   playTicks({ticks});
 };
 
-const createOnEndedWithLoop = ({isLooping, onEnded, getTicks}) => {
+const createOnEndedWithLoop = ({isLooping, onEnded, ticks}) => {
   return () => {
     if (!isLooping || isStopped) return onEnded();
-    playTicks({ticks: getTicks()});
+    playTicks({ticks});
   };
 };
 
