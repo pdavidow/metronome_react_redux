@@ -13,11 +13,11 @@ export default (React) => () => {
   return (
     <div>
       <Beat />
-      <p>=========================</p>
+      <br/>
       <MetronomeSetting />
-      <p>=========================</p>
+      <br/>
       <PlayerSetting />
-      <p>=========================</p>
+      <br/>
       <MetronomeContainer />
     </div>
   );

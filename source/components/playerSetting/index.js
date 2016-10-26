@@ -12,20 +12,26 @@ export default (React) => {
       initialValues: React.PropTypes.shape({
         isLooping: PropTypes.bool.isRequired
       }),
+      player: React.PropTypes.shape({
+        isPlaying: PropTypes.bool.isRequired
+      }),
       handleSubmit: PropTypes.func.isRequired
     };
 
-    const {handleSubmit} = props;
+    const {handleSubmit, player} = props;
+    const {isPlaying} = player;
 
     return (
-      <form className='playerSetting' onSubmit={handleSubmit}>
-        <h3>Player Setting</h3>
-        <div className='isLooping'>
-          <label>Loop</label>
-          <Field name="isLooping" id="loopCheckbox" component="input" type="checkbox"/>
-        </div>
-        <button type="submit">Submit</button>
-      </form>
+      <fieldset id='playerSettingFieldset' disabled={isPlaying ? "disabled" : ""}>
+        <form className='playerSetting' onSubmit={handleSubmit} disabled={isPlaying ? "disabled" : ""}>
+          <h3>Player Setting</h3>
+          <div className='isLooping'>
+            <label>Loop</label>
+            <Field name="isLooping" id="loopCheckbox" component="input" type="checkbox"/>
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+      </fieldset>
     );
   };
 
@@ -34,8 +40,12 @@ export default (React) => {
   })(PlayerSettingForm);
 
   const mapStateToProps = (state) => {
+    const playerSetting = state.playerSetting;
+    const player = state.player;
+
     return {
-      initialValues: state.playerSetting
+      initialValues: playerSetting,
+      player
     }
   };
 

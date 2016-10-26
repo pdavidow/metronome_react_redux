@@ -13,24 +13,30 @@ export default (React) => {
         rh: PropTypes.number.isRequired,
         lh: PropTypes.number.isRequired
       }),
+      player: React.PropTypes.shape({
+        isPlaying: PropTypes.bool.isRequired
+      }),
       handleSubmit: PropTypes.func.isRequired
     };
 
-    const {handleSubmit} = props;
+    const {handleSubmit, player} = props;
+    const {isPlaying} = player;
 
     return (
-      <form className='beat' onSubmit={handleSubmit}>
-        <h3>Beat</h3>
-        <div className='rh'>
-          <label>Right Hand note count</label>
-          <Field id="rhInputField" name="rh" component="input" type="number" min="1"/>
-        </div>
-        <div className='lh'>
-          <label>Left Hand note count</label>
-          <Field id="lhInputField" name="lh" component="input" type="number" min="1"/>
-        </div>
-        <button type="submit">Submit</button>
-      </form>
+      <fieldset id='beatFieldset' disabled={isPlaying ? "disabled" : ""}>
+        <form className='beat' onSubmit={handleSubmit}>
+            <h3>Beat</h3>
+            <div className='rh'>
+              <label>Right Hand note count</label>
+              <Field id="rhInputField" name="rh" component="input" type="number" min="1"/>
+            </div>
+            <div className='lh'>
+              <label>Left Hand note count</label>
+              <Field id="lhInputField" name="lh" component="input" type="number" min="1"/>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+      </fieldset>
     );
   };
 
@@ -39,8 +45,12 @@ export default (React) => {
   })(BeatForm);
 
   const mapStateToProps = (state) => {
+    const beat = state.beat;
+    const player = state.player;
+
     return {
-      initialValues: state.beat
+      initialValues: beat,
+      player,
     }
   };
 

@@ -22,7 +22,7 @@ export default (React) => {
     return (
       <div>
         <TickAssignment {...props}/>
-        <p>=========================</p>
+        <br/>
         <Player {...props}/>
       </div>
     );

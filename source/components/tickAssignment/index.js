@@ -10,18 +10,20 @@ export default (React) => {
     const {tickCount, rhTickIndices, lhTickIndices} = props;
 
     return (
-      <div className="tickAssignment">
-        <h3>Ticks</h3>
-        <div className="tickCount">
-          <label>Tick Count: {tickCount ? tickCount.toString() : "--"}</label>
+      <fieldset id='tickAssignmentFieldset'>
+        <div className="tickAssignment">
+          <h3>Ticks</h3>
+          <div className="tickCount">
+            <label>Tick Count: {tickCount ? tickCount.toString() : "--"}</label>
+          </div>
+          <div className="rhTickIndices">
+            <label>Right-Hand Indices: {rhTickIndices ? rhTickIndices.toString() : "--"}</label>
+          </div>
+          <div className="lhTickIndices">
+            <label>Left-Hand Indices: {lhTickIndices ? lhTickIndices.toString() : "--"}</label>
+          </div>
         </div>
-        <div className="rhTickIndices">
-          <label>Right-Hand Indices: {rhTickIndices ? rhTickIndices.toString() : "--"}</label>
-        </div>
-        <div className="lhTickIndices">
-          <label>Left-Hand Indices: {lhTickIndices ? lhTickIndices.toString() : "--"}</label>
-        </div>
-      </div>
+      </fieldset>
     );
   };
   return TickAssignment;
