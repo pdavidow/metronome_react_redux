@@ -335,7 +335,7 @@ test('Player component', nestOuter => {
         const count = Number(getLoopCount({domNode}).innerHTML);
         counts.push(count);
 
-        const expected = [1,2,3,0];
+        const expected = [1,2,3,1];
         const actual = counts;
 
         assert.deepEqual(actual, expected, msg);
@@ -347,6 +347,33 @@ test('Player component', nestOuter => {
     const endTime = startTime + waitTime; // approx
     simulate.click(getPlayButton({domNode}));
     await sleep(16000) /* msec */; // slows down audio clock by about 1/3
+
+    audioTestEnd();
+  });
+  nestOuter.test('...Do not increment loop count if not looping', async(assert) => {
+    audioTestStart();
+    const msg = 'Should not change loop count';
+
+    const audioContext = initializedAudioContext();
+
+    // 1 tick, at 1 second duration per tick
+    const beat = {rh: 1, lh: 1};
+    const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1};
+    const playerSetting = {isLooping: false};
+    const store = setStore({beat, metronomeSetting, playerSetting});
+    const domNode = getDomNode({store});
+
+    embeddedAudioTest_playTicks.loopCountUnchanged = () => {
+      embeddedAudioTest_playTicks.loopCountUnchanged = null;
+
+      const actual = store.getState().player.loopCount;
+      const expected = 1;
+
+      assert.equal(actual, expected, msg);
+      assert.end();
+    };
+    simulate.click(getPlayButton({domNode}));
+    await sleep(2000) /* msec */; // slows down audio clock by about 1/3
 
     audioTestEnd();
   });

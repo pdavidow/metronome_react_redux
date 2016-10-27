@@ -11,11 +11,11 @@ import player from '../../../../store/reducers/player';
 
 test('Player reducer', nestOuter => {
   nestOuter.test('...initial', assert => {
-    const message = `should set {isPlaying: false, loopCount: 0}`;
+    const message = `should set {isPlaying: false, loopCount: 1}`;
 
     const expected = {
       isPlaying: false,
-      loopCount: 0
+      loopCount: 1
     };
     const actual = player();
 
@@ -27,14 +27,14 @@ test('Player reducer', nestOuter => {
 
     const stateBefore = {
       isPlaying: false,
-      loopCount: 0
+      loopCount: 1
     };
 
     const action = setIsPlaying({isPlaying: true});
 
     const expected = {
       isPlaying: true,
-      loopCount: 0
+      loopCount: 1
     };
 
     deepFreeze(stateBefore);
@@ -50,14 +50,14 @@ test('Player reducer', nestOuter => {
 
     const stateBefore = {
       isPlaying: false,
-      loopCount: 0
+      loopCount: 1
     };
 
     const action = incrementLoopCount();
 
     const expected = {
       isPlaying: false,
-      loopCount: 1
+      loopCount: 2
     };
 
     deepFreeze(stateBefore);
@@ -69,18 +69,18 @@ test('Player reducer', nestOuter => {
     assert.end();
   });
   nestOuter.test('...RESET_LOOP_COUNT', assert => {
-    const message = 'should set loopCount to 0';
+    const message = 'should set loopCount to 1';
 
     const stateBefore = {
       isPlaying: false,
-      loopCount: 1
+      loopCount: 2
     };
 
     const action = resetLoopCount();
 
     const expected = {
       isPlaying: false,
-      loopCount: 0
+      loopCount: 1
     };
 
     deepFreeze(stateBefore);

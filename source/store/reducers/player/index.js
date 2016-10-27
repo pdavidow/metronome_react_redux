@@ -5,7 +5,7 @@ import {
 } from '../../../constants/actionTypes';
 ////////////////////////////////////
 
-const defaultLoopCount = 0;
+const defaultLoopCount = 1;
 
 const defaultState = {
   isPlaying: false,

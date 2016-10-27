@@ -130,19 +130,15 @@ const play = ({
   const ticks = [];
   const onEndedWithLoop = createOnEndedWithLoop({ticks, isLooping, onLoopCounting, onEnded});
   addTicks({ticks, beat, metronomeSetting, onEndedWithLoop});
-  loopCount_playTicks({onLoopCounting, ticks});
+  playTicks({ticks});
 };
 
 const createOnEndedWithLoop = ({ticks, isLooping, onLoopCounting, onEnded}) => {
   return () => {
     if (!isLooping || isStopped) return onEnded();
-    loopCount_playTicks({onLoopCounting, ticks});
+    onLoopCounting();
+    playTicks({ticks});
   };
-};
-
-const loopCount_playTicks = ({onLoopCounting, ticks}) => {
-  onLoopCounting();
-  playTicks({ticks});
 };
 
 const stop = () => {

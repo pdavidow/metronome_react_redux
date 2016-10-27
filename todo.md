@@ -1,6 +1,5 @@
 todo
 
-- do not increment loop count if not looping
 - refactor browser tests
 - show loop count iff looping
 - Optional blank beat in between loop repeats
