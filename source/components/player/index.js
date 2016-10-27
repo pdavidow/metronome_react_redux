@@ -20,11 +20,12 @@ export default (React) => {
         isLooping: PropTypes.bool.isRequired
       }),
       player: React.PropTypes.shape({
-        isPlaying: PropTypes.bool.isRequired
-      }),
+        isPlaying: PropTypes.bool.isRequired,
+        loopCount: PropTypes.number.isRequired
+      })
     };
     const {onPlay, onStop, beat, metronomeSetting, player, playerSetting} = props;
-    const {isPlaying} = player;
+    const {isPlaying, loopCount} = player;
     const {isLooping} = playerSetting;
 
     const onClick_Play = () => onPlay({beat, metronomeSetting, isLooping});
@@ -37,10 +38,13 @@ export default (React) => {
 
       render () {
         return (
-          <div className="player">
-            <button type="submit" id="playButton" disabled={isPlaying ? "disabled" : ""} onClick={onClick_Play}>  P L A Y  </button>
-            <button type="button" id="stopButton" disabled={isPlaying ? "" : "disabled"} onClick={onClick_Stop}>  S T O P  </button>
-          </div>
+          <fieldset>
+            <div className="player">
+              <button type="submit" id="playButton" disabled={isPlaying ? "disabled" : ""} onClick={onClick_Play}>  P L A Y  </button>
+              <button type="button" id="stopButton" disabled={isPlaying ? "" : "disabled"} onClick={onClick_Stop}>  S T O P  </button>
+              <label> Loop Count: </label><label id="loopCount">{loopCount}</label>
+            </div>
+          </fieldset>
         );
       }
     };

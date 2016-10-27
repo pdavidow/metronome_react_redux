@@ -9,14 +9,21 @@ import {
   getElementBySelector,
   setStore,
   waitInAudioTime,
-  embeddedAudioTest
+  embeddedAudioTest,
+  embeddedAudioTest_playTicks
 } from '../../utils';
+import {initializedAudioContext} from '../../../../models/audio';
+import {
+  audioTestStart,
+  audioTestEnd,
+} from '../../../../models/audio/destination';
 ////////////////////////////////////
 
 // Careful: React may replace the element it is modifying, instead of changing it in place.
 // So always retreive the element, instead of keeping a pointer to it.
 const getPlayButton = ({domNode}) => getElementBySelector({domNode, selector: '#playButton'});
 const getStopButton = ({domNode}) => getElementBySelector({domNode, selector: '#stopButton'});
+const getLoopCount  = ({domNode}) => getElementBySelector({domNode, selector: '#loopCount'});
 
 test('Player component', nestOuter => {
   nestOuter.test('...Play button should disable during play', nestInner => {
@@ -301,6 +308,44 @@ test('Player component', nestOuter => {
   //   };
   //   simulate.click(getPlayButton({domNode}));
   // });
+  nestOuter.test('...Show loop count (1-based) if looping', async(assert) => {
+    audioTestStart();
+    const msg = 'Should show 1 for first iteration, 2 for second, 3 for third';
+
+    const audioContext = initializedAudioContext();
+
+    // 1 tick, at 1 second duration per tick
+    const beat = {rh: 1, lh: 1};
+    const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1};
+    const playerSetting = {isLooping: true};
+    const store = setStore({beat, metronomeSetting, playerSetting});
+    const domNode = getDomNode({store});
+    let counts = [];
+
+    embeddedAudioTest_playTicks.loopCount = async() => {
+      await sleep(10); // need delay
+      const count = Number(getLoopCount({domNode}).innerHTML);
+      counts.push(count);
+
+      if (audioContext.currentTime >= endTime) {
+        embeddedAudioTest_playTicks.loopCount = null;
+        simulate.click(getStopButton({domNode}));
+
+        const expected = [1,2,3];
+        const actual = counts;
+
+        assert.deepEqual(actual, expected, msg);
+        assert.end();
+      };
+    };
+    const waitTime = 2; // sec
+    const startTime = audioContext.currentTime; // approx
+    const endTime = startTime + waitTime; // approx
+    simulate.click(getPlayButton({domNode}));
+    await sleep(16000) /* msec */; // slows down audio clock by about 1/3
+
+    audioTestEnd();
+  });
 });
 
 

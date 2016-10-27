@@ -25,7 +25,7 @@ export default (React) => {
     return (
       <fieldset id='metronomeSettingFieldset' disabled={isPlaying ? "disabled" : ""}>
         <form className='metronomeSetting' onSubmit={handleSubmit}>
-          <h3>MetronomeSetting</h3>
+          <h3>Metronome Setting</h3>
           <div className='classicTicksPerMinute'>
             <label>Classic Ticks Per Minute</label>
             <Field id="classicTicksPerMinuteInputField" name="classicTicksPerMinute" component="input" type="number" min="1"/>

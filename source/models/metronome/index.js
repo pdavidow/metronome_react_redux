@@ -123,20 +123,26 @@ const play = ({
   beat = {rh: 1, lh: 1},
   metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1},
   isLooping = false,
+  onLoopCounting,
   onEnded
 } = {}) => {
   isStopped = false;
   const ticks = [];
-  const onEndedWithLoop = createOnEndedWithLoop({isLooping, onEnded, ticks});
+  const onEndedWithLoop = createOnEndedWithLoop({ticks, isLooping, onLoopCounting, onEnded});
   addTicks({ticks, beat, metronomeSetting, onEndedWithLoop});
-  playTicks({ticks});
+  loopCount_playTicks({onLoopCounting, ticks});
 };
 
-const createOnEndedWithLoop = ({isLooping, onEnded, ticks}) => {
+const createOnEndedWithLoop = ({ticks, isLooping, onLoopCounting, onEnded}) => {
   return () => {
     if (!isLooping || isStopped) return onEnded();
-    playTicks({ticks});
+    loopCount_playTicks({onLoopCounting, ticks});
   };
+};
+
+const loopCount_playTicks = ({onLoopCounting, ticks}) => {
+  onLoopCounting();
+  playTicks({ticks});
 };
 
 const stop = () => {

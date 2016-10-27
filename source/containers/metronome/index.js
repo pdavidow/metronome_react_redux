@@ -6,7 +6,10 @@ import {
   play,
   stop
 } from '../../models/metronome';
-import {setIsPlaying} from '../../actions';
+import {
+  setIsPlaying,
+  incrementLoopCount
+} from '../../actions';
 import {
   calc_tickCount,
   calc_rhTickIndices,
@@ -53,7 +56,8 @@ export default (React) => {
       onPlay: (({beat, metronomeSetting, isLooping}) => {
         dispatch(setIsPlaying({isPlaying: true}));
         const onEnded = () => dispatch(setIsPlaying({isPlaying: false}));
-        play({beat, metronomeSetting, isLooping, onEnded});
+        const onLoopCounting = () => dispatch(incrementLoopCount());
+        play({beat, metronomeSetting, isLooping, onLoopCounting, onEnded});
       }),
       onStop: (() => {
         stop();

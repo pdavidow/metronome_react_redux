@@ -1,5 +1,6 @@
 todo
 
+- loop iteration reset
 - Optional blank beat in between loop repeats
 - Ability to have all ticks behave as background ticks
 - Ability to adjust volume, with separate levels for different tick types

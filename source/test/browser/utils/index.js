@@ -51,6 +51,7 @@ const waitInAudioTime = ({waitTime, audioContext, startTime}) => {
 };
 
 const embeddedAudioTest = {};
+const embeddedAudioTest_playTicks = {};
 
 const audioTest = ({audioContext, oscillator, startOffset, playDuration}) => {
   // if (production) return false; // todo
@@ -68,6 +69,17 @@ const audioTest = ({audioContext, oscillator, startOffset, playDuration}) => {
   return result;
 };
 
+const audioTest_playTicks = ({audioContext, ticks}) => {
+  // if (production) return false; // todo
+
+  forOwn(embeddedAudioTest_playTicks, ((test) => { // only one test should be defined at any given time
+    if (test) {
+      test({audioContext, ticks});
+      return false; // exit iteration early by explicitly returning false. https://lodash.com/docs/4.16.4#forOwn
+    };
+  }));
+};
+
 export {
   getDomNode,
   getElementBySelector,
@@ -75,5 +87,7 @@ export {
   setStore,
   waitInAudioTime,
   embeddedAudioTest,
-  audioTest
+  embeddedAudioTest_playTicks,
+  audioTest,
+  audioTest_playTicks
 };

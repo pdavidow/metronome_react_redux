@@ -21,7 +21,10 @@ import {
 
 import {getDestination} from './destination';
 
-import {audioTest} from '../../test/browser/utils';
+import {
+  audioTest,
+  audioTest_playTicks
+} from '../../test/browser/utils';
 ////////////////////////////////////
 
 let audioContext;
@@ -48,6 +51,8 @@ const initializedAudioContext = () => {
 const playTicks = ({
   ticks = []
 } = {}) => {
+  audioTest_playTicks({audioContext, ticks});
+
   oscillators = [];
   ticks.forEach((tick) => {
     playTick({tick});
