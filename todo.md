@@ -1,6 +1,8 @@
 todo
 
-- loop iteration reset
+- do not increment loop count if not looping
+- refactor browser tests
+- show loop count iff looping
 - Optional blank beat in between loop repeats
 - Ability to have all ticks behave as background ticks
 - Ability to adjust volume, with separate levels for different tick types

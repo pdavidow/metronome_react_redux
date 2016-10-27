@@ -308,9 +308,9 @@ test('Player component', nestOuter => {
   //   };
   //   simulate.click(getPlayButton({domNode}));
   // });
-  nestOuter.test('...Show loop count (1-based) if looping', async(assert) => {
+  nestOuter.test('...Show loop count', async(assert) => {
     audioTestStart();
-    const msg = 'Should show 1 for first iteration, 2 for second, 3 for third';
+    const msg = 'Should show 1 for first iteration, 2 for second, 3 for third, 0 after stop';
 
     const audioContext = initializedAudioContext();
 
@@ -320,18 +320,22 @@ test('Player component', nestOuter => {
     const playerSetting = {isLooping: true};
     const store = setStore({beat, metronomeSetting, playerSetting});
     const domNode = getDomNode({store});
-    let counts = [];
+    const counts = [];
 
-    embeddedAudioTest_playTicks.loopCount = async() => {
+    embeddedAudioTest_playTicks.loopCountThenReset = async() => {
       await sleep(10); // need delay
       const count = Number(getLoopCount({domNode}).innerHTML);
       counts.push(count);
 
       if (audioContext.currentTime >= endTime) {
-        embeddedAudioTest_playTicks.loopCount = null;
+        embeddedAudioTest_playTicks.loopCountThenReset = null;
         simulate.click(getStopButton({domNode}));
 
-        const expected = [1,2,3];
+        await sleep(10); // need delay
+        const count = Number(getLoopCount({domNode}).innerHTML);
+        counts.push(count);
+
+        const expected = [1,2,3,0];
         const actual = counts;
 
         assert.deepEqual(actual, expected, msg);

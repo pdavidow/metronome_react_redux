@@ -8,7 +8,8 @@ import {
 } from '../../models/metronome';
 import {
   setIsPlaying,
-  incrementLoopCount
+  incrementLoopCount,
+  resetLoopCount
 } from '../../actions';
 import {
   calc_tickCount,
@@ -62,6 +63,7 @@ export default (React) => {
       onStop: (() => {
         stop();
         dispatch(setIsPlaying({isPlaying: false}));
+        dispatch(resetLoopCount());
       })
     }
   };

@@ -3,7 +3,8 @@ import {
   SET_METRONOME_SETTING,
   SET_IS_PLAYING,
   SET_PLAYER_SETTING,
-  INCREMENT_LOOP_COUNT
+  INCREMENT_LOOP_COUNT,
+  RESET_LOOP_COUNT
 } from '../constants/actionTypes';
 ////////////////////////////////////
 
@@ -38,6 +39,13 @@ export const setIsPlaying = ({isPlaying}) => {
 export const incrementLoopCount = () => {
   return {
     type: INCREMENT_LOOP_COUNT,
+    payload: {}
+  };
+};
+
+export const resetLoopCount = () => {
+  return {
+    type: RESET_LOOP_COUNT,
     payload: {}
   };
 };
