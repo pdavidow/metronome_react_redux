@@ -42,7 +42,7 @@ export default (React) => {
             <div className="player">
               <button type="submit" id="playButton" disabled={isPlaying ? "disabled" : ""} onClick={onClick_Play}>  P L A Y  </button>
               <button type="button" id="stopButton" disabled={isPlaying ? "" : "disabled"} onClick={onClick_Stop}>  S T O P  </button>
-              <label> Loop Count: </label><label id="loopCount">{loopCount}</label>
+              <span hidden={(isPlaying && isLooping) ? "" : "hidden"} id="loopCountSpan"><label> Loop Count: </label><label id="loopCount">{loopCount}</label></span>
             </div>
           </fieldset>
         );

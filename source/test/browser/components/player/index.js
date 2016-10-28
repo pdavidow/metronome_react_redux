@@ -24,6 +24,7 @@ import {
 const getPlayButton = ({domNode}) => getElementBySelector({domNode, selector: '#playButton'});
 const getStopButton = ({domNode}) => getElementBySelector({domNode, selector: '#stopButton'});
 const getLoopCount  = ({domNode}) => getElementBySelector({domNode, selector: '#loopCount'});
+const getLoopCountSpan  = ({domNode}) => getElementBySelector({domNode, selector: '#loopCountSpan'});
 
 test('Player component', nestOuter => {
   nestOuter.test('...Play button should disable during play', nestInner => {
@@ -376,6 +377,67 @@ test('Player component', nestOuter => {
     await sleep(2000) /* msec */; // slows down audio clock by about 1/3
 
     audioTestEnd();
+  });
+  nestOuter.test('...Only show loop count if looping and playing', nestInner => {
+    nestInner.test('......Hide if not playing', assert => {
+      const msg = 'Hide loop count if not playing';
+
+      const domNode = getDomNode();
+
+      const actual = getLoopCountSpan({domNode}).hidden;
+      const expected = true;
+
+      assert.equal(actual, expected, msg);
+      assert.end();
+    });
+    nestInner.test('......Hide if not looping', async(assert) => {
+      audioTestStart();
+      const msg = 'Hide loop count if playing but not looping';
+
+      const audioContext = initializedAudioContext();
+
+      // 1 tick, at 1 second duration per tick
+      const beat = {rh: 1, lh: 1};
+      const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1};
+      const playerSetting = {isLooping: false};
+      const store = setStore({beat, metronomeSetting, playerSetting});
+      const domNode = getDomNode({store});
+
+      simulate.click(getPlayButton({domNode}));
+      await sleep(500) /* msec */; // slows down audio clock by about 1/3
+
+      const actual = getLoopCountSpan({domNode}).hidden;
+      const expected = true;
+
+      assert.equal(actual, expected, msg);
+      assert.end();
+      audioTestEnd();
+    });
+    nestInner.test('......Show if playing and looping', async(assert) => {
+      audioTestStart();
+      const msg = 'Show if playing and looping';
+
+      const audioContext = initializedAudioContext();
+
+      // 1 tick, at 1 second duration per tick
+      const beat = {rh: 1, lh: 1};
+      const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1};
+      const playerSetting = {isLooping: true};
+      const store = setStore({beat, metronomeSetting, playerSetting});
+      const domNode = getDomNode({store});
+
+      simulate.click(getPlayButton({domNode}));
+      await sleep(500) /* msec */; // slows down audio clock by about 1/3
+
+      const actual = getLoopCountSpan({domNode}).hidden;
+      const expected = false;
+
+      simulate.click(getStopButton({domNode}));
+
+      assert.equal(actual, expected, msg);
+      assert.end();
+      audioTestEnd();
+    });
   });
 });
 
