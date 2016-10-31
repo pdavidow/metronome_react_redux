@@ -25,7 +25,7 @@ import {
   getElementBySelector,
   setStore,
   waitInAudioTime,
-  embeddedAudioTest
+  embeddedAudioTest_playTicks
 } from '../../../browser/utils';
 ////////////////////////////////////
 
@@ -269,7 +269,9 @@ test('Metronome model', nestOuter => {
     });
   });
   nestOuter.test('...Loop should repeat ticks, until stopped', async(assert) => {
-    const msg = 'Should have 4 iterations';
+    // don't want to test store.player.loopCount here
+    audioTestStart();
+    const msg = 'Should have 5 iterations';
 
     // 1 tick, at 1 second duration per tick
     const beat = {rh: 1, lh: 1};
@@ -277,32 +279,24 @@ test('Metronome model', nestOuter => {
     const playerSetting = {isLooping: true};
     const store = setStore({beat, metronomeSetting, playerSetting});
     const domNode = getDomNode({store});
-    let iterationCount = 0;
+    let iterationCount = -1; // offset extra final count
+    const expected = 5;
 
-    embeddedAudioTest.loopRepeatTicksUntilStopped = ({audioContext, oscillator, startOffset, playDuration}) => {
-      if (playDuration == 1) iterationCount++; // only want spacer
-      const destination = audioContext.createAnalyser();
-      const startTime = audioContext.currentTime + startOffset;
-
-      oscillator.connect(destination);
-      oscillator.start(startTime);
-      oscillator.stop(startTime + playDuration);
-
+    embeddedAudioTest_playTicks.loopRepeatTicksUntilStopped = () => {
+      iterationCount++;
       if (audioContext.currentTime > endTime) {
-        embeddedAudioTest.loopRepeatTicksUntilStopped = null;
+        embeddedAudioTest_playTicks.loopRepeatTicksUntilStopped = null;
         simulate.click(getStopButton({domNode}));
-
-        const expected = 4;
         const actual = iterationCount;
-
         assert.equal(actual, expected, msg);
         assert.end();
       };
     };
-    const waitTime = 3.5; // sec
+    const waitTime = expected - 0.5; // sec
     const startTime = audioContext.currentTime; // approx
     const endTime = startTime + waitTime; // approx
     simulate.click(getPlayButton({domNode}));
     await sleep(16000) /* msec */; // slows down audio clock by about 1/3
+    audioTestEnd();
   });
 });
