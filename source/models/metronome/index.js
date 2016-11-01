@@ -2,9 +2,7 @@ import {
   dropRight,
   includes,
   last,
-  map,
-  range,
-  sum
+  range
 } from 'lodash';
 import {lcm} from 'mathjs';
 
@@ -82,16 +80,17 @@ const calc_baseTicks = ({
   const duration = calc_tickDuration({beat, metronomeSetting});
   const tickStartTimeOffsets = calc_tickStartTimeOffsets({tickCount, duration});
 
-  const rhTickIndices = calc_rhTickIndices({beat});
-  const lhTickIndices = calc_lhTickIndices({beat});
-
-  const tick = (startOffset, index) => { // todo make pure
+  const tick = ({startOffset, index, rhTickIndices, lhTickIndices}) => {
     const isRH = includes(rhTickIndices, index);
     const isLH = includes(lhTickIndices, index);
     return {isRH, isLH, startOffset, duration};
   };
 
-  return tickStartTimeOffsets.map(tick);
+  return tickStartTimeOffsets.map((startOffset, index) => {
+    const rhTickIndices = calc_rhTickIndices({beat});
+    const lhTickIndices = calc_lhTickIndices({beat});
+    return tick({startOffset, index, rhTickIndices, lhTickIndices});
+  });
 };
 
 const calc_ticks = ({
