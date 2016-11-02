@@ -14,13 +14,13 @@ export default (React) => {
         <div className="tickAssignment">
           <h3>Ticks</h3>
           <div className="tickCount">
-            <label>Tick Count: {tickCount ? tickCount.toString() : "--"}</label>
+            <label id="tickCountLabel">Tick Count: {tickCount ? tickCount.toString() : "--"}</label>
           </div>
           <div className="rhTickIndices">
-            <label>Right-Hand Indices: {rhTickIndices ? rhTickIndices.toString() : "--"}</label>
+            <label id="rhIndiciesLabel">Right-Hand Indices: {rhTickIndices ? rhTickIndices.toString() : "--"}</label>
           </div>
           <div className="lhTickIndices">
-            <label>Left-Hand Indices: {lhTickIndices ? lhTickIndices.toString() : "--"}</label>
+            <label id="lhIndiciesLabel">Left-Hand Indices: {lhTickIndices ? lhTickIndices.toString() : "--"}</label>
           </div>
         </div>
       </fieldset>
