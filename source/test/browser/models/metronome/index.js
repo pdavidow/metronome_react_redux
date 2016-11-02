@@ -48,7 +48,7 @@ test('Metronome model', nestOuter => {
       let value = 0;
       const onEnded = () => value++;
 
-      const ticks = calc_ticks({beat, metronomeSetting, onEndedWithLoop: onEnded});
+      const ticks = calc_ticks({beats: [beat], metronomeSetting, onEndedWithLoop: onEnded});
       const startTime = audioContext.currentTime; // approx
       playTicks({ticks, onLoopCounting: ()=>{}});
 
@@ -80,7 +80,7 @@ test('Metronome model', nestOuter => {
       let value = 0;
       const onEnded = () => value++;
 
-      const ticks = calc_ticks({beat, metronomeSetting, onEndedWithLoop: onEnded});
+      const ticks = calc_ticks({beats: [beat], metronomeSetting, onEndedWithLoop: onEnded});
       const startTime = audioContext.currentTime; // approx
       playTicks({ticks, onLoopCounting: ()=>{}});
 
@@ -112,7 +112,7 @@ test('Metronome model', nestOuter => {
       let value = 0;
       const onEnded = () => value++;
 
-      const ticks = calc_ticks({beat, metronomeSetting, onEndedWithLoop: onEnded});
+      const ticks = calc_ticks({beats: [beat], metronomeSetting, onEndedWithLoop: onEnded});
       const startTime = audioContext.currentTime; // approx
       playTicks({ticks, onLoopCounting: ()=>{}});
 
@@ -144,7 +144,7 @@ test('Metronome model', nestOuter => {
       let value = 0;
       const onEnded = () => value++;
 
-      const ticks = calc_ticks({beat, metronomeSetting, onEndedWithLoop: onEnded});
+      const ticks = calc_ticks({beats: [beat], metronomeSetting, onEndedWithLoop: onEnded});
       const startTime = audioContext.currentTime; // approx
       playTicks({ticks, onLoopCounting: ()=>{}});
 
@@ -179,7 +179,7 @@ test('Metronome model', nestOuter => {
       let value = 0;
       const onEnded = () => value++;
       const startTime = audioContext.currentTime; // approx
-      play({beat, metronomeSetting, isLooping: false, onLoopCounting: ()=>{}, onEnded});
+      play({beats: [beat], metronomeSetting, isLooping: false, onLoopCounting: ()=>{}, onEnded});
 
       const waitTime = 0.2 ; // sec
       waitInAudioTime({waitTime, audioContext, startTime});
@@ -203,7 +203,7 @@ test('Metronome model', nestOuter => {
       let value = 0;
       const onEnded = () => value++;
       const startTime = audioContext.currentTime; // approx
-      play({beat, metronomeSetting, isLooping: false, onLoopCounting: ()=>{}, onEnded});
+      play({beats: [beat], metronomeSetting, isLooping: false, onLoopCounting: ()=>{}, onEnded});
 
       const waitTime = 0.7 ; // sec
       waitInAudioTime({waitTime, audioContext, startTime});
@@ -227,7 +227,7 @@ test('Metronome model', nestOuter => {
       let value = 0;
       const onEnded = () => value++;
       const startTime = audioContext.currentTime; // approx
-      play({beat, metronomeSetting, isLooping: false, onLoopCounting: ()=>{}, onEnded});
+      play({beats: [beat], metronomeSetting, isLooping: false, onLoopCounting: ()=>{}, onEnded});
 
       const waitTime = 1.7 ; // sec
       waitInAudioTime({waitTime, audioContext, startTime});
@@ -254,7 +254,7 @@ test('Metronome model', nestOuter => {
       const onEnded = () => value++;
 
       const startTime = audioContext.currentTime;
-      play({beat, metronomeSetting, isLooping: false, onLoopCounting: ()=>{}, onEnded});
+      play({beats: [beat], metronomeSetting, isLooping: false, onLoopCounting: ()=>{}, onEnded});
 
       const waitTime = 2.2; // sec
       waitInAudioTime({waitTime, audioContext, startTime});

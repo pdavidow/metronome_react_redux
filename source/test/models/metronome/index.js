@@ -8,7 +8,6 @@ import {
   calc_tickDuration,
   calc_tickStartTimeOffsets,
   calc_ticks,
-  calc_ticksForBeats,
   calc_rhTicks,
   calc_lhTicks,
   calc_rhOrLhTicks
@@ -347,7 +346,7 @@ test('Metronome model', nestOuter => {
       const tickDuration = 1;
 
       const actual = calc_ticks({
-        beat: {rh: 3, lh: 4},
+        beats: [{rh: 3, lh: 4}],
         metronomeSetting: {classicTicksPerMinute: 60, classicTicksPerBeat: 12}
       });
 
@@ -434,7 +433,7 @@ test('Metronome model', nestOuter => {
       const tickDuration = 2;
 
       const actual = calc_ticks({
-        beat: {rh: 8, lh: 6},
+        beats: [{rh: 8, lh: 6}],
         metronomeSetting: {classicTicksPerMinute: 15, classicTicksPerBeat: 12}
       });
 
@@ -596,7 +595,7 @@ test('Metronome model', nestOuter => {
       const tickDuration_beat1 = 1;
       const beatDuration = 1;
 
-      const actual = calc_ticksForBeats({
+      const actual = calc_ticks({
         beats: [{rh: 1, lh: 1}, {rh: 1, lh: 1}],
         metronomeSetting: {classicTicksPerMinute: 60, classicTicksPerBeat: 1}
       });
@@ -625,7 +624,7 @@ test('Metronome model', nestOuter => {
       const tickDuration_beat1 = 0.25;
       const beatDuration = 1;
 
-      const actual = calc_ticksForBeats({
+      const actual = calc_ticks({
         beats: [{rh: 1, lh: 2}, {rh: 1, lh: 4}],
         metronomeSetting: {classicTicksPerMinute: 60, classicTicksPerBeat: 1}
       });

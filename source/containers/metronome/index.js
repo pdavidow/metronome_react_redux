@@ -58,7 +58,7 @@ export default (React) => {
         dispatch(setIsPlaying({isPlaying: true}));
         const onEnded = () => dispatch(setIsPlaying({isPlaying: false}));
         const onLoopCounting = () => dispatch(incrementLoopCount());
-        play({beat, metronomeSetting, isLooping, onLoopCounting, onEnded});
+        play({beats: [beat], metronomeSetting, isLooping, onLoopCounting, onEnded});
       }),
       onStop: (() => {
         stop();
