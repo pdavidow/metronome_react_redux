@@ -8,6 +8,7 @@ import {
   calc_tickDuration,
   calc_tickStartTimeOffsets,
   calc_ticks,
+  calc_ticksForBeats,
   calc_rhTicks,
   calc_lhTicks,
   calc_rhOrLhTicks
@@ -340,7 +341,7 @@ test('Metronome model', nestOuter => {
       assert.end();
     });
   });
-  nestOuter.test('...Calculate Ticks', nestInner => {
+  nestOuter.test('...Ticks for Beat', nestInner => {
     const msg = 'All tick details must be correct';
     nestInner.test('......Test #1', assert => {
       const tickDuration = 1;
@@ -584,6 +585,91 @@ test('Metronome model', nestOuter => {
           duration: tickDuration
         }
       ];
+      assert.deepEqual(actual, expected, msg);
+      assert.end();
+    });
+  });
+  nestOuter.test('...Ticks for Beats', nestInner => {
+    const msg = 'All tick details must be correct';
+    nestInner.test('......Test #1', assert => {
+      const tickDuration_beat0 = 1;
+      const tickDuration_beat1 = 1;
+      const beatDuration = 1;
+
+      const actual = calc_ticksForBeats({
+        beats: [{rh: 1, lh: 1}, {rh: 1, lh: 1}],
+        metronomeSetting: {classicTicksPerMinute: 60, classicTicksPerBeat: 1}
+      });
+
+      const expected = [
+        {
+          isRH: true,
+          isLH: true,
+          startOffset: (0 * beatDuration) + (0 * tickDuration_beat0),
+          duration: tickDuration_beat0
+        },
+        {
+          isRH: true,
+          isLH: true,
+          startOffset: (1 * beatDuration) + (0 * tickDuration_beat1),
+          duration: tickDuration_beat1,
+          isSpacer: true
+        }
+      ];
+
+      assert.deepEqual(actual, expected, msg);
+      assert.end();
+    });
+    nestInner.test('......Test #2', assert => {
+      const tickDuration_beat0 = 0.5;
+      const tickDuration_beat1 = 0.25;
+      const beatDuration = 1;
+
+      const actual = calc_ticksForBeats({
+        beats: [{rh: 1, lh: 2}, {rh: 1, lh: 4}],
+        metronomeSetting: {classicTicksPerMinute: 60, classicTicksPerBeat: 1}
+      });
+
+      const expected = [
+        {
+          isRH: true,
+          isLH: true,
+          startOffset: (0 * beatDuration) + (0 * tickDuration_beat0),
+          duration: tickDuration_beat0
+        },
+        {
+          isRH: false,
+          isLH: true,
+          startOffset: (0 * beatDuration) + (1 * tickDuration_beat0),
+          duration: tickDuration_beat0,
+        },
+        {
+          isRH: true,
+          isLH: true,
+          startOffset: (1 * beatDuration) + (0 * tickDuration_beat1),
+          duration: tickDuration_beat1
+        },
+        {
+          isRH: false,
+          isLH: true,
+          startOffset: (1 * beatDuration) + (1 * tickDuration_beat1),
+          duration: tickDuration_beat1,
+        },
+        {
+          isRH: false,
+          isLH: true,
+          startOffset: (1 * beatDuration) + (2 * tickDuration_beat1),
+          duration: tickDuration_beat1,
+        },
+        {
+          isRH: false,
+          isLH: true,
+          startOffset: (1 * beatDuration) + (3 * tickDuration_beat1),
+          duration: tickDuration_beat1,
+          isSpacer: true
+        }
+      ];
+
       assert.deepEqual(actual, expected, msg);
       assert.end();
     });
