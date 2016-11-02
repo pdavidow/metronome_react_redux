@@ -98,24 +98,20 @@ const calc_ticks = ({
   metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1},
   onEndedWithLoop
 } = {}) => {
-  const baseTicks =  calc_baseTicks({beat, metronomeSetting});
-  const spacerTick = asSpacer({tick: last(baseTicks), onEndedWithLoop});
+  const ticks =  calc_baseTicks({beat, metronomeSetting});
+  spacerize({tick: last(ticks), onEndedWithLoop});
+  return ticks;
+};
 
-  const ticksWithSpacer = dropRight(baseTicks);
-  ticksWithSpacer.push(spacerTick);
-
-  return ticksWithSpacer;
+const spacerize = ({tick, onEndedWithLoop}) => {
+  const extra = {isSpacer: true};
+  if (onEndedWithLoop != undefined) extra.spacerOnEnded = onEndedWithLoop;
+  Object.assign(tick, extra);
 };
 
 const addTicks = ({ticks, beat, metronomeSetting, onEndedWithLoop}) => {
   const contents = calc_ticks({beat, metronomeSetting, onEndedWithLoop});
   Array.prototype.push.apply(ticks, contents);
-};
-
-const asSpacer = ({tick, onEndedWithLoop}) => {
-  const extra = {isSpacer: true};
-  if (onEndedWithLoop != undefined) extra.spacerOnEnded = onEndedWithLoop;
-  return {...tick, ...extra};
 };
 
 const play = ({
