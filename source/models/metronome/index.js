@@ -1,5 +1,5 @@
 import {
-  flatten,
+  flatMap,
   includes,
   last,
   range
@@ -44,6 +44,13 @@ const calc_lhTickIndices = ({
   beat = {rh:1, lh:1}
 } = {}) => calc_tickIndices({focus: 'lh', beat});
 
+const calc_beatDuration = ({metronomeSetting}) => { // sec
+  const {classicTicksPerMinute, classicTicksPerBeat} = metronomeSetting;
+  const ticksPerSec = calc_ticksPerSec({classicTicksPerMinute});
+
+  return classicTicksPerBeat * ticksPerSec;
+};
+
 const calc_tickDuration = ({
   beat = {rh: 1, lh: 1},
   metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1}
@@ -55,12 +62,9 @@ const calc_tickDuration = ({
   return classicTicksPerBeat / (tickCount * ticksPerSec);
 };
 
-const calc_beatDuration = ({metronomeSetting}) => { // sec
-  const {classicTicksPerMinute, classicTicksPerBeat} = metronomeSetting;
-  const ticksPerSec = calc_ticksPerSec({classicTicksPerMinute});
-
-  return classicTicksPerBeat * ticksPerSec;
-};
+const calc_ticksPerSec = ({
+  classicTicksPerMinute = 1
+} = {}) => classicTicksPerMinute / 60;
 
 const calc_tickStartTimeOffsets = ({
   tickCount = 1,
@@ -75,23 +79,9 @@ const calc_tickStartTimeOffsets = ({
   });
 };
 
-const calc_ticksPerSec = ({
-  classicTicksPerMinute = 1
-} = {}) => classicTicksPerMinute / 60;
-
-const timeShiftTick = ({tick, amount}) => {
-  tick.startOffset += amount;
-};
-
-const timeShiftTickArray = ({tickArray, amount}) => {
-  tickArray.forEach((tick) => timeShiftTick({tick, amount}));
-};
-
-const timeShiftTicksPerBeat = ({ticksPerBeat, beatDuration}) => {
-  ticksPerBeat.forEach((tickArray, index) => {
-    const amount = beatDuration * index;
-    timeShiftTickArray({tickArray, amount});
-  });
+const calc_shiftedTickStartTimeOffsets = ({tickCount, duration, shiftAmount}) => {
+  const offsets = calc_tickStartTimeOffsets({tickCount, duration});
+  return offsets.map((offset) => offset += shiftAmount);
 };
 
 const calc_baseTicksForBeats = ({
@@ -99,19 +89,21 @@ const calc_baseTicksForBeats = ({
   metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1}
 } = {}) => {
   const beatDuration = calc_beatDuration({metronomeSetting});
-  const ticksPerBeat =  beats.map((beat) => calc_baseTicksForBeat({beat, metronomeSetting}));
-  timeShiftTicksPerBeat({ticksPerBeat, beatDuration});
 
-  return flatten(ticksPerBeat);
+  return flatMap(beats, ((beat, index) => {
+    const shiftAmount = beatDuration * index;
+    return calc_baseTicksForBeat({beat, metronomeSetting, shiftAmount});
+  }));
 };
 
 const calc_baseTicksForBeat = ({
   beat = {rh: 1, lh: 1},
-  metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1}
+  metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1},
+  shiftAmount = 0
 } = {}) => {
   const tickCount = calc_tickCount({...beat});
   const duration = calc_tickDuration({beat, metronomeSetting});
-  const tickStartTimeOffsets = calc_tickStartTimeOffsets({tickCount, duration});
+  const startOffsets = calc_shiftedTickStartTimeOffsets({tickCount, duration, shiftAmount});
 
   const tick = ({startOffset, index, rhTickIndices, lhTickIndices}) => {
     const isRH = includes(rhTickIndices, index);
@@ -119,7 +111,7 @@ const calc_baseTicksForBeat = ({
     return {isRH, isLH, startOffset, duration};
   };
 
-  return tickStartTimeOffsets.map((startOffset, index) => {
+  return startOffsets.map((startOffset, index) => {
     const rhTickIndices = calc_rhTickIndices({beat});
     const lhTickIndices = calc_lhTickIndices({beat});
     return tick({startOffset, index, rhTickIndices, lhTickIndices});
