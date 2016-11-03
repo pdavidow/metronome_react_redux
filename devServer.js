@@ -7,8 +7,10 @@ var app = express();
 var compiler = webpack(config);
 
 const {
-  HOST = '0.0.0.0', // localhost',
-  PORT = 8080 // c9.io
+  HOST = 'localhost',
+  PORT = 3000
+  // HOST = '0.0.0.0', // c9.io
+  // PORT = 8080 // c9.io
 } = process.env;
 
 app.use(require('webpack-dev-middleware')(compiler, {
