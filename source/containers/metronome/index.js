@@ -37,7 +37,7 @@ export default (React) => {
     const metronomeSetting = state.metronomeSetting;
     const playerSetting = state.playerSetting;
     const player = state.player;
-    const tickCount = calc_tickCount({...beat});
+    const tickCount = calc_tickCount({beat});
     const rhTickIndices = calc_rhTickIndices({beat});
     const lhTickIndices = calc_lhTickIndices({beat});
 

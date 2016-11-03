@@ -15,16 +15,18 @@ import {
 let isStopped = true;
 
 const calc_tickCount = ({
-  rh = 1,
-  lh = 1
-} = {}) => lcm(rh, lh);
+  beat = {rh: 1, lh: 1}
+} = {}) => {
+  const {rh, lh} = beat;
+  return lcm(rh, lh);
+};
 
 const calc_tickIndices = ({
   focus = 'rh',
-  beat = {rh:1, lh:1}
+  beat = {rh: 1, lh: 1}
 } = {}) => {
   const noteCount = beat[focus];
-  const tickCount = calc_tickCount(beat);
+  const tickCount = calc_tickCount({beat});
   const interval = tickCount / noteCount;
   const indicies = [];
   let index = 0;
@@ -37,11 +39,11 @@ const calc_tickIndices = ({
 };
 
 const calc_rhTickIndices = ({
-  beat = {rh:1, lh:1}
+  beat = {rh: 1, lh: 1}
 } = {}) => calc_tickIndices({focus: 'rh', beat});
 
 const calc_lhTickIndices = ({
-  beat = {rh:1, lh:1}
+  beat = {rh: 1, lh: 1}
 } = {}) => calc_tickIndices({focus: 'lh', beat});
 
 const calc_beatDuration = ({metronomeSetting}) => { // sec
@@ -56,7 +58,7 @@ const calc_tickDuration = ({
   metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1}
 } = {}) => {
   const {classicTicksPerMinute, classicTicksPerBeat} = metronomeSetting;
-  const tickCount = calc_tickCount({...beat});
+  const tickCount = calc_tickCount({beat});
   const ticksPerSec = calc_ticksPerSec({classicTicksPerMinute});
 
   return classicTicksPerBeat / (tickCount * ticksPerSec);
@@ -101,7 +103,7 @@ const calc_baseTicksForBeat = ({
   metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1},
   shiftAmount = 0
 } = {}) => {
-  const tickCount = calc_tickCount({...beat});
+  const tickCount = calc_tickCount({beat});
   const duration = calc_tickDuration({beat, metronomeSetting});
   const startOffsets = calc_shiftedTickStartTimeOffsets({tickCount, duration, shiftAmount});
 

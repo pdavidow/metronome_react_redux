@@ -18,21 +18,21 @@ test('Metronome model', nestOuter => {
   nestOuter.test('...Tick count should equal Lowest Common Multiple of rh and lh', nestInner => {
     const msg = 'Tick count should equal Lowest Common Multiple of rh and lh';
     nestInner.test('......Test #1', assert => {
-      const actual = calc_tickCount({rh: 3, lh: 4});
+      const actual = calc_tickCount({beat: {rh: 3, lh: 4}});
       const expected = 12;
 
       assert.equal(actual, expected, msg);
       assert.end();
     });
     nestInner.test('......Test #2', assert => {
-      const actual = calc_tickCount({rh: 8, lh: 6});
+      const actual = calc_tickCount({beat: {rh: 8, lh: 6}});
       const expected = 24;
 
       assert.equal(actual, expected, msg);
       assert.end();
     });
     nestInner.test('......Test #3', assert => {
-      const actual = calc_tickCount({rh: 0, lh: 0});
+      const actual = calc_tickCount({beat: {rh: 0, lh: 0}});
       const expected = 0;
 
       assert.equal(actual, expected, msg);
@@ -240,7 +240,7 @@ test('Metronome model', nestOuter => {
       const beat = {rh: 3, lh: 4};
       const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 12};
 
-      const tickCount = calc_tickCount({...beat});
+      const tickCount = calc_tickCount({beat});
       const duration = calc_tickDuration({beat, metronomeSetting});
 
       const actual = calc_tickStartTimeOffsets({tickCount, duration});
@@ -255,7 +255,7 @@ test('Metronome model', nestOuter => {
       const beat = {rh: 3, lh: 4};
       const metronomeSetting = {classicTicksPerMinute: 30, classicTicksPerBeat: 12};
 
-      const tickCount = calc_tickCount({...beat});
+      const tickCount = calc_tickCount({beat});
       const duration = calc_tickDuration({beat, metronomeSetting});
 
       const actual = calc_tickStartTimeOffsets({tickCount, duration});
@@ -270,7 +270,7 @@ test('Metronome model', nestOuter => {
       const beat = {rh: 3, lh: 4};
       const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 12};
 
-      const tickCount = calc_tickCount({...beat});
+      const tickCount = calc_tickCount({beat});
       const duration = calc_tickDuration({beat, metronomeSetting});
 
       const actual = calc_tickStartTimeOffsets({tickCount, duration});
@@ -285,7 +285,7 @@ test('Metronome model', nestOuter => {
       const beat = {rh: 3, lh: 4};
       const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 24};
 
-      const tickCount = calc_tickCount({...beat});
+      const tickCount = calc_tickCount({beat});
       const duration = calc_tickDuration({beat, metronomeSetting});
 
       const actual = calc_tickStartTimeOffsets({tickCount, duration});
@@ -300,7 +300,7 @@ test('Metronome model', nestOuter => {
       const beat = {rh: 3, lh: 4};
       const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 6};
 
-      const tickCount = calc_tickCount({...beat});
+      const tickCount = calc_tickCount({beat});
       const duration = calc_tickDuration({beat, metronomeSetting});
 
       const actual = calc_tickStartTimeOffsets({tickCount, duration});
@@ -315,7 +315,7 @@ test('Metronome model', nestOuter => {
       const beat = {rh: 3, lh: 4};
       const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 4};
 
-      const tickCount = calc_tickCount({...beat});
+      const tickCount = calc_tickCount({beat});
       const duration = calc_tickDuration({beat, metronomeSetting});
 
       const actual = calc_tickStartTimeOffsets({tickCount, duration});
@@ -330,7 +330,7 @@ test('Metronome model', nestOuter => {
       const beat = {rh: 8, lh: 6};
       const metronomeSetting = {classicTicksPerMinute: 15, classicTicksPerBeat: 12};
 
-      const tickCount = calc_tickCount({...beat});
+      const tickCount = calc_tickCount({beat});
       const duration = calc_tickDuration({beat, metronomeSetting});
 
       const actual = calc_tickStartTimeOffsets({tickCount, duration});
