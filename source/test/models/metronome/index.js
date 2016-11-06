@@ -7,10 +7,7 @@ import {
   calc_lhTickIndices,
   calc_tickDuration,
   calc_tickStartTimeOffsets,
-  calc_ticks,
-  calc_rhTicks,
-  calc_lhTicks,
-  calc_rhOrLhTicks
+  calc_ticks
 } from '../../../models/metronome';
 ////////////////////////////////////
 
