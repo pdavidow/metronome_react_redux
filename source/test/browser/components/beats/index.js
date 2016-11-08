@@ -15,21 +15,17 @@ const getForm = ({domNode}) => getElementBySelector({domNode, selector: '.beats'
 
 test('Beats component', nestOuter => {
   nestOuter.test('...Should set beats state upon submit', assert => {
-    const msg = 'Should set [{rh: 3, lh: 1}]';
+    const msg = 'Should set [{rh: 3, lh: 4}]';
 
     const rh = 3;
-    const lh = 1;
+    const lh = 4;
 
     const store = defaultStore();
     const domNode = getDomNode({store});
 
-    const rhInputField = getRhInputField({domNode});
-    const lhInputField = getLhInputField({domNode});
-    const form = getForm({domNode});
-
-    simulate.change(rhInputField, {target: {value: rh}});
-    simulate.change(lhInputField, {target: {value: lh}}); // todo: for some reason does not set this, so fake it with pre-existing value
-    simulate.submit(form);
+    simulate.change(getRhInputField({domNode}), {target: {value: rh}});
+    simulate.change(getLhInputField({domNode}), {target: {value: lh}});
+    simulate.submit(getForm({domNode}));
 
     const actual = store.getState().beats;
     const expected = [{rh, lh}];
