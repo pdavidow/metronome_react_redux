@@ -43,12 +43,12 @@ test('Metronome model', nestOuter => {
       const msg = 'Should increment by 1';
 
       // 2 ticks at 1/4 second each, for total of 1/2 second
-      const beat = {rh: 2, lh: 1};
+      const beats = [{rh: 2, lh: 1}];
       const metronomeSetting = {classicTicksPerMinute: 240, classicTicksPerBeat: 2};
       let value = 0;
       const onEnded = () => value++;
 
-      const ticks = calc_ticks({beats: [beat], metronomeSetting, onEndedWithLoop: onEnded});
+      const ticks = calc_ticks({beats, metronomeSetting, onEndedWithLoop: onEnded});
       const startTime = audioContext.currentTime; // approx
       playTicks({ticks, onLoopCounting: ()=>{}});
 
@@ -75,12 +75,12 @@ test('Metronome model', nestOuter => {
       const msg = 'Should increment by 1';
 
       // 2 ticks at 1/4 second each, for total of 1/2 second
-      const beat = {rh: 1, lh: 2};
+      const beats = [{rh: 1, lh: 2}];
       const metronomeSetting = {classicTicksPerMinute: 240, classicTicksPerBeat: 2};
       let value = 0;
       const onEnded = () => value++;
 
-      const ticks = calc_ticks({beats: [beat], metronomeSetting, onEndedWithLoop: onEnded});
+      const ticks = calc_ticks({beats, metronomeSetting, onEndedWithLoop: onEnded});
       const startTime = audioContext.currentTime; // approx
       playTicks({ticks, onLoopCounting: ()=>{}});
 
@@ -107,12 +107,12 @@ test('Metronome model', nestOuter => {
       const msg = 'Should increment by 1';
 
       // 2 ticks at 1/4 second each, for total of 1/2 second
-      const beat = {rh: 2, lh: 2};
+      const beats = [{rh: 2, lh: 2}];
       const metronomeSetting = {classicTicksPerMinute: 240, classicTicksPerBeat: 2};
       let value = 0;
       const onEnded = () => value++;
 
-      const ticks = calc_ticks({beats: [beat], metronomeSetting, onEndedWithLoop: onEnded});
+      const ticks = calc_ticks({beats, metronomeSetting, onEndedWithLoop: onEnded});
       const startTime = audioContext.currentTime; // approx
       playTicks({ticks, onLoopCounting: ()=>{}});
 
@@ -139,12 +139,12 @@ test('Metronome model', nestOuter => {
       const msg = 'Should increment by 1';
 
       // 6 ticks at 1/2 second each, for total of 3 second
-      const beat = {rh: 2, lh: 3};
+      const beats = [{rh: 2, lh: 3}];
       const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 6};
       let value = 0;
       const onEnded = () => value++;
 
-      const ticks = calc_ticks({beats: [beat], metronomeSetting, onEndedWithLoop: onEnded});
+      const ticks = calc_ticks({beats, metronomeSetting, onEndedWithLoop: onEnded});
       const startTime = audioContext.currentTime; // approx
       playTicks({ticks, onLoopCounting: ()=>{}});
 
@@ -173,13 +173,13 @@ test('Metronome model', nestOuter => {
       const msg = 'Should not increment';
 
       // 3 ticks at 1/2 second each, for total of 1.5 sec
-      const beat = {rh: 3, lh: 3};
+      const beats = [{rh: 3, lh: 3}];
       const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 3};
 
       let value = 0;
       const onEnded = () => value++;
       const startTime = audioContext.currentTime; // approx
-      play({beats: [beat], metronomeSetting, isLooping: false, onLoopCounting: ()=>{}, onEnded});
+      play({beats, metronomeSetting, isLooping: false, onLoopCounting: ()=>{}, onEnded});
 
       const waitTime = 0.2 ; // sec
       waitInAudioTime({waitTime, audioContext, startTime});
@@ -197,13 +197,13 @@ test('Metronome model', nestOuter => {
       const msg = 'Should not increment';
 
       // 3 ticks at 1/2 second each, for total of 1.5 sec
-      const beat = {rh: 3, lh: 3};
+      const beats = [{rh: 3, lh: 3}];
       const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 3};
 
       let value = 0;
       const onEnded = () => value++;
       const startTime = audioContext.currentTime; // approx
-      play({beats: [beat], metronomeSetting, isLooping: false, onLoopCounting: ()=>{}, onEnded});
+      play({beats, metronomeSetting, isLooping: false, onLoopCounting: ()=>{}, onEnded});
 
       const waitTime = 0.7 ; // sec
       waitInAudioTime({waitTime, audioContext, startTime});
@@ -221,13 +221,13 @@ test('Metronome model', nestOuter => {
       const msg = 'Should increment';
 
       // 3 ticks at 1/2 second each, for total of 1.5 sec
-      const beat = {rh: 3, lh: 3};
+      const beats = [{rh: 3, lh: 3}];
       const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 3};
 
       let value = 0;
       const onEnded = () => value++;
       const startTime = audioContext.currentTime; // approx
-      play({beats: [beat], metronomeSetting, isLooping: false, onLoopCounting: ()=>{}, onEnded});
+      play({beats, metronomeSetting, isLooping: false, onLoopCounting: ()=>{}, onEnded});
 
       const waitTime = 1.7 ; // sec
       waitInAudioTime({waitTime, audioContext, startTime});
@@ -247,14 +247,14 @@ test('Metronome model', nestOuter => {
       const msg = 'Should increment value at 2 seconds';
 
       // 1 tick, at 2 seconds per tick
-      const beat = {rh: 1, lh: 1};
+      const beats = [{rh: 1, lh: 1}];
       const metronomeSetting = {classicTicksPerMinute: 30, classicTicksPerBeat: 1};
 
       let value = 0;
       const onEnded = () => value++;
 
       const startTime = audioContext.currentTime;
-      play({beats: [beat], metronomeSetting, isLooping: false, onLoopCounting: ()=>{}, onEnded});
+      play({beats, metronomeSetting, isLooping: false, onLoopCounting: ()=>{}, onEnded});
 
       const waitTime = 2.2; // sec
       waitInAudioTime({waitTime, audioContext, startTime});
@@ -274,10 +274,10 @@ test('Metronome model', nestOuter => {
     const msg = 'Should have 5 iterations';
 
     // 1 tick, at 1 second duration per tick
-    const beat = {rh: 1, lh: 1};
+    const beats = [{rh: 1, lh: 1}];
     const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1};
     const playerSetting = {isLooping: true};
-    const store = setStore({beat, metronomeSetting, playerSetting});
+    const store = setStore({beats, metronomeSetting, playerSetting});
     const domNode = getDomNode({store});
     let iterationCount = -1; // offset extra final count
     const expected = 5;

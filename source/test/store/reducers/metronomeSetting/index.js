@@ -33,15 +33,15 @@ test('MetronomeSetting reducer', nestOuter => {
         classicTicksPerBeat: 3
       });
 
-      const expected = {
-        classicTicksPerMinute: 15,
-        classicTicksPerBeat: 3
-      };
-
       deepFreeze(stateBefore);
       deepFreeze(action);
 
       const actual = metronomeSetting(stateBefore, action);
+
+      const expected = {
+        classicTicksPerMinute: 15,
+        classicTicksPerBeat: 3
+      };
 
       assert.deepEqual(actual, expected, message);
       assert.end();

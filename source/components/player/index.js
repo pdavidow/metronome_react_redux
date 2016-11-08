@@ -8,10 +8,7 @@ export default (React) => {
     Player.propTypes = {
       onPlay: PropTypes.func.isRequired,
       onStop: PropTypes.func.isRequired,
-      beat: React.PropTypes.shape({
-        rh: PropTypes.number.isRequired,
-        lh: PropTypes.number.isRequired
-      }),
+      beats: PropTypes.array.isRequired,
       metronomeSetting: React.PropTypes.shape({
         classicTicksPerMinute: PropTypes.number.isRequired,
         classicTicksPerBeat: PropTypes.number.isRequired
@@ -24,11 +21,11 @@ export default (React) => {
         loopCount: PropTypes.number.isRequired
       })
     };
-    const {onPlay, onStop, beat, metronomeSetting, player, playerSetting} = props;
+    const {onPlay, onStop, beats, metronomeSetting, player, playerSetting} = props;
     const {isPlaying, loopCount} = player;
     const {isLooping} = playerSetting;
 
-    const onClick_Play = () => onPlay({beat, metronomeSetting, isLooping});
+    const onClick_Play = () => onPlay({beats, metronomeSetting, isLooping});
     const onClick_Stop = () => onStop();
 
     return {

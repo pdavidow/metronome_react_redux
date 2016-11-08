@@ -44,10 +44,10 @@ test('Player component', nestOuter => {
       const msg = 'Should be disabled';
 
       // 1 tick, at 1 second duration per tick
-      const beat = {rh: 1, lh: 1};
+      const beats = [{rh: 1, lh: 1}];
       const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1};
       const playerSetting = {isLooping: false};
-      const store = setStore({beat, metronomeSetting, playerSetting});
+      const store = setStore({beats, metronomeSetting, playerSetting});
       const domNode = getDomNode({store});
 
       embeddedAudioTest_playTicks.playButtonDisabledDuringPlay = async() => {
@@ -68,10 +68,10 @@ test('Player component', nestOuter => {
       const msg = 'Should be enabled';
 
       // 1 tick, at 1/2 second duration per tick
-      const beat = {rh: 1, lh: 1};
+      const beats = [{rh: 1, lh: 1}];
       const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 1};
       const playerSetting = {isLooping: false};
-      const store = setStore({beat, metronomeSetting, playerSetting});
+      const store = setStore({beats, metronomeSetting, playerSetting});
       const domNode = getDomNode({store});
 
       embeddedAudioTest_playTicks.playButtonEnabledAfterPlay = async() => {
@@ -105,10 +105,10 @@ test('Player component', nestOuter => {
       const msg = 'Should be enabled';
 
       // 1 tick, at 1 second duration per tick
-      const beat = {rh: 1, lh: 1};
+      const beats = [{rh: 1, lh: 1}];
       const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1};
       const playerSetting = {isLooping: false};
-      const store = setStore({beat, metronomeSetting, playerSetting});
+      const store = setStore({beats, metronomeSetting, playerSetting});
       const domNode = getDomNode({store});
 
       embeddedAudioTest_playTicks.stopButtonEnabledDuringPlay = async() => {
@@ -128,10 +128,10 @@ test('Player component', nestOuter => {
       const msg = 'Should be disabled';
 
       // 1 tick, at 1/2 second duration per tick
-      const beat = {rh: 1, lh: 1};
+      const beats = [{rh: 1, lh: 1}];
       const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 1};
       const playerSetting = {isLooping: false};
-      const store = setStore({beat, metronomeSetting, playerSetting});
+      const store = setStore({beats, metronomeSetting, playerSetting});
       const domNode = getDomNode({store});
 
       embeddedAudioTest_playTicks.stopButtonDisabledAfterPlay = async() => {
@@ -153,10 +153,10 @@ test('Player component', nestOuter => {
     const msg = 'Should be enabled';
 
     // 1 tick, at 1 second duration per tick
-    const beat = {rh: 1, lh: 1};
+    const beats = [{rh: 1, lh: 1}];
     const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1};
     const playerSetting = {isLooping: false};
-    const store = setStore({beat, metronomeSetting, playerSetting});
+    const store = setStore({beats, metronomeSetting, playerSetting});
     const domNode = getDomNode({store});
 
     embeddedAudioTest_playTicks.playButtonReenableMidplay = async() => {
@@ -178,7 +178,7 @@ test('Player component', nestOuter => {
 
     const actual = {};
 
-    const store = setStore({beat: {rh: 1, lh: 1}}); // just 1 tick
+    const store = setStore({beats: [{rh: 1, lh: 1}]}); // just 1 tick
     const domNode = getDomNode({store});
 
     embeddedAudioTest.playButtonStartsAudio = async({audioContext, oscillator}) => {
@@ -219,7 +219,7 @@ test('Player component', nestOuter => {
   nestOuter.test('...Stop button should actually stop audio', (assert) => {
     const msg = 'currentTime when onended should be 1 second (approx) later than startTime';
 
-    const store = setStore({beat: {rh: 1, lh: 1}}); // just 1 tick
+    const store = setStore({beats: [{rh: 1, lh: 1}]}); // just 1 tick
     const domNode = getDomNode({store});
 
     embeddedAudioTest.stopButtonStopsAudio = async({audioContext, oscillator}) => {
@@ -255,10 +255,10 @@ test('Player component', nestOuter => {
     const audioContext = initializedAudioContext();
 
     // 1 tick, at 1 second duration per tick
-    const beat = {rh: 1, lh: 1};
+    const beats = [{rh: 1, lh: 1}];
     const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1};
     const playerSetting = {isLooping: true};
-    const store = setStore({beat, metronomeSetting, playerSetting});
+    const store = setStore({beats, metronomeSetting, playerSetting});
     const domNode = getDomNode({store});
     const counts = [];
 
@@ -295,10 +295,10 @@ test('Player component', nestOuter => {
     const msg = 'Should not change loop count';
 
     // 1 tick, at 1 second duration per tick
-    const beat = {rh: 1, lh: 1};
+    const beats = [{rh: 1, lh: 1}];
     const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1};
     const playerSetting = {isLooping: false};
-    const store = setStore({beat, metronomeSetting, playerSetting});
+    const store = setStore({beats, metronomeSetting, playerSetting});
     const domNode = getDomNode({store});
 
     embeddedAudioTest_playTicks.loopCountUnchanged = () => {
@@ -332,10 +332,10 @@ test('Player component', nestOuter => {
       const msg = 'Hide loop count if playing but not looping';
 
       // 1 tick, at 1 second duration per tick
-      const beat = {rh: 1, lh: 1};
+      const beats = [{rh: 1, lh: 1}];
       const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1};
       const playerSetting = {isLooping: false};
-      const store = setStore({beat, metronomeSetting, playerSetting});
+      const store = setStore({beats, metronomeSetting, playerSetting});
       const domNode = getDomNode({store});
 
       simulate.click(getPlayButton({domNode}));
@@ -353,10 +353,10 @@ test('Player component', nestOuter => {
       const msg = 'Show if playing and looping';
 
       // 1 tick, at 1 second duration per tick
-      const beat = {rh: 1, lh: 1};
+      const beats = [{rh: 1, lh: 1}];
       const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1};
       const playerSetting = {isLooping: true};
-      const store = setStore({beat, metronomeSetting, playerSetting});
+      const store = setStore({beats, metronomeSetting, playerSetting});
       const domNode = getDomNode({store});
 
       simulate.click(getPlayButton({domNode}));

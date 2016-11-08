@@ -238,9 +238,9 @@ test('Metronome model', nestOuter => {
       const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 12};
 
       const tickCount = calc_tickCount({beat});
-      const duration = calc_tickDuration({beat, metronomeSetting});
+      const tickDuration = calc_tickDuration({beat, metronomeSetting});
 
-      const actual = calc_tickStartTimeOffsets({tickCount, duration});
+      const actual = calc_tickStartTimeOffsets({tickCount, tickDuration});
       const expected = range(0, 12, 1);
 
       assert.deepEqual(actual, expected, msg);
@@ -253,9 +253,9 @@ test('Metronome model', nestOuter => {
       const metronomeSetting = {classicTicksPerMinute: 30, classicTicksPerBeat: 12};
 
       const tickCount = calc_tickCount({beat});
-      const duration = calc_tickDuration({beat, metronomeSetting});
+      const tickDuration = calc_tickDuration({beat, metronomeSetting});
 
-      const actual = calc_tickStartTimeOffsets({tickCount, duration});
+      const actual = calc_tickStartTimeOffsets({tickCount, tickDuration});
       const expected = range(0, 24, 2);
 
       assert.deepEqual(actual, expected, msg);
@@ -268,9 +268,9 @@ test('Metronome model', nestOuter => {
       const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 12};
 
       const tickCount = calc_tickCount({beat});
-      const duration = calc_tickDuration({beat, metronomeSetting});
+      const tickDuration = calc_tickDuration({beat, metronomeSetting});
 
-      const actual = calc_tickStartTimeOffsets({tickCount, duration});
+      const actual = calc_tickStartTimeOffsets({tickCount, tickDuration});
       const expected = range(0, 6, 1/2);
 
       assert.deepEqual(actual, expected, msg);
@@ -283,9 +283,9 @@ test('Metronome model', nestOuter => {
       const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 24};
 
       const tickCount = calc_tickCount({beat});
-      const duration = calc_tickDuration({beat, metronomeSetting});
+      const tickDuration = calc_tickDuration({beat, metronomeSetting});
 
-      const actual = calc_tickStartTimeOffsets({tickCount, duration});
+      const actual = calc_tickStartTimeOffsets({tickCount, tickDuration});
       const expected = range(0, 24, 2);
 
       assert.deepEqual(actual, expected, msg);
@@ -298,9 +298,9 @@ test('Metronome model', nestOuter => {
       const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 6};
 
       const tickCount = calc_tickCount({beat});
-      const duration = calc_tickDuration({beat, metronomeSetting});
+      const tickDuration = calc_tickDuration({beat, metronomeSetting});
 
-      const actual = calc_tickStartTimeOffsets({tickCount, duration});
+      const actual = calc_tickStartTimeOffsets({tickCount, tickDuration});
       const expected = range(0, 6, 1/2);
 
       assert.deepEqual(actual, expected, msg);
@@ -313,9 +313,9 @@ test('Metronome model', nestOuter => {
       const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 4};
 
       const tickCount = calc_tickCount({beat});
-      const duration = calc_tickDuration({beat, metronomeSetting});
+      const tickDuration = calc_tickDuration({beat, metronomeSetting});
 
-      const actual = calc_tickStartTimeOffsets({tickCount, duration});
+      const actual = calc_tickStartTimeOffsets({tickCount, tickDuration});
       const expected = range(0, 2, 1/6);
 
       assert.deepEqual(actual, expected, msg);
@@ -328,9 +328,9 @@ test('Metronome model', nestOuter => {
       const metronomeSetting = {classicTicksPerMinute: 15, classicTicksPerBeat: 12};
 
       const tickCount = calc_tickCount({beat});
-      const duration = calc_tickDuration({beat, metronomeSetting});
+      const tickDuration = calc_tickDuration({beat, metronomeSetting});
 
-      const actual = calc_tickStartTimeOffsets({tickCount, duration});
+      const actual = calc_tickStartTimeOffsets({tickCount, tickDuration});
       const expected = range(0, 48, 2);
 
       assert.deepEqual(actual, expected, msg);
@@ -661,6 +661,131 @@ test('Metronome model', nestOuter => {
           isRH: false,
           isLH: true,
           startOffset: (1 * beatDuration) + (3 * tickDuration_beat1),
+          duration: tickDuration_beat1,
+          isSpacer: true
+        }
+      ];
+
+      assert.deepEqual(actual, expected, msg);
+      assert.end();
+    });
+    nestInner.test('......Test #3', assert => {
+      const tickDuration_beat0 = 0.5;
+      const tickDuration_beat1 = 0.25;
+      const beatDuration = 3;
+
+      const actual = calc_ticks({
+        beats: [{rh: 2, lh: 3}, {rh: 3, lh: 4}],
+        metronomeSetting: {classicTicksPerMinute: 120, classicTicksPerBeat: 6}
+      });
+
+      const expected = [
+        {
+          isRH: true,
+          isLH: true,
+          startOffset: (0 * beatDuration) + (0 * tickDuration_beat0),
+          duration: tickDuration_beat0
+        },
+        {
+          isRH: false,
+          isLH: false,
+          startOffset: (0 * beatDuration) + (1 * tickDuration_beat0),
+          duration: tickDuration_beat0,
+        },
+        {
+          isRH: false,
+          isLH: true,
+          startOffset: (0 * beatDuration) + (2 * tickDuration_beat0),
+          duration: tickDuration_beat0
+        },
+        {
+          isRH: true,
+          isLH: false,
+          startOffset: (0 * beatDuration) + (3 * tickDuration_beat0),
+          duration: tickDuration_beat0,
+        },
+        {
+          isRH: false,
+          isLH: true,
+          startOffset: (0 * beatDuration) + (4 * tickDuration_beat0),
+          duration: tickDuration_beat0
+        },
+        {
+          isRH: false,
+          isLH: false,
+          startOffset: (0 * beatDuration) + (5 * tickDuration_beat0),
+          duration: tickDuration_beat0,
+        },
+        {
+          isRH: true,
+          isLH: true,
+          startOffset: (1 * beatDuration) + (0 * tickDuration_beat1),
+          duration: tickDuration_beat1
+        },
+        {
+          isRH: false,
+          isLH: false,
+          startOffset: (1 * beatDuration) + (1 * tickDuration_beat1),
+          duration: tickDuration_beat1,
+        },
+        {
+          isRH: false,
+          isLH: false,
+          startOffset: (1 * beatDuration) + (2 * tickDuration_beat1),
+          duration: tickDuration_beat1,
+        },
+        {
+          isRH: false,
+          isLH: true,
+          startOffset: (1 * beatDuration) + (3 * tickDuration_beat1),
+          duration: tickDuration_beat1,
+        },
+        {
+          isRH: true,
+          isLH: false,
+          startOffset: (1 * beatDuration) + (4 * tickDuration_beat1),
+          duration: tickDuration_beat1
+        },
+        {
+          isRH: false,
+          isLH: false,
+          startOffset: (1 * beatDuration) + (5 * tickDuration_beat1),
+          duration: tickDuration_beat1,
+        },
+        {
+          isRH: false,
+          isLH: true,
+          startOffset: (1 * beatDuration) + (6 * tickDuration_beat1),
+          duration: tickDuration_beat1,
+        },
+        {
+          isRH: false,
+          isLH: false,
+          startOffset: (1 * beatDuration) + (7 * tickDuration_beat1),
+          duration: tickDuration_beat1,
+        },
+        {
+          isRH: true,
+          isLH: false,
+          startOffset: (1 * beatDuration) + (8 * tickDuration_beat1),
+          duration: tickDuration_beat1
+        },
+        {
+          isRH: false,
+          isLH: true,
+          startOffset: (1 * beatDuration) + (9 * tickDuration_beat1),
+          duration: tickDuration_beat1,
+        },
+        {
+          isRH: false,
+          isLH: false,
+          startOffset: (1 * beatDuration) + (10 * tickDuration_beat1),
+          duration: tickDuration_beat1,
+        },
+        {
+          isRH: false,
+          isLH: false,
+          startOffset: (1 * beatDuration) + (11 * tickDuration_beat1),
           duration: tickDuration_beat1,
           isSpacer: true
         }

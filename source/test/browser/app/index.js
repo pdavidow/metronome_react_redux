@@ -16,26 +16,26 @@ import {
 // Careful: React may replace the element it is modifying, instead of changing it in place.
 // So always retreive the element, instead of keeping a pointer to it.
 const getPlayButton = ({domNode}) => getElementBySelector({domNode, selector: '#playButton'});
-const getBeatComponent = ({domNode}) => getElementBySelector({domNode, selector: '#beatFieldset'});
+const getBeatsComponent = ({domNode}) => getElementBySelector({domNode, selector: '#beatsFieldset'});
 const getMetronomeSettingComponent = ({domNode}) => getElementBySelector({domNode, selector: '#metronomeSettingFieldset'});
 const getPlayerSettingComponent = ({domNode}) => getElementBySelector({domNode, selector: '.playerSetting'});
 
 
 test('App', nestOuter => {
-  nestOuter.test('...Beat Component, MetronomeSetting, PlayerSetting Components should disable during play', nestInner => {
-    nestInner.test('......Should render an enabled Beat Component, MetronomeSetting, PlayerSetting Component by default', assert => {
+  nestOuter.test('...Beats Component, MetronomeSetting, PlayerSetting Components should disable during play', nestInner => {
+    nestInner.test('......Should render an enabled Beats Component, MetronomeSetting, PlayerSetting Component by default', assert => {
       const msg = 'Should be enabled';
 
       const domNode = getDomNode();
 
       const actual = {
-        beat: getBeatComponent({domNode}).hasAttribute('disabled'),
+        beats: getBeatsComponent({domNode}).hasAttribute('disabled'),
         metronomeSetting: getMetronomeSettingComponent({domNode}).hasAttribute('disabled'),
         playerSetting: getPlayerSettingComponent({domNode}).hasAttribute('disabled')
       };
 
       const expected = {
-        beat: false,
+        beats: false,
         metronomeSetting: false,
         playerSetting: false
       };
@@ -43,10 +43,10 @@ test('App', nestOuter => {
       assert.deepEqual(actual, expected, msg);
       assert.end();
     });
-    nestInner.test('......Beat Component, MetronomeSetting, PlayerSetting Components should be disabled during play', (assert) => {
+    nestInner.test('......Beats Component, MetronomeSetting, PlayerSetting Components should be disabled during play', (assert) => {
       const msg = 'Should be disabled';
 
-      const store = setStore({beat: {rh: 1, lh: 1}});
+      const store = setStore({beats: [{rh: 1, lh: 1}]});
       const domNode = getDomNode({store});
 
       embeddedAudioTest.componentsDisabledDuringPlay = async({audioContext, oscillator}) => {
@@ -61,13 +61,13 @@ test('App', nestOuter => {
         await sleep(1) /* msec */; // for some reason, must sleep something
 
         const actual = {
-          beat: getBeatComponent({domNode}).hasAttribute('disabled'),
+          beats: getBeatsComponent({domNode}).hasAttribute('disabled'),
           metronomeSetting: getMetronomeSettingComponent({domNode}).hasAttribute('disabled'),
           playerSetting: getPlayerSettingComponent({domNode}).hasAttribute('disabled')
         };
 
         const expected = {
-          beat: true,
+          beats: true,
           metronomeSetting: true,
           playerSetting: true
         };
@@ -77,10 +77,10 @@ test('App', nestOuter => {
       };
       simulate.click(getPlayButton({domNode}));
     });
-    nestInner.test('......Beat Component, MetronomeSetting, PlayerSetting Components should be enabled after play', (assert) => {
+    nestInner.test('......Beats Component, MetronomeSetting, PlayerSetting Components should be enabled after play', (assert) => {
       const msg = 'Should be enabled';
 
-      const store = setStore({beat: {rh: 1, lh: 1}});
+      const store = setStore({beats: [{rh: 1, lh: 1}]});
       const domNode = getDomNode({store});
 
       embeddedAudioTest.componentsDisabledDuringPlay = async({audioContext, oscillator}) => {
@@ -97,13 +97,13 @@ test('App', nestOuter => {
         await sleep(1) /* msec */; // for some reason, must sleep something
 
         const actual = {
-          beat: getBeatComponent({domNode}).hasAttribute('disabled'),
+          beats: getBeatsComponent({domNode}).hasAttribute('disabled'),
           metronomeSetting: getMetronomeSettingComponent({domNode}).hasAttribute('disabled'),
           playerSetting: getPlayerSettingComponent({domNode}).hasAttribute('disabled')
         };
 
         const expected = {
-          beat: false,
+          beats: false,
           metronomeSetting: false,
           playerSetting: false
         };

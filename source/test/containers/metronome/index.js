@@ -13,19 +13,17 @@ const render = reactDom.renderToStaticMarkup;
 
 test('Metronome Container', nest => {
   nest.test('class structure', assert => {
-    const msg = 'Should have beat, tickAssignment, metronomeSetting classes';
+    const msg = 'Should have player class';
 
     const store = createStore(combinedReducers);
     const el = <MetronomeContainer store={store}/>;
     const $ = dom.load(render(el));
 
     const actual = {
-      tickAssignment: Boolean($('.tickAssignment').html()),
       player: Boolean($('.player').html())
     };
 
     const expected = {
-      tickAssignment: true,
       player: true
     };
 

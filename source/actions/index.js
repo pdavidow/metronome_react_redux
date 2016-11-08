@@ -1,5 +1,5 @@
 import {
-  SET_BEAT,
+  SET_BEATS,
   SET_METRONOME_SETTING,
   SET_IS_PLAYING,
   SET_PLAYER_SETTING,
@@ -8,12 +8,10 @@ import {
 } from '../constants/actionTypes';
 ////////////////////////////////////
 
-export const setBeat = ({rh, lh}) => {
+export const setBeats = (beats) => {
   return {
-    type: SET_BEAT,
-    payload: {
-      rh,
-      lh}
+      type: SET_BEATS,
+      payload: beats
   };
 };
 

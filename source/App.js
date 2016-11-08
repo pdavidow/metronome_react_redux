@@ -1,18 +1,18 @@
 import createMetronomeContainer from './containers/metronome';
-import createBeat from './components/beat';
+import createBeats from './components/beats';
 import createMetronomeSetting from './components/metronomeSetting';
 import createPlayerSetting from './components/playerSetting';
 ////////////////////////////////////
 
 export default (React) => () => {
-  const Beat = createBeat(React);
+  const Beats = createBeats(React);
   const MetronomeContainer = createMetronomeContainer(React);
   const MetronomeSetting = createMetronomeSetting(React);
   const PlayerSetting = createPlayerSetting(React);
 
   return (
     <div>
-      <Beat />
+      <Beats />
       <br/>
       <MetronomeSetting />
       <br/>

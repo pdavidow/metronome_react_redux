@@ -1,14 +1,14 @@
 import {combineReducers} from 'redux';
-import {reducer as formReducer} from 'redux-form'
+import {reducer as formReducer} from 'redux-form';
 
-import beatReducer from './beat';
+import beatsReducer from './beats';
 import metronomeSettingReducer from './metronomeSetting';
 import playerReducer from './player';
 import playerSettingReducer from './playerSetting';
 ////////////////////////////////////
 
 const reducers = {
-  beat: beatReducer,
+  beats: beatsReducer,
   metronomeSetting: metronomeSettingReducer,
   player: playerReducer,
   playerSetting: playerSettingReducer,
