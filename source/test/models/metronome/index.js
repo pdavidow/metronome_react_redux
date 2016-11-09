@@ -7,7 +7,8 @@ import {
   calc_lhTickIndices,
   calc_tickDuration,
   calc_tickStartTimeOffsets,
-  calc_ticks
+  calc_ticks,
+  play
 } from '../../../models/metronome';
 ////////////////////////////////////
 
@@ -856,6 +857,16 @@ test('Metronome model', nestOuter => {
     ];
 
     assert.deepEqual(actual, expected, msg);
+    assert.end();
+  });
+  nestOuter.test('...Validate beats with metronome-setting', (assert) => {
+    const msg = 'Tick-count must be cleanly divisible by classic-ticks-per-beat';
+
+    const beats = [{rh: 1, lh: 3}];
+    const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 2};
+    const fn = () => play({beats, metronomeSetting});
+
+    assert.throws(fn, Error, msg);
     assert.end();
   });
 });

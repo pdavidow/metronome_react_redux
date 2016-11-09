@@ -97,12 +97,19 @@ const calc_baseTicksForBeats = ({
   }));
 };
 
+const validateTickCount = ({tickCount, classicTicksPerBeat}) => {
+  if (tickCount%classicTicksPerBeat != 0) throw new Error("Tick-count must be cleanly divisible by classicTicksPerBeat");
+};
+
 const calc_baseTicksForBeat = ({
   beat = {rh: 1, lh: 1},
   metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1},
   shiftAmount = 0
 } = {}) => {
+  const {classicTicksPerBeat} = metronomeSetting;
   const tickCount = calc_tickCount({beat});
+  validateTickCount({tickCount, classicTicksPerBeat});
+
   const tickDuration = calc_tickDuration({beat, metronomeSetting});
   const startOffsets = calc_shiftedTickStartTimeOffsets({tickCount, tickDuration, shiftAmount});
 
