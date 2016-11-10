@@ -99,7 +99,7 @@ const calc_baseTicksForBeats = ({
 };
 
 const validateTickCountWithClassicTicksPerBeat = ({tickCount, classicTicksPerBeat, beatIndex}) => {
-  if (tickCount%classicTicksPerBeat != 0) throw new TickCountVsClassicTicksPerBeatError({beatIndex});
+  if (tickCount%classicTicksPerBeat != 0) throw new TickCountVsClassicTicksPerBeatError({beatIndex, tickCount, classicTicksPerBeat});
 };
 
 const calc_baseTicksForBeat = ({

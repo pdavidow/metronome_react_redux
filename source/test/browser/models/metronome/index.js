@@ -294,25 +294,74 @@ test('Metronome model', nestOuter => {
       assert.end();
       audioTestEnd();
     });
-    nestInner.test('......Report problematic beat #', assert => {
+    nestInner.test('......Report problem 1', assert => {
       audioTestStart();
       const msg = 'Problem is in third beat';
 
-      const beats = [{rh: 1, lh: 2},{rh: 1, lh: 2},{rh: 1, lh: 3}];
+      const beats = [{rh: 1, lh: 2},{rh: 1, lh: 2},{rh: 5, lh: 3}];
       const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 2};
-      const actual = {index: 0};
+
+      let actual = {
+        beatIndex: 0,
+        tickCount: 0,
+        classicTicksPerBeat: 0,
+        message: ''
+      };
 
       try {
         play({beats, metronomeSetting, isLooping: false, onEnded: ()=>{}});
       }
       catch (e) {
-        actual.index = e.beatIndex;
-        actual.message = e.message;
+        actual = {
+          beatIndex: e.beatIndex,
+          tickCount: e.tickCount,
+          classicTicksPerBeat: e.classicTicksPerBeat,
+          message: e.message
+        };
       };
 
       const expected = {
-        index: 2, // 0 based
-        message: 'Beat #3: Tick count must be cleanly divisible by Classic Ticks Per Beat' // 1 based
+        beatIndex: 2, // 0 based
+        tickCount: 15,
+        classicTicksPerBeat: 2,
+        message: 'Beat #3: Tick count of 15 is not cleanly divisible by Classic Ticks Per Beat of 2' // 1 based
+      };
+
+      assert.deepEqual(actual, expected, msg);
+      assert.end();
+      audioTestEnd();
+    });
+    nestInner.test('......Report problem 2', assert => {
+      audioTestStart();
+      const msg = 'Only first problem of several is reported';
+
+      const beats = [{rh: 1, lh: 8},{rh: 9, lh: 3},{rh: 9, lh: 3}];
+      const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 4};
+
+      let actual = {
+        beatIndex: 0,
+        tickCount: 0,
+        classicTicksPerBeat: 0,
+        message: ''
+      };
+
+      try {
+        play({beats, metronomeSetting, isLooping: false, onEnded: ()=>{}});
+      }
+      catch (e) {
+        actual = {
+          beatIndex: e.beatIndex,
+          tickCount: e.tickCount,
+          classicTicksPerBeat: e.classicTicksPerBeat,
+          message: e.message
+        };
+      };
+
+      const expected = {
+        beatIndex: 1, // 0 based
+        tickCount: 9,
+        classicTicksPerBeat: 4,
+        message: 'Beat #2: Tick count of 9 is not cleanly divisible by Classic Ticks Per Beat of 4' // 1 based
       };
 
       assert.deepEqual(actual, expected, msg);
