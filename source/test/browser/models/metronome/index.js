@@ -27,6 +27,7 @@ import {
   waitInAudioTime,
   embeddedAudioTest_playTicks
 } from '../../../browser/utils';
+import {TickCountVsClassicTicksPerBeatError} from '../../../../exceptions';
 ////////////////////////////////////
 
 const audioContext = initializedAudioContext();
@@ -264,6 +265,57 @@ test('Metronome model', nestOuter => {
       const actual = (value == 1);
 
       assert.equal(actual, expected, msg);
+      assert.end();
+      audioTestEnd();
+    });
+  });
+  nestOuter.test('...Validate Tick-count with classic-ticks-per-beat', (nestInner) => {
+    nestInner.test('......Custom exception', assert => {
+      audioTestStart();
+      const msg = 'Expecting TickCountVsClassicTicksPerBeatError';
+
+      const beats = [{rh: 1, lh: 3}];
+      const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 2};
+      const fn = () => play({beats, metronomeSetting, isLooping: false, onEnded: ()=>{}});
+
+      assert.throws(fn, TickCountVsClassicTicksPerBeatError, msg);
+      assert.end();
+      audioTestEnd();
+    });
+    nestInner.test('......Custom exception', assert => {
+      audioTestStart();
+      const msg = 'Not expecting TickCountVsClassicTicksPerBeatError';
+
+      const beats = [{rh: 1, lh: 4}];
+      const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 2};
+      const fn = () => play({beats, metronomeSetting, isLooping: false, onEnded: ()=>{}});
+
+      assert.doesNotThrow(fn, TickCountVsClassicTicksPerBeatError, msg);
+      assert.end();
+      audioTestEnd();
+    });
+    nestInner.test('......Report problematic beat #', assert => {
+      audioTestStart();
+      const msg = 'Problem is in third beat';
+
+      const beats = [{rh: 1, lh: 2},{rh: 1, lh: 2},{rh: 1, lh: 3}];
+      const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 2};
+      const actual = {index: 0};
+
+      try {
+        play({beats, metronomeSetting, isLooping: false, onEnded: ()=>{}});
+      }
+      catch (e) {
+        actual.index = e.beatIndex;
+        actual.message = e.message;
+      };
+
+      const expected = {
+        index: 2, // 0 based
+        message: 'Beat #3: Tick count must be cleanly divisible by Classic Ticks Per Beat' // 1 based
+      };
+
+      assert.deepEqual(actual, expected, msg);
       assert.end();
       audioTestEnd();
     });
