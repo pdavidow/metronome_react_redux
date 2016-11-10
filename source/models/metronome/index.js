@@ -10,6 +10,7 @@ import {
   playTicks,
   stopTicks
 } from '../audio';
+import {TickCountVsClassicTicksPerBeatError} from '../../exceptions';
 ////////////////////////////////////
 
 let isStopped = true;
@@ -91,24 +92,25 @@ const calc_baseTicksForBeats = ({
 } = {}) => {
   const beatDuration = calc_beatDuration({metronomeSetting});
 
-  return flatMap(beats, ((beat, index) => {
-    const shiftAmount = beatDuration * index;
-    return calc_baseTicksForBeat({beat, metronomeSetting, shiftAmount});
+  return flatMap(beats, ((beat, beatIndex) => {
+    const shiftAmount = beatDuration * beatIndex;
+    return calc_baseTicksForBeat({beat, beatIndex, metronomeSetting, shiftAmount});
   }));
 };
 
-const validateTickCount = ({tickCount, classicTicksPerBeat}) => {
-  if (tickCount%classicTicksPerBeat != 0) throw new Error("Tick-count must be cleanly divisible by classicTicksPerBeat");
+const validateTickCountWithClassicTicksPerBeat = ({tickCount, classicTicksPerBeat, beatIndex}) => {
+  if (tickCount%classicTicksPerBeat != 0) throw new TickCountVsClassicTicksPerBeatError({beatIndex});
 };
 
 const calc_baseTicksForBeat = ({
   beat = {rh: 1, lh: 1},
+  beatIndex = 0,
   metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1},
   shiftAmount = 0
 } = {}) => {
   const {classicTicksPerBeat} = metronomeSetting;
   const tickCount = calc_tickCount({beat});
-  validateTickCount({tickCount, classicTicksPerBeat});
+  validateTickCountWithClassicTicksPerBeat({tickCount, classicTicksPerBeat, beatIndex});
 
   const tickDuration = calc_tickDuration({beat, metronomeSetting});
   const startOffsets = calc_shiftedTickStartTimeOffsets({tickCount, tickDuration, shiftAmount});

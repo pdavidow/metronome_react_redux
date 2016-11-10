@@ -10,6 +10,7 @@ import {
   calc_ticks,
   play
 } from '../../../models/metronome';
+import {TickCountVsClassicTicksPerBeatError} from '../../../exceptions';
 ////////////////////////////////////
 
 test('Metronome model', nestOuter => {
@@ -859,15 +860,40 @@ test('Metronome model', nestOuter => {
     assert.deepEqual(actual, expected, msg);
     assert.end();
   });
-  nestOuter.test('...Validate beats with metronome-setting', (assert) => {
-    const msg = 'Tick-count must be cleanly divisible by classic-ticks-per-beat';
+  nestOuter.test('...Validate Tick-count with classic-ticks-per-beat', (nestInner) => {
+    nestInner.test('......Custom exception', assert => {
+      const msg = 'Expecting TickCountVsClassicTicksPerBeatError';
 
-    const beats = [{rh: 1, lh: 3}];
-    const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 2};
-    const fn = () => play({beats, metronomeSetting});
+      const beats = [{rh: 1, lh: 3}];
+      const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 2};
+      const fn = () => play({beats, metronomeSetting});
 
-    assert.throws(fn, Error, msg);
-    assert.end();
+      assert.throws(fn, TickCountVsClassicTicksPerBeatError, msg);
+      assert.end();
+    });
+    nestInner.test('......Report problematic beat #', assert => {
+      const msg = 'Problem is in third beat';
+
+      const beats = [{rh: 1, lh: 2},{rh: 1, lh: 2},{rh: 1, lh: 3}];
+      const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 2};
+      const actual = {index: 0};
+
+      try {
+        play({beats, metronomeSetting});
+      }
+      catch (e) {
+        actual.index = e.beatIndex;
+        actual.message = e.message;
+      };
+
+      const expected = {
+        index: 2, // 0 based
+        message: 'Beat #3: Tick count must be cleanly divisible by Classic Ticks Per Beat' // 1 based
+      };
+
+      assert.deepEqual(actual, expected, msg);
+      assert.end();
+    });
   });
 });
 
