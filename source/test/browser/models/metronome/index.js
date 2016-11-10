@@ -300,24 +300,13 @@ test('Metronome model', nestOuter => {
 
       const beats = [{rh: 1, lh: 2},{rh: 1, lh: 2},{rh: 5, lh: 3}];
       const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 2};
-
-      let actual = {
-        beatIndex: 0,
-        tickCount: 0,
-        classicTicksPerBeat: 0,
-        message: ''
-      };
+      let actual = {};
 
       try {
         play({beats, metronomeSetting, isLooping: false, onEnded: ()=>{}});
       }
-      catch (e) {
-        actual = {
-          beatIndex: e.beatIndex,
-          tickCount: e.tickCount,
-          classicTicksPerBeat: e.classicTicksPerBeat,
-          message: e.message
-        };
+      catch ({beatIndex, tickCount, classicTicksPerBeat, message}) {
+        actual = {beatIndex, tickCount, classicTicksPerBeat, message};
       };
 
       const expected = {
@@ -337,24 +326,13 @@ test('Metronome model', nestOuter => {
 
       const beats = [{rh: 1, lh: 8},{rh: 9, lh: 3},{rh: 9, lh: 3}];
       const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 4};
-
-      let actual = {
-        beatIndex: 0,
-        tickCount: 0,
-        classicTicksPerBeat: 0,
-        message: ''
-      };
+      let actual = {};
 
       try {
         play({beats, metronomeSetting, isLooping: false, onEnded: ()=>{}});
       }
-      catch (e) {
-        actual = {
-          beatIndex: e.beatIndex,
-          tickCount: e.tickCount,
-          classicTicksPerBeat: e.classicTicksPerBeat,
-          message: e.message
-        };
+      catch ({beatIndex, tickCount, classicTicksPerBeat, message}) {
+        actual = {beatIndex, tickCount, classicTicksPerBeat, message};
       };
 
       const expected = {
