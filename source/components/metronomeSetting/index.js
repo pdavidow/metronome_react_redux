@@ -1,5 +1,13 @@
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
+import {
+  Button,
+  Col,
+  ControlLabel,
+  Form,
+  FormGroup,
+  Panel
+} from 'react-bootstrap';
 
 import {setMetronomeSetting} from '../../actions';
 ////////////////////////////////////
@@ -24,18 +32,31 @@ export default (React) => {
 
     return (
       <fieldset id='metronomeSettingFieldset' disabled={isPlaying ? "disabled" : ""}>
-        <form className='metronomeSetting' onSubmit={handleSubmit}>
-          <h3>Metronome Setting</h3>
-          <div className='classicTicksPerMinute'>
-            <label>Classic Ticks Per Minute</label>
-            <Field id="classicTicksPerMinuteInputField" name="classicTicksPerMinute" component="input" type="number" min="1"/>
-          </div>
-          <div className='classicTicksPerBeat'>
-            <label>Classic Ticks Per Beat</label>
-            <Field id="classicTicksPerBeatInputField" name="classicTicksPerBeat" component="input" type="number" min="1"/>
-          </div>
-          <button type="submit">Submit</button>
-        </form>
+        <Panel header={<h1>Metronome Setting</h1>}>
+          <Form horizontal className='metronomeSetting' onSubmit={handleSubmit}>
+            <FormGroup>
+              <div className='classicTicksPerMinute'>
+                <Col componentClass={ControlLabel} sm={2}>
+                  Classic Ticks Per Minute
+                </Col>
+                <Col sm={10}>
+                  <Field id="classicTicksPerMinuteInputField" name="classicTicksPerMinute" component="input" type="number" min="1"/>
+                </Col>
+              </div>
+            </FormGroup>
+            <FormGroup>
+              <div className='classicTicksPerBeat'>
+                <Col componentClass={ControlLabel} sm={2}>
+                  Classic Ticks Per Beat
+                </Col>
+                <Col sm={10}>
+                  <Field id="classicTicksPerBeatInputField" name="classicTicksPerBeat" component="input" type="number" min="1"/>
+                </Col>
+              </div>
+            </FormGroup>
+            <Button type="submit" bsStyle="success">Submit</Button>
+          </Form>
+        </Panel>
       </fieldset>
     );
   };

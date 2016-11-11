@@ -1,3 +1,8 @@
+import {
+  Button,
+  ButtonGroup
+} from 'react-bootstrap';
+
 import {initialize as initializeAudio} from '../../models/audio';
 ////////////////////////////////////
 
@@ -37,8 +42,10 @@ export default (React) => {
         return (
           <fieldset>
             <div className="player">
-              <button type="submit" id="playButton" disabled={isPlaying ? "disabled" : ""} onClick={onClick_Play}>  P L A Y  </button>
-              <button type="button" id="stopButton" disabled={isPlaying ? "" : "disabled"} onClick={onClick_Stop}>  S T O P  </button>
+              <ButtonGroup bsSize="large">
+                <Button type="button" bsStyle="primary" id="playButton" disabled={isPlaying} onClick={onClick_Play}>  P L A Y  </Button>
+                <Button type="button" bsStyle="primary" id="stopButton" disabled={!isPlaying} onClick={onClick_Stop}>  S T O P  </Button>
+              </ButtonGroup >
               <span hidden={(isPlaying && isLooping) ? "" : "hidden"} id="loopCountSpan"><label> Loop Count: </label><label id="loopCount">{loopCount}</label></span>
             </div>
           </fieldset>

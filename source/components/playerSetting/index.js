@@ -1,5 +1,9 @@
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
+import {
+  Button,
+  Panel
+} from 'react-bootstrap';
 
 import {setPlayerSetting} from '../../actions';
 ////////////////////////////////////
@@ -23,14 +27,15 @@ export default (React) => {
 
     return (
       <fieldset id='playerSettingFieldset' disabled={isPlaying ? "disabled" : ""}>
-        <form className='playerSetting' onSubmit={handleSubmit} disabled={isPlaying ? "disabled" : ""}>
-          <h3>Player Setting</h3>
-          <div className='isLooping'>
-            <label>Loop</label>
-            <Field name="isLooping" id="loopCheckbox" component="input" type="checkbox"/>
-          </div>
-          <button type="submit">Submit</button>
-        </form>
+        <Panel header={<h1>Player Setting</h1>}>
+          <form className='playerSetting' onSubmit={handleSubmit} disabled={isPlaying ? "disabled" : ""}>
+            <div className='isLooping'>
+              <label>Loop</label>
+              <Field name="isLooping" id="loopCheckbox" component="input" type="checkbox"/>
+            </div>
+            <Button type="submit" bsStyle="success">Submit</Button>
+          </form>
+        </Panel>
       </fieldset>
     );
   };
