@@ -1,16 +1,20 @@
 import test from 'tape';
 import deepFreeze from 'deep-freeze';
 
-import {setPlayerSetting} from '../../../../actions';
+import {
+  setPlayerSetting,
+  setIsLoopBreak
+} from '../../../../actions';
 import playerSetting from '../../../../store/reducers/playerSetting';
 ////////////////////////////////////
 
 test('PlayerSetting reducer', nestOuter => {
   nestOuter.test('...initial', assert => {
-    const message = `should set {isLooping: false}`;
+    const message = `should set {isLooping: false, isLoopBreak: true}`;
 
     const expected = {
-      isLooping: false
+      isLooping: false,
+      isLoopBreak: true
     };
     const actual = playerSetting();
 
@@ -23,6 +27,21 @@ test('PlayerSetting reducer', nestOuter => {
     const stateBefore = {isLooping: false};
     const action = setPlayerSetting({isLooping: true});
     const expected = {isLooping: true};
+
+    deepFreeze(stateBefore);
+    deepFreeze(action);
+
+    const actual = playerSetting(stateBefore, action);
+
+    assert.deepEqual(actual, expected, message);
+    assert.end();
+  });
+  nestOuter.test('......SET_IS_LOOP_BREAK', assert => {
+    const message = 'should set isLoopBreak to false';
+
+    const stateBefore = {isLoopBreak: true};
+    const action = setIsLoopBreak({isLoopBreak: false});
+    const expected = {isLoopBreak: false};
 
     deepFreeze(stateBefore);
     deepFreeze(action);

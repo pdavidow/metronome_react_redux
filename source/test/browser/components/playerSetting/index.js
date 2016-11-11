@@ -27,10 +27,10 @@ test('PlayerSetting component', nestOuter => {
       simulate.change(loopCheckbox, {target: {value: isLooping}});
       simulate.submit(form);
 
-      const actual = store.getState().playerSetting;
-      const expected = {isLooping};
+      const actual = store.getState().playerSetting.isLooping;
+      const expected = isLooping;
 
-      assert.deepEqual(actual, expected, msg);
+      assert.equal(actual, expected, msg);
       assert.end();
     });
     nestInner.test('......False if unchecked', assert => {
@@ -49,10 +49,10 @@ test('PlayerSetting component', nestOuter => {
       simulate.change(loopCheckbox, {target: {value: isLooping}});
       simulate.submit(form);
 
-      const actual = store.getState().playerSetting;
-      const expected = {isLooping};
+      const actual = store.getState().playerSetting.isLooping;
+      const expected = isLooping;
 
-      assert.deepEqual(actual, expected, msg);
+      assert.equal(actual, expected, msg);
       assert.end();
     });
   });

@@ -1,6 +1,7 @@
 import {
   SET_BEATS,
   SET_METRONOME_SETTING,
+  SET_IS_LOOP_BREAK,
   SET_IS_PLAYING,
   SET_PLAYER_SETTING,
   INCREMENT_LOOP_COUNT,
@@ -18,19 +19,14 @@ export const setBeats = (beats) => {
 export const setMetronomeSetting = ({classicTicksPerMinute, classicTicksPerBeat}) => {
   return {
     type: SET_METRONOME_SETTING,
-    payload: {
-      classicTicksPerMinute,
-      classicTicksPerBeat
-    }
+    payload: {classicTicksPerMinute, classicTicksPerBeat}
   };
 };
 
 export const setIsPlaying = ({isPlaying}) => {
   return {
     type: SET_IS_PLAYING,
-    payload: {
-      isPlaying
-    }
+    payload: {isPlaying}
   };
 };
 
@@ -48,11 +44,16 @@ export const resetLoopCount = () => {
   };
 };
 
-export const setPlayerSetting = ({isLooping}) => {
+export const setPlayerSetting = ({isLooping}) => { // todo NOPE
   return {
     type: SET_PLAYER_SETTING,
-    payload: {
-      isLooping
-    }
+    payload: {isLooping}
+  };
+};
+
+export const setIsLoopBreak = ({isLoopBreak}) => {
+  return {
+    type: SET_IS_LOOP_BREAK,
+    payload: {isLoopBreak}
   };
 };
