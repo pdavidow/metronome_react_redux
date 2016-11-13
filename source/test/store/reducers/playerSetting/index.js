@@ -2,7 +2,7 @@ import test from 'tape';
 import deepFreeze from 'deep-freeze';
 
 import {
-  setPlayerSetting,
+  setIsLooping,
   setIsLoopBreak
 } from '../../../../actions';
 import playerSetting from '../../../../store/reducers/playerSetting';
@@ -25,7 +25,7 @@ test('PlayerSetting reducer', nestOuter => {
     const message = 'should set isLooping to true';
 
     const stateBefore = {isLooping: false};
-    const action = setPlayerSetting({isLooping: true});
+    const action = setIsLooping({isLooping: true});
     const expected = {isLooping: true};
 
     deepFreeze(stateBefore);

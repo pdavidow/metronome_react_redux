@@ -6,7 +6,7 @@ import {
   getDomNode,
   getElementBySelector,
   defaultStore} from '../../utils';
-import {setPlayerSetting} from '../../../../actions';
+import {setIsLooping} from '../../../../actions';
 ////////////////////////////////////
 
 const getLoopCheckbox = ({domNode}) => getElementBySelector({domNode, selector: '#loopCheckbox'});
@@ -40,7 +40,7 @@ test('PlayerSetting component', nestOuter => {
 
       // First set to true
       const store = defaultStore();
-      store.dispatch(setPlayerSetting({isLooping: true}));
+      store.dispatch(setIsLooping({isLooping: true}));
       const domNode = getDomNode({store});
 
       const loopCheckbox = getLoopCheckbox({domNode});

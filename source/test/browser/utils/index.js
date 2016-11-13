@@ -10,7 +10,7 @@ import combinedReducers from '../../../store/reducers';
 import {
   setBeats,
   setMetronomeSetting,
-  setPlayerSetting
+  setIsLooping
 } from '../../../actions';
 ////////////////////////////////////
 
@@ -20,12 +20,12 @@ const setStore = ({
   store = defaultStore(),
   beats,
   metronomeSetting,
-  playerSetting
+  isLooping = false
 }) => {
   const newStore = {...store};
   if (beats != undefined) newStore.dispatch(setBeats(beats));
   if (metronomeSetting != undefined) newStore.dispatch(setMetronomeSetting({...metronomeSetting}));
-  if (playerSetting != undefined) newStore.dispatch(setPlayerSetting({...playerSetting}));
+  if (isLooping != undefined) newStore.dispatch(setIsLooping({isLooping}));
   return newStore;
 };
 

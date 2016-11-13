@@ -3,7 +3,7 @@ import {
   SET_METRONOME_SETTING,
   SET_IS_LOOP_BREAK,
   SET_IS_PLAYING,
-  SET_PLAYER_SETTING,
+  SET_IS_LOOPING,
   INCREMENT_LOOP_COUNT,
   RESET_LOOP_COUNT
 } from '../constants/actionTypes';
@@ -44,9 +44,9 @@ export const resetLoopCount = () => {
   };
 };
 
-export const setPlayerSetting = ({isLooping}) => { // todo NOPE
+export const setIsLooping = ({isLooping}) => {
   return {
-    type: SET_PLAYER_SETTING,
+    type: SET_IS_LOOPING,
     payload: {isLooping}
   };
 };

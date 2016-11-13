@@ -355,8 +355,8 @@ test('Metronome model', nestOuter => {
     // 1 tick, at 1 second duration per tick
     const beats = [{rh: 1, lh: 1}];
     const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1};
-    const playerSetting = {isLooping: true};
-    const store = setStore({beats, metronomeSetting, playerSetting});
+    const isLooping = true;
+    const store = setStore({beats, metronomeSetting, isLooping});
     const domNode = getDomNode({store});
     let iterationCount = -1; // offset extra final count
     const expected = 5;

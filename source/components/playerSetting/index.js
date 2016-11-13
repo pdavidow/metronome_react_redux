@@ -5,7 +5,7 @@ import {
   Panel
 } from 'react-bootstrap';
 
-import {setPlayerSetting} from '../../actions';
+import {setIsLooping} from '../../actions';
 ////////////////////////////////////
 
 export default (React) => {
@@ -57,7 +57,7 @@ export default (React) => {
   const mapDispatchToProps = (dispatch) => {
     return {
       // tricky: onSubmit turns into handleSubmit
-      onSubmit: ({isLooping}) => dispatch(setPlayerSetting({isLooping}))
+      onSubmit: ({isLooping}) => dispatch(setIsLooping({isLooping}))
     }
   };
 
