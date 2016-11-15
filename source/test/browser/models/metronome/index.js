@@ -9,8 +9,7 @@ import {Simulate as simulate} from 'react-addons-test-utils';
 
 import {
   calc_ticks,
-  play,
-  playTicks
+  play
 } from '../../../../models/metronome';
 import {
   isTick_Rh,
@@ -18,7 +17,10 @@ import {
   isTick_RhLh,
   isTick_Background
 } from '../../../../models/tick';
-import {initializedAudioContext} from '../../../../models/audio';
+import {
+  initializedAudioContext,
+  playTicks
+} from '../../../../models/audio';
 import {
   audioTestStart,
   audioTestEnd,
@@ -428,7 +430,6 @@ test('Metronome model', nestOuter => {
     ];
 
     embeddedAudioTest_playTicks.loopBreakBasic = ({ticks}) => {
-      console.log("ticks", ticks);
       const filteredTicks = ticks.map((tick) => omit(tick, 'spacerOnEnded'));
       actual.push(filteredTicks);
       iterationCount++;

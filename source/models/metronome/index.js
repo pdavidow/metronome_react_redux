@@ -203,6 +203,5 @@ export {
   calc_tickStartTimeOffsets,
   calc_ticks,
   play,
-  playTicks, // todo what is this doing here ??????????
   stop
 };

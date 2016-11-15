@@ -103,26 +103,11 @@ const playOscillator = ({oscillator, startOffset = 0, playDuration = 1, onEnded}
   oscillator.stop(startTime + playDuration);
 };
 
-const oscillator_Spacer = () => {
-  const freq = AUDIO_FREQ_SILENT;
-  return oscillator({freq});
-};
-const oscillator_Rh = () => {
-  const freq = AUDIO_FREQ_RH;
-  return oscillator({freq});
-};
-const oscillator_Lh = () => {
-  const freq = AUDIO_FREQ_LH;
-  return oscillator({freq});
-};
-const oscillator_RhLh = () => {
-  const freq = AUDIO_FREQ_RH_LH;
-  return oscillator({freq});
-};
-const oscillator_Background = () => {
-  const freq = AUDIO_FREQ_BACKGROUND;
-  return oscillator({freq});
-};
+const oscillator_Spacer     = () => oscillator({freq: AUDIO_FREQ_SILENT});
+const oscillator_Rh         = () => oscillator({freq: AUDIO_FREQ_RH});
+const oscillator_Lh         = () => oscillator({freq: AUDIO_FREQ_LH});
+const oscillator_RhLh       = () => oscillator({freq: AUDIO_FREQ_RH_LH});
+const oscillator_Background = () => oscillator({freq: AUDIO_FREQ_BACKGROUND});
 
 const oscillator = ({
   freq = 0
