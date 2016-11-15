@@ -10,7 +10,8 @@ import combinedReducers from '../../../store/reducers';
 import {
   setBeats,
   setMetronomeSetting,
-  setIsLooping
+  setIsLooping,
+  setIsLoopBreak
 } from '../../../actions';
 ////////////////////////////////////
 
@@ -20,12 +21,14 @@ const setStore = ({
   store = defaultStore(),
   beats,
   metronomeSetting,
-  isLooping = false
+  isLooping = false,
+  isLoopBreak = false
 }) => {
   const newStore = {...store};
   if (beats != undefined) newStore.dispatch(setBeats(beats));
   if (metronomeSetting != undefined) newStore.dispatch(setMetronomeSetting({...metronomeSetting}));
   if (isLooping != undefined) newStore.dispatch(setIsLooping({isLooping}));
+  if (isLoopBreak != undefined) newStore.dispatch(setIsLoopBreak({isLoopBreak}));
   return newStore;
 };
 

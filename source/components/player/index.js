@@ -30,7 +30,7 @@ export default (React) => {
     const {isPlaying, loopCount} = player;
     const {isLooping} = playerSetting;
 
-    const onClick_Play = () => onPlay({beats, metronomeSetting, isLooping});
+    const onClick_Play = () => onPlay({beats, metronomeSetting, playerSetting});
     const onClick_Stop = () => onStop();
 
     return {

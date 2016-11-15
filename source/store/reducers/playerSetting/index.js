@@ -6,7 +6,7 @@ import {
 
 const defaultState = {
   isLooping: false,
-  isLoopBreak: true
+  isLoopBreak: false
 };
 
 export default (state = defaultState, action = {}) => {

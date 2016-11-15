@@ -153,24 +153,40 @@ const addTicks = ({ticks, beats, metronomeSetting, onEndedWithLoop}) => {
 const play = ({
   beats = [{rh: 1, lh: 1}],
   metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1},
-  isLooping = false,
+  playerSetting = {isLooping: false, isLoopBreak: true},
   onLoopCounting,
   onEnded
 } = {}) => {
   const populateTicks = ({ticks, beats, metronomeSetting, onEndedWithLoop}) => addTicks({ticks, beats, metronomeSetting, onEndedWithLoop});
   isStopped = false;
   const ticks = [];
-  const onEndedWithLoop = createOnEndedWithLoop({ticks, isLooping, onLoopCounting, onEnded});
+  const onEndedWithLoop = createOnEndedWithLoop({ticks, metronomeSetting, playerSetting, onLoopCounting, onEnded});
 
   populateTicks({ticks, beats, metronomeSetting, onEndedWithLoop});
   playTicks({ticks});
 };
 
-const createOnEndedWithLoop = ({ticks, isLooping, onLoopCounting, onEnded}) => {
+const createOnEndedWithLoop = ({ticks, metronomeSetting, playerSetting, onLoopCounting, onEnded}) => {
+  const calc_loopBreakTicks = ({ticks, metronomeSetting}) => {
+    const {classicTicksPerBeat} = metronomeSetting;
+    const loopBreakBeat = {rh: classicTicksPerBeat, lh: classicTicksPerBeat};
+    const loopBreakTicks = calc_baseTicksForBeat({beat: loopBreakBeat, metronomeSetting});
+    spacerize({tick: last(loopBreakTicks), onEndedWithLoop: () => {if (!isStopped) playTicks({ticks})} });
+
+    return loopBreakTicks;
+  };
+
+  const {isLooping, isLoopBreak} = playerSetting;
+  const loopBreakTicks = isLoopBreak ? calc_loopBreakTicks({ticks, metronomeSetting}) : null;
+
   return () => {
     if (!isLooping || isStopped) return onEnded();
     onLoopCounting();
-    playTicks({ticks});
+
+    if (isLoopBreak)
+      playTicks({ticks: loopBreakTicks});
+    else
+      playTicks({ticks});
   };
 };
 
@@ -187,6 +203,6 @@ export {
   calc_tickStartTimeOffsets,
   calc_ticks,
   play,
-  playTicks,
+  playTicks, // todo what is this doing here ??????????
   stop
 };

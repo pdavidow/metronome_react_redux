@@ -39,13 +39,13 @@ export default (React) => {
 
   const mapDispatchToProps = (dispatch) => {
     return {
-      onPlay: (({beats, metronomeSetting, isLooping}) => {
+      onPlay: (({beats, metronomeSetting, playerSetting}) => {
         dispatch(setIsPlaying({isPlaying: true}));
         const onEnded = () => dispatch(setIsPlaying({isPlaying: false}));
         const onLoopCounting = () => dispatch(incrementLoopCount());
 
         try {
-          play({beats, metronomeSetting, isLooping, onLoopCounting, onEnded});
+          play({beats, metronomeSetting, playerSetting, onLoopCounting, onEnded});
         }
         catch (e) {
           alert(e.message);

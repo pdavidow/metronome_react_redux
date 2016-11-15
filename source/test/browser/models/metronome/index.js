@@ -1,7 +1,10 @@
 import test from 'tape-async';
 import sleep from 'sleep-promise';
 import 'babel-polyfill'; // http://stackoverflow.com/questions/28976748/regeneratorruntime-is-not-defined
-import {last} from 'lodash';
+import {
+  last,
+  omit
+} from 'lodash';
 import {Simulate as simulate} from 'react-addons-test-utils';
 
 import {
@@ -270,7 +273,7 @@ test('Metronome model', nestOuter => {
     });
   });
   nestOuter.test('...Validate Tick-count with classic-ticks-per-beat', (nestInner) => {
-    nestInner.test('......Custom exception', assert => {
+    nestInner.test('......Yes exception', assert => {
       audioTestStart();
       const msg = 'Expecting TickCountVsClassicTicksPerBeatError';
 
@@ -282,7 +285,7 @@ test('Metronome model', nestOuter => {
       assert.end();
       audioTestEnd();
     });
-    nestInner.test('......Custom exception', assert => {
+    nestInner.test('......No exception', assert => {
       audioTestStart();
       const msg = 'Not expecting TickCountVsClassicTicksPerBeatError';
 
@@ -376,6 +379,69 @@ test('Metronome model', nestOuter => {
     const endTime = startTime + waitTime; // approx
     simulate.click(getPlayButton({domNode}));
     await sleep(16000) /* msec */; // slows down audio clock by about 1/3
+    audioTestEnd();
+  });
+  nestOuter.test('...Loop break should insert one beat of {rh: x, lh: x} prior to each iteration (except first), where x is classic ticks per beat', async(assert) => {
+    audioTestStart();
+    const msg = 'Should loop twice: 3 iterations with loop break of one rhLh tick in center';
+
+    // 1 tick, at 1 second duration per tick
+    const beats = [{rh: 1, lh: 1}];
+    const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1};
+    const isLooping = true;
+    const isLoopBreak = true;
+    const store = setStore({beats, metronomeSetting, isLooping, isLoopBreak});
+    const domNode = getDomNode({store});
+    let iterationCount = 0;
+    const tickDuration = 1;
+
+    const actual = [];
+
+    const expected = [
+      [
+        {
+          isRH: true,
+          isLH: true,
+          startOffset: 0 * tickDuration,
+          duration: tickDuration,
+          isSpacer: true
+        }
+      ],
+      [
+        { // break
+          isRH: true,
+          isLH: true,
+          startOffset: 0 * tickDuration,
+          duration: tickDuration,
+          isSpacer: true
+        }
+      ],
+      [
+        {
+          isRH: true,
+          isLH: true,
+          startOffset: 0 * tickDuration,
+          duration: tickDuration,
+          isSpacer: true
+        }
+      ]
+    ];
+
+    embeddedAudioTest_playTicks.loopBreakBasic = ({ticks}) => {
+      console.log("ticks", ticks);
+      const filteredTicks = ticks.map((tick) => omit(tick, 'spacerOnEnded'));
+      actual.push(filteredTicks);
+      iterationCount++;
+      if (iterationCount == 3) {
+        embeddedAudioTest_playTicks.loopBreakBasic = null;
+        simulate.click(getStopButton({domNode}));
+
+        assert.deepEqual(actual, expected, msg);
+        assert.end();
+      };
+    };
+    simulate.click(getPlayButton({domNode}));
+    await sleep(10000) /* msec */; // slows down audio clock by about 1/3
     audioTestEnd();
   });
 });

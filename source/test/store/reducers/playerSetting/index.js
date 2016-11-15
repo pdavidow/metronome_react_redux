@@ -10,11 +10,11 @@ import playerSetting from '../../../../store/reducers/playerSetting';
 
 test('PlayerSetting reducer', nestOuter => {
   nestOuter.test('...initial', assert => {
-    const message = `should set {isLooping: false, isLoopBreak: true}`;
+    const message = `should set {isLooping: false, isLoopBreak: false}`;
 
     const expected = {
       isLooping: false,
-      isLoopBreak: true
+      isLoopBreak: false
     };
     const actual = playerSetting();
 
