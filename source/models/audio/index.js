@@ -61,17 +61,17 @@ const playTicks = ({
 };
 
 const playTick = ({tick}) => {
-  const {startOffset, onEnded} = tick;
+  const {startOffset} = tick;
   const playDuration = playDurationForTick({tick});
   const oscillator = oscillatorForTick({tick});
-  playOscillator({oscillator, startOffset, playDuration, onEnded});
+  playOscillator({oscillator, startOffset, playDuration});
 };
 
 const playTickAsSpacer = ({tick}) => {
-  const {startOffset, duration, spacerOnEnded} = tick;
+  const {startOffset, duration, spaceOnEnded} = tick;
   const playDuration = duration;
   const oscillator = oscillator_Spacer();
-  const onEnded = spacerOnEnded;
+  const onEnded = spaceOnEnded;
   playOscillator({oscillator, startOffset, playDuration, onEnded});
 };
 

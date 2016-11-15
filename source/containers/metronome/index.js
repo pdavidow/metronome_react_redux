@@ -41,15 +41,15 @@ export default (React) => {
     return {
       onPlay: (({beats, metronomeSetting, playerSetting}) => {
         dispatch(setIsPlaying({isPlaying: true}));
-        const onEnded = () => dispatch(setIsPlaying({isPlaying: false}));
+        const onPlayEnded = () => dispatch(setIsPlaying({isPlaying: false}));
         const onLoopCounting = () => dispatch(incrementLoopCount());
 
         try {
-          play({beats, metronomeSetting, playerSetting, onLoopCounting, onEnded});
+          play({beats, metronomeSetting, playerSetting, onLoopCounting, onPlayEnded});
         }
         catch (e) {
-          alert(e.message);
-          onEnded();
+          alert(e.message); // todo bootstrap...
+          onPlayEnded();
         };
       }),
       onStop: (() => {

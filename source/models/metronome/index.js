@@ -128,25 +128,25 @@ const calc_baseTicksForBeat = ({
   });
 };
 
-const spacerize = ({tick, onEndedWithLoop}) => {
+const spacerize = ({tick, onSpaceEnded}) => {
   if (!tick) return;
   const extra = {isSpacer: true};
-  if (onEndedWithLoop != undefined) extra.spacerOnEnded = onEndedWithLoop;
+  if (onSpaceEnded != undefined) extra.spaceOnEnded = onSpaceEnded;
   Object.assign(tick, extra);
 };
 
 const calc_ticks = ({
   beats = [{rh: 1, lh: 1}],
   metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1},
-  onEndedWithLoop
+  onTicksEnded
 } = {}) => {
   const ticks = calc_baseTicksForBeats({beats, metronomeSetting});
-  spacerize({tick: last(ticks), onEndedWithLoop});
+  spacerize({tick: last(ticks), onSpaceEnded: onTicksEnded});
   return ticks;
 };
 
-const addTicks = ({ticks, beats, metronomeSetting, onEndedWithLoop}) => {
-  const contents = calc_ticks({beats, metronomeSetting, onEndedWithLoop});
+const addTicks = ({ticks, beats, metronomeSetting, onTicksEnded}) => {
+  const contents = calc_ticks({beats, metronomeSetting, onTicksEnded});
   Array.prototype.push.apply(ticks, contents);
 };
 
@@ -155,23 +155,23 @@ const play = ({
   metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1},
   playerSetting = {isLooping: false, isLoopBreak: true},
   onLoopCounting,
-  onEnded
+  onPlayEnded
 } = {}) => {
-  const populateTicks = ({ticks, beats, metronomeSetting, onEndedWithLoop}) => addTicks({ticks, beats, metronomeSetting, onEndedWithLoop});
+  const populateTicks = ({ticks, beats, metronomeSetting, onTicksEnded}) => addTicks({ticks, beats, metronomeSetting, onTicksEnded});
   isStopped = false;
   const ticks = [];
-  const onEndedWithLoop = createOnEndedWithLoop({ticks, metronomeSetting, playerSetting, onLoopCounting, onEnded});
+  const onTicksEnded = calc_onTicksEnded({ticks, metronomeSetting, playerSetting, onLoopCounting, onPlayEnded});
 
-  populateTicks({ticks, beats, metronomeSetting, onEndedWithLoop});
+  populateTicks({ticks, beats, metronomeSetting, onTicksEnded});
   playTicks({ticks});
 };
 
-const createOnEndedWithLoop = ({ticks, metronomeSetting, playerSetting, onLoopCounting, onEnded}) => {
+const calc_onTicksEnded = ({ticks, metronomeSetting, playerSetting, onLoopCounting, onPlayEnded}) => {
   const calc_loopBreakTicks = ({ticks, metronomeSetting}) => {
     const {classicTicksPerBeat} = metronomeSetting;
     const loopBreakBeat = {rh: classicTicksPerBeat, lh: classicTicksPerBeat};
     const loopBreakTicks = calc_baseTicksForBeat({beat: loopBreakBeat, metronomeSetting});
-    spacerize({tick: last(loopBreakTicks), onEndedWithLoop: () => {if (!isStopped) playTicks({ticks})} });
+    spacerize({tick: last(loopBreakTicks), onSpaceEnded: () => {if (!isStopped) playTicks({ticks})} });
 
     return loopBreakTicks;
   };
@@ -180,7 +180,7 @@ const createOnEndedWithLoop = ({ticks, metronomeSetting, playerSetting, onLoopCo
   const loopBreakTicks = isLoopBreak ? calc_loopBreakTicks({ticks, metronomeSetting}) : null;
 
   return () => {
-    if (!isLooping || isStopped) return onEnded();
+    if (!isLooping || isStopped) return onPlayEnded();
     onLoopCounting();
 
     if (isLoopBreak)
