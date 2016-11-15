@@ -167,24 +167,24 @@ const play = ({
 };
 
 const calc_onTicksEnded = ({ticks, metronomeSetting, playerSetting, onLoopCounting, onPlayEnded}) => {
-  const calc_loopBreakTicks = ({ticks, metronomeSetting}) => {
+  const calc_breakTicksFollowedByTicks = ({ticks, metronomeSetting}) => {
     const {classicTicksPerBeat} = metronomeSetting;
-    const loopBreakBeat = {rh: classicTicksPerBeat, lh: classicTicksPerBeat};
-    const loopBreakTicks = calc_baseTicksForBeat({beat: loopBreakBeat, metronomeSetting});
-    spacerize({tick: last(loopBreakTicks), onSpaceEnded: () => {if (!isStopped) playTicks({ticks})} });
-
-    return loopBreakTicks;
+    const breakBeat = {rh: classicTicksPerBeat, lh: classicTicksPerBeat};
+    const breakTicks = calc_baseTicksForBeat({beat: breakBeat, metronomeSetting});
+    const onSpaceEnded  = () => {if (!isStopped) playTicks({ticks})};
+    spacerize({tick: last(breakTicks), onSpaceEnded});
+    return breakTicks;
   };
 
   const {isLooping, isLoopBreak} = playerSetting;
-  const loopBreakTicks = isLoopBreak ? calc_loopBreakTicks({ticks, metronomeSetting}) : null;
+  const breakTicksFollowedByTicks = isLoopBreak ? calc_breakTicksFollowedByTicks({ticks, metronomeSetting}) : null;
 
   return () => {
     if (!isLooping || isStopped) return onPlayEnded();
     onLoopCounting();
 
     if (isLoopBreak)
-      playTicks({ticks: loopBreakTicks});
+      playTicks({ticks: breakTicksFollowedByTicks});
     else
       playTicks({ticks});
   };
