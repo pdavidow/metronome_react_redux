@@ -383,66 +383,526 @@ test('Metronome model', nestOuter => {
     await sleep(16000) /* msec */; // slows down audio clock by about 1/3
     audioTestEnd();
   });
-  nestOuter.test('...Loop break should insert one beat of {rh: x, lh: x} prior to each iteration (except first), where x is classic ticks per beat', async(assert) => {
-    audioTestStart();
-    const msg = 'Should loop twice: 3 iterations with loop break of one rhLh tick in center';
+  nestOuter.test('...Loop break', nestInner => {
+    nestInner.test('......should loop twice: 3 iterations with 1 break of 1 rhLh ticks', async(assert) => {
+      audioTestStart();
+      const msg = 'Should loop twice: 3 iterations with loop break of one rhLh tick in center';
 
-    // 1 tick, at 1 second duration per tick
-    const beats = [{rh: 1, lh: 1}];
-    const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1};
-    const isLooping = true;
-    const isLoopBreak = true;
-    const store = setStore({beats, metronomeSetting, isLooping, isLoopBreak});
-    const domNode = getDomNode({store});
-    let iterationCount = 0;
-    const tickDuration = 1;
+      // 1 tick, at 1 second duration per tick
+      const beats = [{rh: 1, lh: 1}];
+      const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1};
+      const isLooping = true;
+      const isLoopBreak = true;
+      const store = setStore({beats, metronomeSetting, isLooping, isLoopBreak});
+      const domNode = getDomNode({store});
+      let iterationCount = 0;
+      const tickDuration = 1;
 
-    const actual = [];
+      const actual = [];
 
-    const expected = [
-      [
-        {
-          isRH: true,
-          isLH: true,
-          startOffset: 0 * tickDuration,
-          duration: tickDuration,
-          isSpacer: true
+      const expected = [
+        [
+          {
+            isRH: true,
+            isLH: true,
+            startOffset: 0 * tickDuration,
+            duration: tickDuration,
+            isSpacer: true
+          }
+        ],
+        [ // break
+          {
+            isRH: true,
+            isLH: true,
+            startOffset: 0 * tickDuration,
+            duration: tickDuration,
+            isSpacer: true
+          }
+        ],
+        [
+          {
+            isRH: true,
+            isLH: true,
+            startOffset: 0 * tickDuration,
+            duration: tickDuration,
+            isSpacer: true
+          }
+        ]
+      ];
+
+      embeddedAudioTest_playTicks.loopBreakTest0 = ({ticks}) => {
+        const filteredTicks = ticks.map((tick) => omit(tick, 'spaceOnEnded'));
+        actual.push(filteredTicks);
+        iterationCount++;
+        if (iterationCount == 3) {
+          embeddedAudioTest_playTicks.loopBreakTest0 = null;
+          simulate.click(getStopButton({domNode}));
+
+          assert.deepEqual(actual, expected, msg);
+          assert.end();
         }
-      ],
-      [
-        { // break
-          isRH: true,
-          isLH: true,
-          startOffset: 0 * tickDuration,
-          duration: tickDuration,
-          isSpacer: true
-        }
-      ],
-      [
-        {
-          isRH: true,
-          isLH: true,
-          startOffset: 0 * tickDuration,
-          duration: tickDuration,
-          isSpacer: true
-        }
-      ]
-    ];
-
-    embeddedAudioTest_playTicks.loopBreakBasic = ({ticks}) => {
-      const filteredTicks = ticks.map((tick) => omit(tick, 'spaceOnEnded'));
-      actual.push(filteredTicks);
-      iterationCount++;
-      if (iterationCount == 3) {
-        embeddedAudioTest_playTicks.loopBreakBasic = null;
-        simulate.click(getStopButton({domNode}));
-
-        assert.deepEqual(actual, expected, msg);
-        assert.end();
+        ;
       };
-    };
-    simulate.click(getPlayButton({domNode}));
-    await sleep(10000) /* msec */; // slows down audio clock by about 1/3
-    audioTestEnd();
+      simulate.click(getPlayButton({domNode}));
+      await sleep(200000) /* msec */; // slows down audio clock by about 1/3
+      audioTestEnd();
+    });
   });
 });
+
+// put here separately to avoid test conflicts
+test('Metronome model', nestOuter => {
+  nestOuter.test('...Loop break', nestInner => {
+    nestInner.test('......should loop thrice: 5 iterations with 2 breaks of 6 rhLh ticks', async(assert) => {
+      audioTestStart();
+      const msg = 'Should loop thrice: 5 iterations with 2 breaks of 6 rhLh ticks';
+
+      const beats = [{rh: 2, lh: 3}, {rh: 3, lh: 4}];
+      const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 6};
+      const isLooping = true;
+      const isLoopBreak = true;
+      const store = setStore({beats, metronomeSetting, isLooping, isLoopBreak});
+      const domNode = getDomNode({store});
+      let iterationCount = 0;
+
+      const tickDuration_beat0 = 0.5;
+      const tickDuration_beat1 = 0.25;
+      const tickDuration_beatBreak = 0.5;
+      const beatDuration = 3;
+
+      const actual = [];
+
+      const expected = [
+        [
+          {
+            isRH: true,
+            isLH: true,
+            startOffset: (0 * beatDuration) + (0 * tickDuration_beat0),
+            duration: tickDuration_beat0
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (0 * beatDuration) + (1 * tickDuration_beat0),
+            duration: tickDuration_beat0,
+          },
+          {
+            isRH: false,
+            isLH: true,
+            startOffset: (0 * beatDuration) + (2 * tickDuration_beat0),
+            duration: tickDuration_beat0
+          },
+          {
+            isRH: true,
+            isLH: false,
+            startOffset: (0 * beatDuration) + (3 * tickDuration_beat0),
+            duration: tickDuration_beat0,
+          },
+          {
+            isRH: false,
+            isLH: true,
+            startOffset: (0 * beatDuration) + (4 * tickDuration_beat0),
+            duration: tickDuration_beat0
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (0 * beatDuration) + (5 * tickDuration_beat0),
+            duration: tickDuration_beat0,
+          },
+          {
+            isRH: true,
+            isLH: true,
+            startOffset: (1 * beatDuration) + (0 * tickDuration_beat1),
+            duration: tickDuration_beat1
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (1 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (2 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: false,
+            isLH: true,
+            startOffset: (1 * beatDuration) + (3 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: true,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (4 * tickDuration_beat1),
+            duration: tickDuration_beat1
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (5 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: false,
+            isLH: true,
+            startOffset: (1 * beatDuration) + (6 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (7 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: true,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (8 * tickDuration_beat1),
+            duration: tickDuration_beat1
+          },
+          {
+            isRH: false,
+            isLH: true,
+            startOffset: (1 * beatDuration) + (9 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (10 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (11 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+            isSpacer: true
+          }
+        ],
+        [ // break
+          {
+            isRH: true,
+            isLH: true,
+            startOffset: 0 * tickDuration_beatBreak,
+            duration: tickDuration_beatBreak
+          },
+          {
+            isRH: true,
+            isLH: true,
+            startOffset: 1 * tickDuration_beatBreak,
+            duration: tickDuration_beatBreak
+          },
+          {
+            isRH: true,
+            isLH: true,
+            startOffset: 2 * tickDuration_beatBreak,
+            duration: tickDuration_beatBreak
+          },
+          {
+            isRH: true,
+            isLH: true,
+            startOffset: 3 * tickDuration_beatBreak,
+            duration: tickDuration_beatBreak
+          },
+          {
+            isRH: true,
+            isLH: true,
+            startOffset: 4 * tickDuration_beatBreak,
+            duration: tickDuration_beatBreak,
+          },
+          {
+            isRH: true,
+            isLH: true,
+            startOffset: 5 * tickDuration_beatBreak,
+            duration: tickDuration_beatBreak,
+            isSpacer: true
+          },
+        ],
+        [
+          {
+            isRH: true,
+            isLH: true,
+            startOffset: (0 * beatDuration) + (0 * tickDuration_beat0),
+            duration: tickDuration_beat0
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (0 * beatDuration) + (1 * tickDuration_beat0),
+            duration: tickDuration_beat0,
+          },
+          {
+            isRH: false,
+            isLH: true,
+            startOffset: (0 * beatDuration) + (2 * tickDuration_beat0),
+            duration: tickDuration_beat0
+          },
+          {
+            isRH: true,
+            isLH: false,
+            startOffset: (0 * beatDuration) + (3 * tickDuration_beat0),
+            duration: tickDuration_beat0,
+          },
+          {
+            isRH: false,
+            isLH: true,
+            startOffset: (0 * beatDuration) + (4 * tickDuration_beat0),
+            duration: tickDuration_beat0
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (0 * beatDuration) + (5 * tickDuration_beat0),
+            duration: tickDuration_beat0,
+          },
+          {
+            isRH: true,
+            isLH: true,
+            startOffset: (1 * beatDuration) + (0 * tickDuration_beat1),
+            duration: tickDuration_beat1
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (1 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (2 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: false,
+            isLH: true,
+            startOffset: (1 * beatDuration) + (3 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: true,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (4 * tickDuration_beat1),
+            duration: tickDuration_beat1
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (5 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: false,
+            isLH: true,
+            startOffset: (1 * beatDuration) + (6 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (7 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: true,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (8 * tickDuration_beat1),
+            duration: tickDuration_beat1
+          },
+          {
+            isRH: false,
+            isLH: true,
+            startOffset: (1 * beatDuration) + (9 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (10 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (11 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+            isSpacer: true
+          }
+        ],
+        [ // break
+          {
+            isRH: true,
+            isLH: true,
+            startOffset: 0 * tickDuration_beatBreak,
+            duration: tickDuration_beatBreak
+          },
+          {
+            isRH: true,
+            isLH: true,
+            startOffset: 1 * tickDuration_beatBreak,
+            duration: tickDuration_beatBreak
+          },
+          {
+            isRH: true,
+            isLH: true,
+            startOffset: 2 * tickDuration_beatBreak,
+            duration: tickDuration_beatBreak
+          },
+          {
+            isRH: true,
+            isLH: true,
+            startOffset: 3 * tickDuration_beatBreak,
+            duration: tickDuration_beatBreak
+          },
+          {
+            isRH: true,
+            isLH: true,
+            startOffset: 4 * tickDuration_beatBreak,
+            duration: tickDuration_beatBreak,
+          },
+          {
+            isRH: true,
+            isLH: true,
+            startOffset: 5 * tickDuration_beatBreak,
+            duration: tickDuration_beatBreak,
+            isSpacer: true
+          },
+        ],
+        [
+          {
+            isRH: true,
+            isLH: true,
+            startOffset: (0 * beatDuration) + (0 * tickDuration_beat0),
+            duration: tickDuration_beat0
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (0 * beatDuration) + (1 * tickDuration_beat0),
+            duration: tickDuration_beat0,
+          },
+          {
+            isRH: false,
+            isLH: true,
+            startOffset: (0 * beatDuration) + (2 * tickDuration_beat0),
+            duration: tickDuration_beat0
+          },
+          {
+            isRH: true,
+            isLH: false,
+            startOffset: (0 * beatDuration) + (3 * tickDuration_beat0),
+            duration: tickDuration_beat0,
+          },
+          {
+            isRH: false,
+            isLH: true,
+            startOffset: (0 * beatDuration) + (4 * tickDuration_beat0),
+            duration: tickDuration_beat0
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (0 * beatDuration) + (5 * tickDuration_beat0),
+            duration: tickDuration_beat0,
+          },
+          {
+            isRH: true,
+            isLH: true,
+            startOffset: (1 * beatDuration) + (0 * tickDuration_beat1),
+            duration: tickDuration_beat1
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (1 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (2 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: false,
+            isLH: true,
+            startOffset: (1 * beatDuration) + (3 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: true,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (4 * tickDuration_beat1),
+            duration: tickDuration_beat1
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (5 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: false,
+            isLH: true,
+            startOffset: (1 * beatDuration) + (6 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (7 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: true,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (8 * tickDuration_beat1),
+            duration: tickDuration_beat1
+          },
+          {
+            isRH: false,
+            isLH: true,
+            startOffset: (1 * beatDuration) + (9 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (10 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+          },
+          {
+            isRH: false,
+            isLH: false,
+            startOffset: (1 * beatDuration) + (11 * tickDuration_beat1),
+            duration: tickDuration_beat1,
+            isSpacer: true
+          }
+        ]
+      ];
+
+      embeddedAudioTest_playTicks.loopBreakTest1 = ({ticks}) => {
+        const filteredTicks = ticks.map((tick) => omit(tick, 'spaceOnEnded'));
+        actual.push(filteredTicks);
+        iterationCount++;
+        if (iterationCount == 5) {
+          embeddedAudioTest_playTicks.loopBreakTest1 = null;
+          simulate.click(getStopButton({domNode}));
+
+          assert.deepEqual(actual, expected, msg);
+          assert.end();
+        }
+        ;
+      };
+      simulate.click(getPlayButton({domNode}));
+      await sleep(800000) /* msec */; // slows down audio clock by about 1/3
+      audioTestEnd();
+    });
+  });
+});
+

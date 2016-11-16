@@ -29,6 +29,7 @@ import {
 
 let audioContext;
 let oscillators = [];
+let isStopped = true;
 
 const initialize = () => {
   try {
@@ -51,10 +52,12 @@ const initializedAudioContext = () => {
 const playTicks = ({
   ticks = []
 } = {}) => {
+  isStopped = false;
   audioTest_playTicks({audioContext, ticks});
 
   oscillators = [];
   ticks.forEach((tick) => {
+    if (isStopped) return;
     playTick({tick});
     if (tick.isSpacer) playTickAsSpacer({tick});
   })
@@ -117,7 +120,10 @@ const oscillator = ({
   return oscillator;
 };
 
-const stopTicks = () => oscillators.forEach((each) => each.stop());
+const stopTicks = () => {
+  isStopped = true;
+  oscillators.forEach((each) => each.stop());
+};
 
 export {
   initialize,
