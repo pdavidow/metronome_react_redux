@@ -5,7 +5,10 @@ import {
   Panel
 } from 'react-bootstrap';
 
-import {setIsLooping} from '../../actions';
+import {
+  setIsLooping,
+  setIsLoopBreak
+} from '../../actions';
 ////////////////////////////////////
 
 export default (React) => {
@@ -14,7 +17,8 @@ export default (React) => {
   let PlayerSettingForm = (props) => {
     PlayerSettingForm.propTypes = {
       initialValues: React.PropTypes.shape({
-        isLooping: PropTypes.bool.isRequired
+        isLooping: PropTypes.bool.isRequired,
+        isLoopBreak: PropTypes.bool.isRequired
       }),
       player: React.PropTypes.shape({
         isPlaying: PropTypes.bool.isRequired
@@ -32,6 +36,10 @@ export default (React) => {
             <div className='isLooping'>
               <label>Loop</label>
               <Field name="isLooping" id="loopCheckbox" component="input" type="checkbox"/>
+            </div>
+            <div className='isLoopBreak'>
+              <label>Loop Break</label>
+              <Field name="isLoopBreak" id="loopBreakCheckbox" component="input" type="checkbox"/>
             </div>
             <Button type="submit" bsStyle="success">Submit</Button>
           </form>
@@ -57,7 +65,10 @@ export default (React) => {
   const mapDispatchToProps = (dispatch) => {
     return {
       // tricky: onSubmit turns into handleSubmit
-      onSubmit: ({isLooping}) => dispatch(setIsLooping({isLooping}))
+      onSubmit: ({isLooping, isLoopBreak}) => {
+        dispatch(setIsLooping({isLooping}));
+        dispatch(setIsLoopBreak({isLoopBreak}));
+      }
     }
   };
 

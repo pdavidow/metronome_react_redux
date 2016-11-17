@@ -450,7 +450,7 @@ test('Metronome model', nestOuter => {
   });
 });
 
-// put here separately to avoid test conflicts
+// isolate to avoid test conflicts
 test('Metronome model', nestOuter => {
   nestOuter.test('...Loop break', nestInner => {
     nestInner.test('......should loop thrice: 5 iterations with 2 breaks of 6 rhLh ticks', async(assert) => {

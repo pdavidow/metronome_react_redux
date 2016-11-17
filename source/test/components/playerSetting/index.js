@@ -14,7 +14,7 @@ const render = reactDom.renderToStaticMarkup;
 
 test('PlayerSetting component', nest => {
   nest.test('Tags', assert => {
-    const msg = 'Should have isLooping class';
+    const msg = 'Should have isLooping, isLoopBreak classes';
 
     const store = createStore(combinedReducers);
 
@@ -25,11 +25,13 @@ test('PlayerSetting component', nest => {
     const $ = dom.load(render(el));
 
     const actual = {
-      isLooping: Boolean($('.isLooping').html())
+      isLooping: Boolean($('.isLooping').html()),
+      isLoopBreak: Boolean($('.isLoopBreak').html())
     };
 
     const expected = {
-      isLooping: true
+      isLooping: true,
+      isLoopBreak: true
     };
 
     assert.deepEqual(actual, expected, msg);
@@ -47,6 +49,23 @@ test('PlayerSetting component', nest => {
     const $ = dom.load(render(el));
 
     const actual = Boolean($('#loopCheckbox').attr('id'));
+    const expected = true;
+
+    assert.equal(actual, expected, msg);
+    assert.end();
+  });
+  nest.test('......Loop Break', assert => {
+    const msg = 'Should have loop-break checkbox id';
+
+    const store = createStore(combinedReducers);
+
+    const el =
+      <Provider store={store}>
+        <PlayerSetting />
+      </Provider>;
+    const $ = dom.load(render(el));
+
+    const actual = Boolean($('#loopBreakCheckbox').attr('id'));
     const expected = true;
 
     assert.equal(actual, expected, msg);
