@@ -26,8 +26,9 @@ export default (React) => {
       handleSubmit: PropTypes.func.isRequired
     };
 
-    const {handleSubmit, player} = props;
+    const {handleSubmit, player, initialValues} = props;
     const {isPlaying} = player;
+    const {isLooping} = initialValues;
 
     return (
       <fieldset id='playerSettingFieldset' disabled={isPlaying ? "disabled" : ""}>
@@ -39,7 +40,7 @@ export default (React) => {
             </div>
             <div className='isLoopBreak'>
               <label>Loop Break</label>
-              <Field name="isLoopBreak" id="loopBreakCheckbox" component="input" type="checkbox"/>
+              <Field name="isLoopBreak" id="loopBreakCheckbox" component="input" type="checkbox" disabled={isLooping ? "" : "disabled"}/>
             </div>
             <Button type="submit" bsStyle="success">Submit</Button>
           </form>

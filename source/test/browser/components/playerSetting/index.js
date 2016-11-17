@@ -14,6 +14,7 @@ import {
 
 const getLoopCheckbox = ({domNode}) => getElementBySelector({domNode, selector: '#loopCheckbox'});
 const getLoopBreakCheckbox = ({domNode}) => getElementBySelector({domNode, selector: '#loopBreakCheckbox'});
+const getForm = ({domNode}) => getElementBySelector({domNode, selector: '.playerSetting'});
 
 test('PlayerSetting component', nestOuter => {
   nestOuter.test('...Should set store isLooping upon submit', nestInner => {
@@ -25,11 +26,8 @@ test('PlayerSetting component', nestOuter => {
       const store = defaultStore();
       const domNode = getDomNode({store});
 
-      const loopCheckbox = getLoopCheckbox({domNode});
-      const form = getElementBySelector({domNode, selector: '.playerSetting'});
-
-      simulate.change(loopCheckbox, {target: {value: isLooping}});
-      simulate.submit(form);
+      simulate.change(getLoopCheckbox({domNode}), {target: {value: isLooping}});
+      simulate.submit(getForm({domNode}));
 
       const actual = store.getState().playerSetting.isLooping;
       const expected = isLooping;
@@ -47,11 +45,8 @@ test('PlayerSetting component', nestOuter => {
       store.dispatch(setIsLooping({isLooping: true}));
       const domNode = getDomNode({store});
 
-      const loopCheckbox = getLoopCheckbox({domNode});
-      const form = getElementBySelector({domNode, selector: '.playerSetting'});
-
-      simulate.change(loopCheckbox, {target: {value: isLooping}});
-      simulate.submit(form);
+      simulate.change(getLoopCheckbox({domNode}), {target: {value: isLooping}});
+      simulate.submit(getForm({domNode}));
 
       const actual = store.getState().playerSetting.isLooping;
       const expected = isLooping;
@@ -69,11 +64,8 @@ test('PlayerSetting component', nestOuter => {
       const store = defaultStore();
       const domNode = getDomNode({store});
 
-      const loopBreakCheckbox = getLoopBreakCheckbox({domNode});
-      const form = getElementBySelector({domNode, selector: '.playerSetting'});
-
-      simulate.change(loopBreakCheckbox, {target: {value: isLoopBreak}});
-      simulate.submit(form);
+      simulate.change(getLoopBreakCheckbox({domNode}), {target: {value: isLoopBreak}});
+      simulate.submit(getForm({domNode}));
 
       const actual = store.getState().playerSetting.isLoopBreak;
       const expected = isLoopBreak;
@@ -91,11 +83,8 @@ test('PlayerSetting component', nestOuter => {
       store.dispatch(setIsLoopBreak({isLoopBreak: true}));
       const domNode = getDomNode({store});
 
-      const loopBreakCheckbox = getLoopBreakCheckbox({domNode});
-      const form = getElementBySelector({domNode, selector: '.playerSetting'});
-
-      simulate.change(loopBreakCheckbox, {target: {value: isLooping}});
-      simulate.submit(form);
+      simulate.change(getLoopBreakCheckbox({domNode}), {target: {value: isLooping}});
+      simulate.submit(getForm({domNode}));
 
       const actual = store.getState().playerSetting.isLooping;
       const expected = isLooping;
@@ -103,6 +92,27 @@ test('PlayerSetting component', nestOuter => {
       assert.equal(actual, expected, msg);
       assert.end();
     });
+  });
+  nestOuter.test('...Should disable isLoopBreak checkbox if isLoop checkbox is unchecked', assert => {
+    const msg = 'Should disable isLoopBreak checkbox';
+
+    const store = defaultStore();
+    store.dispatch(setIsLooping({isLooping: true}));
+    const domNode = getDomNode({store});
+    const actual = {};
+
+    actual.before = getLoopBreakCheckbox({domNode}).hasAttribute('disabled');
+    simulate.change(getLoopCheckbox({domNode}), {target: {value: false}});
+    simulate.submit(getForm({domNode})); // todo: interaction should happen without submit
+    actual.after = getLoopBreakCheckbox({domNode}).hasAttribute('disabled');
+
+    const expected = {
+      before: false,
+      after: true
+    };
+
+    assert.deepEqual(actual, expected, msg);
+    assert.end();
   });
 });
 
