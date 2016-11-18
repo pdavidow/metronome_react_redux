@@ -103,7 +103,6 @@ test('PlayerSetting component', nestOuter => {
 
     actual.before = getLoopBreakCheckbox({domNode}).hasAttribute('disabled');
     simulate.change(getLoopCheckbox({domNode}), {target: {value: false}});
-    simulate.submit(getForm({domNode})); // todo: interaction should happen without submit
     actual.after = getLoopBreakCheckbox({domNode}).hasAttribute('disabled');
 
     const expected = {

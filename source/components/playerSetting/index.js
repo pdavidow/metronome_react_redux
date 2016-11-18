@@ -23,12 +23,18 @@ export default (React) => {
       player: React.PropTypes.shape({
         isPlaying: PropTypes.bool.isRequired
       }),
+      form_isLooping: PropTypes.bool.isRequired,
       handleSubmit: PropTypes.func.isRequired
     };
 
-    const {handleSubmit, player, initialValues} = props;
+    const {handleSubmit, player, initialValues, form_isLooping} = props;
     const {isPlaying} = player;
     const {isLooping} = initialValues;
+
+    const shouldDisable_loopBreakCheckbox = () => {
+      if (form_isLooping == null) return isLooping;
+      return form_isLooping;
+    };
 
     return (
       <fieldset id='playerSettingFieldset' disabled={isPlaying ? "disabled" : ""}>
@@ -40,7 +46,7 @@ export default (React) => {
             </div>
             <div className='isLoopBreak'>
               <label>Loop Break</label>
-              <Field name="isLoopBreak" id="loopBreakCheckbox" component="input" type="checkbox" disabled={isLooping ? "" : "disabled"}/>
+              <Field name="isLoopBreak" id="loopBreakCheckbox" component="input" type="checkbox" disabled={shouldDisable_loopBreakCheckbox() ? "" : "disabled"}/>
             </div>
             <Button type="submit" bsStyle="success">Submit</Button>
           </form>
@@ -56,10 +62,13 @@ export default (React) => {
   const mapStateToProps = (state) => {
     const playerSetting = state.playerSetting;
     const player = state.player;
+    const form_playerSetting = state.form.playerSetting;
+    const form_isLooping = form_playerSetting ? form_playerSetting.values.isLooping : null;
 
     return {
       initialValues: playerSetting,
-      player
+      player,
+      form_isLooping
     }
   };
 
