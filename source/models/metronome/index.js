@@ -116,9 +116,9 @@ const calc_baseTicksForBeat = ({
   const startOffsets = calc_shiftedTickStartTimeOffsets({tickCount, tickDuration, shiftAmount});
 
   const tick = ({startOffset, index, rhTickIndices, lhTickIndices}) => {
-    const isRH = includes(rhTickIndices, index);
-    const isLH = includes(lhTickIndices, index);
-    return {isRH, isLH, startOffset, duration: tickDuration};
+    const isRh = includes(rhTickIndices, index);
+    const isLh = includes(lhTickIndices, index);
+    return {isRh, isLh, startOffset, duration: tickDuration};
   };
 
   return startOffsets.map((startOffset, index) => {

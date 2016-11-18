@@ -349,74 +349,74 @@ test('Metronome model', nestOuter => {
 
       const expected = [
         {
-          isRH: true,
-          isLH: true,
+          isRh: true,
+          isLh: true,
           startOffset: 0 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: 1 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: 2 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: true,
+          isRh: false,
+          isLh: true,
           startOffset: 3 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: true,
-          isLH: false,
+          isRh: true,
+          isLh: false,
           startOffset: 4 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: 5 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: true,
+          isRh: false,
+          isLh: true,
           startOffset: 6 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: 7 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: true,
-          isLH: false,
+          isRh: true,
+          isLh: false,
           startOffset: 8 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: true,
+          isRh: false,
+          isLh: true,
           startOffset: 9 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: 10 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           isSpacer: true,
           startOffset: 11 * tickDuration,
           duration: tickDuration
@@ -436,146 +436,146 @@ test('Metronome model', nestOuter => {
 
       const expected = [
         {
-          isRH: true,
-          isLH: true,
+          isRh: true,
+          isLh: true,
           startOffset: 0 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: 1 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: 2 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: true,
-          isLH: false,
+          isRh: true,
+          isLh: false,
           startOffset: 3 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: true,
+          isRh: false,
+          isLh: true,
           startOffset: 4 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: 5 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: true,
-          isLH: false,
+          isRh: true,
+          isLh: false,
           startOffset: 6 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: 7 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: true,
+          isRh: false,
+          isLh: true,
           startOffset: 8 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: true,
-          isLH: false,
+          isRh: true,
+          isLh: false,
           startOffset: 9 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: 10 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: 11 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: true,
-          isLH: true,
+          isRh: true,
+          isLh: true,
           startOffset: 12 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: 13 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: 14 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: true,
-          isLH: false,
+          isRh: true,
+          isLh: false,
           startOffset: 15 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: true,
+          isRh: false,
+          isLh: true,
           startOffset: 16 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: 17 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: true,
-          isLH: false,
+          isRh: true,
+          isLh: false,
           startOffset: 18 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: 19 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: true,
+          isRh: false,
+          isLh: true,
           startOffset: 20 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: true,
-          isLH: false,
+          isRh: true,
+          isLh: false,
           startOffset: 21 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: 22 * tickDuration,
           duration: tickDuration
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           isSpacer: true,
           startOffset: 23 * tickDuration,
           duration: tickDuration
@@ -599,14 +599,14 @@ test('Metronome model', nestOuter => {
 
       const expected = [
         {
-          isRH: true,
-          isLH: true,
+          isRh: true,
+          isLh: true,
           startOffset: (0 * beatDuration) + (0 * tickDuration_beat0),
           duration: tickDuration_beat0
         },
         {
-          isRH: true,
-          isLH: true,
+          isRh: true,
+          isLh: true,
           startOffset: (1 * beatDuration) + (0 * tickDuration_beat1),
           duration: tickDuration_beat1,
           isSpacer: true
@@ -628,38 +628,38 @@ test('Metronome model', nestOuter => {
 
       const expected = [
         {
-          isRH: true,
-          isLH: true,
+          isRh: true,
+          isLh: true,
           startOffset: (0 * beatDuration) + (0 * tickDuration_beat0),
           duration: tickDuration_beat0
         },
         {
-          isRH: false,
-          isLH: true,
+          isRh: false,
+          isLh: true,
           startOffset: (0 * beatDuration) + (1 * tickDuration_beat0),
           duration: tickDuration_beat0,
         },
         {
-          isRH: true,
-          isLH: true,
+          isRh: true,
+          isLh: true,
           startOffset: (1 * beatDuration) + (0 * tickDuration_beat1),
           duration: tickDuration_beat1
         },
         {
-          isRH: false,
-          isLH: true,
+          isRh: false,
+          isLh: true,
           startOffset: (1 * beatDuration) + (1 * tickDuration_beat1),
           duration: tickDuration_beat1,
         },
         {
-          isRH: false,
-          isLH: true,
+          isRh: false,
+          isLh: true,
           startOffset: (1 * beatDuration) + (2 * tickDuration_beat1),
           duration: tickDuration_beat1,
         },
         {
-          isRH: false,
-          isLH: true,
+          isRh: false,
+          isLh: true,
           startOffset: (1 * beatDuration) + (3 * tickDuration_beat1),
           duration: tickDuration_beat1,
           isSpacer: true
@@ -681,110 +681,110 @@ test('Metronome model', nestOuter => {
 
       const expected = [
         {
-          isRH: true,
-          isLH: true,
+          isRh: true,
+          isLh: true,
           startOffset: (0 * beatDuration) + (0 * tickDuration_beat0),
           duration: tickDuration_beat0
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: (0 * beatDuration) + (1 * tickDuration_beat0),
           duration: tickDuration_beat0,
         },
         {
-          isRH: false,
-          isLH: true,
+          isRh: false,
+          isLh: true,
           startOffset: (0 * beatDuration) + (2 * tickDuration_beat0),
           duration: tickDuration_beat0
         },
         {
-          isRH: true,
-          isLH: false,
+          isRh: true,
+          isLh: false,
           startOffset: (0 * beatDuration) + (3 * tickDuration_beat0),
           duration: tickDuration_beat0,
         },
         {
-          isRH: false,
-          isLH: true,
+          isRh: false,
+          isLh: true,
           startOffset: (0 * beatDuration) + (4 * tickDuration_beat0),
           duration: tickDuration_beat0
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: (0 * beatDuration) + (5 * tickDuration_beat0),
           duration: tickDuration_beat0,
         },
         {
-          isRH: true,
-          isLH: true,
+          isRh: true,
+          isLh: true,
           startOffset: (1 * beatDuration) + (0 * tickDuration_beat1),
           duration: tickDuration_beat1
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: (1 * beatDuration) + (1 * tickDuration_beat1),
           duration: tickDuration_beat1,
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: (1 * beatDuration) + (2 * tickDuration_beat1),
           duration: tickDuration_beat1,
         },
         {
-          isRH: false,
-          isLH: true,
+          isRh: false,
+          isLh: true,
           startOffset: (1 * beatDuration) + (3 * tickDuration_beat1),
           duration: tickDuration_beat1,
         },
         {
-          isRH: true,
-          isLH: false,
+          isRh: true,
+          isLh: false,
           startOffset: (1 * beatDuration) + (4 * tickDuration_beat1),
           duration: tickDuration_beat1
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: (1 * beatDuration) + (5 * tickDuration_beat1),
           duration: tickDuration_beat1,
         },
         {
-          isRH: false,
-          isLH: true,
+          isRh: false,
+          isLh: true,
           startOffset: (1 * beatDuration) + (6 * tickDuration_beat1),
           duration: tickDuration_beat1,
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: (1 * beatDuration) + (7 * tickDuration_beat1),
           duration: tickDuration_beat1,
         },
         {
-          isRH: true,
-          isLH: false,
+          isRh: true,
+          isLh: false,
           startOffset: (1 * beatDuration) + (8 * tickDuration_beat1),
           duration: tickDuration_beat1
         },
         {
-          isRH: false,
-          isLH: true,
+          isRh: false,
+          isLh: true,
           startOffset: (1 * beatDuration) + (9 * tickDuration_beat1),
           duration: tickDuration_beat1,
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: (1 * beatDuration) + (10 * tickDuration_beat1),
           duration: tickDuration_beat1,
         },
         {
-          isRH: false,
-          isLH: false,
+          isRh: false,
+          isLh: false,
           startOffset: (1 * beatDuration) + (11 * tickDuration_beat1),
           duration: tickDuration_beat1,
           isSpacer: true
@@ -847,8 +847,8 @@ test('Metronome model', nestOuter => {
 
     const expected = [
       {
-        isLH: true,
-        isRH: true,
+        isLh: true,
+        isRh: true,
         isSpacer: true,
         duration: 1,
         startOffset: 0

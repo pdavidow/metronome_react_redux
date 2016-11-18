@@ -1,9 +1,8 @@
 // mutually exclusive
-// todo RH LH => Rh Lh
-const isTick_Rh = ({isRH, isLH}) => isRH && !isLH;
-const isTick_Lh = ({isRH, isLH}) => !isRH && isLH;
-const isTick_RhLh = ({isRH, isLH}) => isRH && isLH;
-const isTick_Background = ({isRH, isLH}) => !isRH && !isLH;
+const isTick_Rh = ({isRh, isLh}) => isRh && !isLh;
+const isTick_Lh = ({isRh, isLh}) => !isRh && isLh;
+const isTick_RhLh = ({isRh, isLh}) => isRh && isLh;
+const isTick_Background = ({isRh, isLh}) => !isRh && !isLh;
 
 export {
   isTick_Rh,

@@ -14,8 +14,8 @@ test('Tick model', nestOuter => {
       const msg = 'Tick is exclusively rh';
 
       const tick = {
-        isRH: true,
-        isLH: false
+        isRh: true,
+        isLh: false
       };
 
       const actual = isTick_Rh(tick) && !isTick_Lh(tick) && !isTick_RhLh(tick) && !isTick_Background(tick);
@@ -28,8 +28,8 @@ test('Tick model', nestOuter => {
       const msg = 'Tick is exclusively lh';
 
       const tick = {
-        isRH: false,
-        isLH: true
+        isRh: false,
+        isLh: true
       };
 
       const actual = !isTick_Rh(tick) && isTick_Lh(tick) && !isTick_RhLh(tick) && !isTick_Background(tick);
@@ -42,8 +42,8 @@ test('Tick model', nestOuter => {
       const msg = 'Tick is exclusively rh & lh';
 
       const tick = {
-        isRH: true,
-        isLH: true
+        isRh: true,
+        isLh: true
       };
 
       const actual = !isTick_Rh(tick) && !isTick_Lh(tick) && isTick_RhLh(tick) && !isTick_Background(tick);
@@ -56,8 +56,8 @@ test('Tick model', nestOuter => {
       const msg = 'Tick is exclusively background';
 
       const tick = {
-        isRH: false,
-        isLH: false
+        isRh: false,
+        isLh: false
       };
 
       const actual = !isTick_Rh(tick) && !isTick_Lh(tick) && !isTick_RhLh(tick) && isTick_Background(tick);
