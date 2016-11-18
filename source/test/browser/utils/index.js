@@ -56,7 +56,7 @@ const waitInAudioTime = ({waitTime, audioContext, startTime}) => {
 const embeddedAudioTest = {};
 const embeddedAudioTest_playTicks = {};
 
-const audioTest = ({audioContext, oscillator, startOffset, playDuration}) => {
+const audioTest = ({oscillator, startOffset, playDuration, audioContext}) => {
   // if (production) return false; // todo
 
   let result = false;
@@ -72,7 +72,7 @@ const audioTest = ({audioContext, oscillator, startOffset, playDuration}) => {
   return result;
 };
 
-const audioTest_playTicks = ({audioContext, ticks}) => {
+const audioTest_playTicks = ({ticks, audioContext}) => {
   // if (production) return false; // todo
 
   forOwn(embeddedAudioTest_playTicks, ((test) => { // only one test should be defined at any given time
