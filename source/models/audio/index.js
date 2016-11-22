@@ -8,7 +8,8 @@ import {getDestination} from './destination';
 
 import {
   audioTest,
-  audioTest_playTicks
+  audioTest_playTicks,
+  audioTest_playTick
 } from '../../test/browser/utils';
 ////////////////////////////////////
 
@@ -54,6 +55,7 @@ const playTicksWithAudioContext = ({
 };
 
 const playTick = ({tick, audioContext}) => {
+  audioTest_playTick({tick, audioContext});
   const {startOffset} = tick;
   const playDuration = playDurationForTick({tick});
   const oscillator = oscillatorForTick({tick, audioContext});
@@ -61,10 +63,10 @@ const playTick = ({tick, audioContext}) => {
 };
 
 const playTickAsSpacer = ({tick, audioContext}) => {
-  const {startOffset, duration, spaceOnEnded} = tick;
+  const {startOffset, duration, onSpaceEnded} = tick;
   const playDuration = duration;
   const oscillator = oscillator_Spacer({audioContext});
-  const onEnded = spaceOnEnded;
+  const onEnded = onSpaceEnded;
   playOscillator({oscillator, startOffset, playDuration, onEnded, audioContext});
 };
 

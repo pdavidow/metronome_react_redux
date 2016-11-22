@@ -431,7 +431,7 @@ test('Metronome model', nestOuter => {
       ];
 
       embeddedAudioTest_playTicks.loopBreakTest0 = ({ticks}) => {
-        const filteredTicks = ticks.map((tick) => omit(tick, 'spaceOnEnded'));
+        const filteredTicks = ticks.map((tick) => omit(tick, 'onSpaceEnded'));
         actual.push(filteredTicks);
         iterationCount++;
         if (iterationCount == 3) {
@@ -887,7 +887,7 @@ test('Metronome model', nestOuter => {
       ];
 
       embeddedAudioTest_playTicks.loopBreakTest1 = ({ticks}) => {
-        const filteredTicks = ticks.map((tick) => omit(tick, 'spaceOnEnded'));
+        const filteredTicks = ticks.map((tick) => omit(tick, 'onSpaceEnded'));
         actual.push(filteredTicks);
         iterationCount++;
         if (iterationCount == 5) {

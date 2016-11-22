@@ -131,7 +131,7 @@ const calc_baseTicksForBeat = ({
 const spacerize = ({tick, onSpaceEnded}) => {
   if (!tick) return;
   const extra = {isSpacer: true};
-  if (onSpaceEnded != undefined) extra.spaceOnEnded = onSpaceEnded;
+  if (onSpaceEnded != undefined) extra.onSpaceEnded = onSpaceEnded;
   Object.assign(tick, extra);
 };
 
@@ -171,7 +171,12 @@ const calc_onTicksEnded = ({ticks, metronomeSetting, playerSetting, onLoopCounti
     const {classicTicksPerBeat} = metronomeSetting;
     const breakBeat = {rh: classicTicksPerBeat, lh: classicTicksPerBeat};
     const breakTicks = calc_baseTicksForBeat({beat: breakBeat, metronomeSetting});
-    const onSpaceEnded  = () => {if (!isStopped) playTicks({ticks})};
+    const onSpaceEnded  = () => {
+      if (!isStopped) {
+        onLoopCounting();
+        playTicks({ticks});
+      };
+    };
     spacerize({tick: last(breakTicks), onSpaceEnded});
     return breakTicks;
   };
@@ -181,12 +186,13 @@ const calc_onTicksEnded = ({ticks, metronomeSetting, playerSetting, onLoopCounti
 
   return () => {
     if (!isLooping || isStopped) return onPlayEnded();
-    onLoopCounting();
 
-    if (isLoopBreak)
+    if (isLoopBreak) {
       playTicks({ticks: breakTicksFollowedByTicks});
-    else
+    } else {
+      onLoopCounting();
       playTicks({ticks});
+    };
   };
 };
 
