@@ -1,7 +1,8 @@
 import {
   SET_IS_PLAYING,
   INCREMENT_LOOP_COUNT,
-  RESET_LOOP_COUNT
+  RESET_LOOP_COUNT,
+  SET_IS_TAKING_LOOP_BREAK
 } from '../../../constants/actionTypes';
 ////////////////////////////////////
 
@@ -9,7 +10,8 @@ const defaultLoopCount = 1;
 
 const defaultState = {
   isPlaying: false,
-  loopCount: defaultLoopCount
+  loopCount: defaultLoopCount,
+  isTakingLoopBreak: false
 };
 
 export default (state = defaultState, action = {}) => {
@@ -26,6 +28,7 @@ export default (state = defaultState, action = {}) => {
       const loopCount = defaultLoopCount;
       return {...state, loopCount};
     };
+    case SET_IS_TAKING_LOOP_BREAK: return {...state, ...payload};
     default: return state;
   }
 };

@@ -8,7 +8,8 @@ import {
 import {
   setIsPlaying,
   incrementLoopCount,
-  resetLoopCount
+  resetLoopCount,
+  setIsTakingLoopBreak
 } from '../../actions';
 ////////////////////////////////////
 
@@ -43,9 +44,10 @@ export default (React) => {
         dispatch(setIsPlaying({isPlaying: true}));
         const onPlayEnded = () => dispatch(setIsPlaying({isPlaying: false}));
         const onLoopCounting = () => dispatch(incrementLoopCount());
-
+        const onStartTakingLoopBreak = () => dispatch(setIsTakingLoopBreak({isTakingLoopBreak: true}));
+        const onEndTakingLoopBreak = () => dispatch(setIsTakingLoopBreak({isTakingLoopBreak: false}));
         try {
-          play({beats, metronomeSetting, playerSetting, onLoopCounting, onPlayEnded});
+          play({beats, metronomeSetting, playerSetting, onLoopCounting, onStartTakingLoopBreak, onEndTakingLoopBreak, onPlayEnded});
         }
         catch (e) {
           alert(e.message); // todo bootstrap...

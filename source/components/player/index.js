@@ -23,11 +23,12 @@ export default (React) => {
       }),
       player: React.PropTypes.shape({
         isPlaying: PropTypes.bool.isRequired,
-        loopCount: PropTypes.number.isRequired
+        loopCount: PropTypes.number.isRequired,
+        isTakingLoopBreak: PropTypes.number.isRequired
       })
     };
     const {onPlay, onStop, beats, metronomeSetting, player, playerSetting} = props;
-    const {isPlaying, loopCount} = player;
+    const {isPlaying, loopCount, isTakingLoopBreak} = player;
     const {isLooping} = playerSetting;
 
     const onClick_Play = () => onPlay({beats, metronomeSetting, playerSetting});
@@ -46,7 +47,10 @@ export default (React) => {
                 <Button type="button" bsStyle="primary" id="playButton" disabled={isPlaying} onClick={onClick_Play}>  P L A Y  </Button>
                 <Button type="button" bsStyle="primary" id="stopButton" disabled={!isPlaying} onClick={onClick_Stop}>  S T O P  </Button>
               </ButtonGroup >
-              <span hidden={(isPlaying && isLooping) ? "" : "hidden"} id="loopCountSpan"><label> Loop Count: </label><label id="loopCount">{loopCount}</label></span>
+              <br/>
+              <span hidden={(isPlaying && isLooping) ? "" : "hidden"} id="loopCountSpan"><label>Loop Count: </label><label id="loopCount">{loopCount}</label></span>
+              <br/>
+              <span hidden={(isTakingLoopBreak) ? "" : "hidden"} id="loopBreakStatusSpan"><label>BREAK</label></span>
             </div>
           </fieldset>
         );
@@ -55,5 +59,4 @@ export default (React) => {
   };
   return Player;
 };
-
 

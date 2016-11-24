@@ -5,7 +5,8 @@ import {
   SET_IS_PLAYING,
   SET_IS_LOOPING,
   INCREMENT_LOOP_COUNT,
-  RESET_LOOP_COUNT
+  RESET_LOOP_COUNT,
+  SET_IS_TAKING_LOOP_BREAK
 } from '../constants/actionTypes';
 ////////////////////////////////////
 
@@ -55,5 +56,12 @@ export const setIsLoopBreak = ({isLoopBreak}) => {
   return {
     type: SET_IS_LOOP_BREAK,
     payload: {isLoopBreak}
+  };
+};
+
+export const setIsTakingLoopBreak = ({isTakingLoopBreak}) => {
+  return {
+    type: SET_IS_TAKING_LOOP_BREAK,
+    payload: {isTakingLoopBreak}
   };
 };

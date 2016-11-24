@@ -24,8 +24,9 @@ import {initializedAudioContext} from '../../../../models/audio';
 // So always retreive the element, instead of keeping a pointer to it.
 const getPlayButton = ({domNode}) => getElementBySelector({domNode, selector: '#playButton'});
 const getStopButton = ({domNode}) => getElementBySelector({domNode, selector: '#stopButton'});
-const getLoopCount  = ({domNode}) => getElementBySelector({domNode, selector: '#loopCount'});
-const getLoopCountSpan  = ({domNode}) => getElementBySelector({domNode, selector: '#loopCountSpan'});
+const getLoopCount = ({domNode}) => getElementBySelector({domNode, selector: '#loopCount'});
+const getLoopCountSpan = ({domNode}) => getElementBySelector({domNode, selector: '#loopCountSpan'});
+const getLoopBreakStatusSpan = ({domNode}) => getElementBySelector({domNode, selector: '#loopBreakStatusSpan'});
 
 test('Player component', nestOuter => {
   nestOuter.test('...Play button should disable during play', nestInner => {
@@ -383,7 +384,7 @@ test('Player component', nestOuter => {
     audioTestStart();
     const msg = 'Only increment loop count after loop break has finished';
 
-    // 2 tick, at 1/2 second duration per tick
+    // 2 ticks, at 1/2 second duration per tick
     const beats = [{rh: 2, lh: 1}];
     const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 2};
     const isLooping = true;
@@ -396,12 +397,13 @@ test('Player component', nestOuter => {
       1, 1, // loop break
       2, 2  // 2nd iteration
     ];
+    const iterationCountLimit = expected.length - 1;
     const actual = [];
 
     embeddedAudioTest_playTick.loopCountUpdateAfterBreak = () => {
       const loopCount = store.getState().player.loopCount;
       actual.push(loopCount);
-      if (iterationCount == 5) embeddedAudioTest_playTick.loopCountUpdateAfterBreak = null;
+      if (iterationCount == iterationCountLimit) embeddedAudioTest_playTick.loopCountUpdateAfterBreak = null;
       iterationCount++;
     };
 
@@ -415,5 +417,42 @@ test('Player component', nestOuter => {
   });
 });
 
+// isolate, otherwise doesn't work for some as yet undetermined reason
+test('Player component', nestOuter => {
+  nestOuter.test('...Display loop break in progress', async(assert) => {
+    audioTestStart();
+    const msg = 'During loop break, should display as such';
 
+    // 3 ticks, at 1/2 second duration per tick
+    const beats = [{rh: 3, lh: 1}];
+    const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 3};
+    const isLooping = true;
+    const isLoopBreak = true;
+    const store = setStore({beats, metronomeSetting, isLooping, isLoopBreak});
+    const domNode = getDomNode({store});
+    //////////////////////////////getLoopBreakStatusSpan
+    let iterationCount = 0;
+    const expected = [
+      true, true, true,     // 1st iteration
+      false, false, false,  // loop break
+      true, true, true      // 2nd iteration
+    ];
+    const iterationCountLimit = expected.length - 1;
+    const actual = [];
 
+    embeddedAudioTest_playTick.loopBreakStatus = () => {
+      const span = getLoopBreakStatusSpan({domNode});
+      actual.push(span.hidden);
+      if (iterationCount == iterationCountLimit) embeddedAudioTest_playTick.loopBreakStatus = null;
+      iterationCount++;
+    };
+
+    simulate.click(getPlayButton({domNode}));
+    await sleep(10000) /* msec */; // slows down audio clock by about 1/3
+    simulate.click(getStopButton({domNode}));
+
+    assert.deepEqual(actual, expected, msg);
+    assert.end();
+    audioTestEnd();
+  });
+});
