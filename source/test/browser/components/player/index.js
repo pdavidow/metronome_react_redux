@@ -27,6 +27,9 @@ const getStopButton = ({domNode}) => getElementBySelector({domNode, selector: '#
 const getLoopCount = ({domNode}) => getElementBySelector({domNode, selector: '#loopCount'});
 const getLoopCountSpan = ({domNode}) => getElementBySelector({domNode, selector: '#loopCountSpan'});
 const getLoopBreakStatusSpan = ({domNode}) => getElementBySelector({domNode, selector: '#loopBreakStatusSpan'});
+const getAlert = ({domNode}) => getElementBySelector({domNode, selector: '#alert'});
+const getAlertMessage = ({domNode}) => getElementBySelector({domNode, selector: '#alertMessage'});
+const getAlertDismissButton = ({domNode}) => getElementBySelector({domNode, selector: '.narcissus_n3sdvf'}); // class-name retrieved via Chrome debugger inspection
 
 test('Player component', nestOuter => {
   nestOuter.test('...Play button should disable during play', nestInner => {
@@ -456,3 +459,69 @@ test('Player component', nestOuter => {
     audioTestEnd();
   });
 });
+
+test('Player component', nestOuter => {
+  nestOuter.test('...No Alert for Validation of Tick-count with classic-ticks-per-beat', async(assert) => {
+    audioTestStart();
+    const msg = 'Do not show Alert';
+
+    const beats = [{rh: 2, lh: 1}];
+    const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 2};
+    const store = setStore({beats, metronomeSetting});
+    const domNode = getDomNode({store});
+
+    simulate.click(getPlayButton({domNode}));
+    await sleep(500) /* msec */;
+
+    const actual = Boolean(getAlert({domNode: window.document}));
+    const expected = false;
+
+    assert.equal(actual, expected, msg);
+    assert.end();
+    audioTestEnd();
+  });
+  nestOuter.test('...Alert for Validation of Tick-count with classic-ticks-per-beat', async(assert) => {
+    const msg = 'Show Alert';
+
+    const beats = [{rh: 2, lh: 1}];
+    const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 3};
+    const store = setStore({beats, metronomeSetting});
+    const domNode = getDomNode({store});
+
+    simulate.click(getPlayButton({domNode}));
+    await sleep(500) /* msec */;
+    const actual = (getAlertMessage({domNode: window.document})).innerHTML;
+    const expected = 'Beat #1: Tick count of 2 is not cleanly divisible by Classic Ticks Per Beat of 3';
+
+    assert.equal(actual, expected, msg);
+    assert.end();
+  });
+  // nestOuter.test('...Alert -- then dismiss -- for Validation of Tick-count with classic-ticks-per-beat', async(assert) => {
+  // todo simulating click for dialog close (simulate.click(getAlertDismissButton...) doesn't work...
+  //   audioTestStart();
+  //   const msg = 'Dismiss Alert';
+  //
+  //   const beats = [{rh: 2, lh: 1}];
+  //   const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 3};
+  //   const store = setStore({beats, metronomeSetting});
+  //   const domNode = getDomNode({store});
+  //   const actual = {};
+  //
+  //   simulate.click(getPlayButton({domNode}));
+  //   await sleep(500) /* msec */;
+  //   actual.before = Boolean(getAlert({domNode: window.document}));
+  //#######   simulate.click(getAlertDismissButton({domNode: window.document}));
+  //   await sleep(500) /* msec */;
+  //   actual.after = Boolean(getAlert({domNode: window.document}));
+  //
+  //   const expected = {
+  //     before: true,
+  //     after: false
+  //   };
+  //
+  //   assert.equal(actual, expected, msg);
+  //   assert.end();
+  //   audioTestEnd();
+  // });
+});
+

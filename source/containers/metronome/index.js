@@ -9,7 +9,9 @@ import {
   setIsPlaying,
   incrementLoopCount,
   resetLoopCount,
-  setIsTakingLoopBreak
+  setIsTakingLoopBreak,
+  setPlayAlert,
+  cancelPlayAlert
 } from '../../actions';
 ////////////////////////////////////
 
@@ -50,9 +52,12 @@ export default (React) => {
           play({beats, metronomeSetting, playerSetting, onLoopCounting, onStartTakingLoopBreak, onEndTakingLoopBreak, onPlayEnded});
         }
         catch (e) {
-          alert(e.message); // todo bootstrap...
+          dispatch(setPlayAlert({playAlert: e.message}));
           onPlayEnded();
         };
+      }),
+      onDismissAlert: (() => {
+        dispatch(cancelPlayAlert())
       }),
       onStop: (() => {
         stop();

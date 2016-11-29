@@ -5,19 +5,22 @@ import {
   setIsPlaying,
   incrementLoopCount,
   resetLoopCount,
-  setIsTakingLoopBreak
+  setIsTakingLoopBreak,
+  setPlayAlert,
+  cancelPlayAlert
 } from '../../../../actions';
 import player from '../../../../store/reducers/player';
 ////////////////////////////////////
 
 test('Player reducer', nestOuter => {
   nestOuter.test('...initial', assert => {
-    const message = `should set {isPlaying: false, loopCount: 1, isTakingLoopBreak: false}`;
+    const message = `should set {isPlaying: false, loopCount: 1, isTakingLoopBreak: false, playAlert: null}`;
 
     const expected = {
       isPlaying: false,
       loopCount: 1,
-      isTakingLoopBreak: false
+      isTakingLoopBreak: false,
+      playAlert: null
     };
     const actual = player();
 
@@ -164,6 +167,61 @@ test('Player reducer', nestOuter => {
       isPlaying: false,
       loopCount: 1,
       isTakingLoopBreak: false
+    };
+
+    deepFreeze(stateBefore);
+    deepFreeze(action);
+
+    const actual = player(stateBefore, action);
+
+    assert.deepEqual(actual, expected, message);
+    assert.end();
+  });
+  nestOuter.test('...SET_PLAY_ALERT', assert => {
+    const message = 'should set playAlert to error message';
+
+    const errorMessage = 'uhoh';
+    const stateBefore = {
+      isPlaying: false,
+      loopCount: 1,
+      isTakingLoopBreak: false,
+      playAlert: null
+    };
+
+    const action = setPlayAlert({playAlert: errorMessage});
+
+    const expected = {
+      isPlaying: false,
+      loopCount: 1,
+      isTakingLoopBreak: false,
+      playAlert: errorMessage
+    };
+
+    deepFreeze(stateBefore);
+    deepFreeze(action);
+
+    const actual = player(stateBefore, action);
+
+    assert.deepEqual(actual, expected, message);
+    assert.end();
+  });
+  nestOuter.test('...CANCEL_PLAY_ALERT', assert => {
+    const message = 'should set playAlert to null';
+
+    const stateBefore = {
+      isPlaying: false,
+      loopCount: 1,
+      isTakingLoopBreak: false,
+      playAlert: 'uhoh'
+    };
+
+    const action = cancelPlayAlert();
+
+    const expected = {
+      isPlaying: false,
+      loopCount: 1,
+      isTakingLoopBreak: false,
+      playAlert: null
     };
 
     deepFreeze(stateBefore);

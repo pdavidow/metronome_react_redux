@@ -4,6 +4,7 @@ import {
 } from 'react-bootstrap';
 
 import {initialize as initializeAudio} from '../../models/audio';
+import createModalAlert from '../modalAlert';
 ////////////////////////////////////
 
 export default (React) => {
@@ -27,22 +28,30 @@ export default (React) => {
         isTakingLoopBreak: PropTypes.number.isRequired
       })
     };
-    const {onPlay, onStop, beats, metronomeSetting, player, playerSetting} = props;
-    const {isPlaying, loopCount, isTakingLoopBreak} = player;
+
+    const {onPlay, onDismissAlert, onStop, beats, metronomeSetting, player, playerSetting} = props;
+    const {isPlaying, loopCount, isTakingLoopBreak, playAlert} = player;
     const {isLooping} = playerSetting;
 
     const onClick_Play = () => onPlay({beats, metronomeSetting, playerSetting});
     const onClick_Stop = () => onStop();
 
+    const alertIfNeeded = ({playAlert}) => {
+      if (playAlert) {
+        const ModalAlert = createModalAlert(React);
+        return <ModalAlert message={playAlert} onDismiss={onDismissAlert}/>
+      }
+    };
+
     return {
       componentDidMount () {
         initializeAudio();
       },
-
       render () {
         return (
           <fieldset>
             <div className="player">
+              <div>{alertIfNeeded({playAlert})}</div>
               <ButtonGroup bsSize="large">
                 <Button type="button" bsStyle="primary" id="playButton" disabled={isPlaying} onClick={onClick_Play}>  P L A Y  </Button>
                 <Button type="button" bsStyle="primary" id="stopButton" disabled={!isPlaying} onClick={onClick_Stop}>  S T O P  </Button>

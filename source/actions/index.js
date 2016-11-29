@@ -6,7 +6,9 @@ import {
   SET_IS_LOOPING,
   INCREMENT_LOOP_COUNT,
   RESET_LOOP_COUNT,
-  SET_IS_TAKING_LOOP_BREAK
+  SET_IS_TAKING_LOOP_BREAK,
+  SET_PLAY_ALERT,
+  CANCEL_PLAY_ALERT
 } from '../constants/actionTypes';
 ////////////////////////////////////
 
@@ -33,15 +35,13 @@ export const setIsPlaying = ({isPlaying}) => {
 
 export const incrementLoopCount = () => {
   return {
-    type: INCREMENT_LOOP_COUNT,
-    payload: {}
+    type: INCREMENT_LOOP_COUNT
   };
 };
 
 export const resetLoopCount = () => {
   return {
-    type: RESET_LOOP_COUNT,
-    payload: {}
+    type: RESET_LOOP_COUNT
   };
 };
 
@@ -63,5 +63,18 @@ export const setIsTakingLoopBreak = ({isTakingLoopBreak}) => {
   return {
     type: SET_IS_TAKING_LOOP_BREAK,
     payload: {isTakingLoopBreak}
+  };
+};
+
+export const setPlayAlert = ({playAlert}) => {
+  return {
+    type: SET_PLAY_ALERT,
+    payload: {playAlert}
+  };
+};
+
+export const cancelPlayAlert = () => {
+  return {
+    type: CANCEL_PLAY_ALERT
   };
 };

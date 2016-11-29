@@ -13,8 +13,10 @@ export default (state = defaultState, action = {}) => {
   const {type, payload} = action;
 
   switch (type) {
-    case SET_IS_LOOPING: return {...state, ...payload};
-    case SET_IS_LOOP_BREAK: return {...state, ...payload};
+    case SET_IS_LOOPING:
+    case SET_IS_LOOP_BREAK:
+      return {...state, ...payload};
+
     default: return state;
   }
 };
