@@ -10,7 +10,10 @@ import {
   playTicks,
   stopTicks
 } from '../audio';
-import {TickCountVsClassicTicksPerBeatError} from '../../exceptions';
+import {
+  TickCountVsClassicTicksPerBeat_Error,
+  BeatRhLhPositiveInt_Error
+} from '../../exceptions';
 ////////////////////////////////////
 
 let isStopped = true;
@@ -99,7 +102,7 @@ const calc_baseTicksForBeats = ({
 };
 
 const validateTickCountWithClassicTicksPerBeat = ({tickCount, classicTicksPerBeat, beatIndex}) => {
-  if (tickCount%classicTicksPerBeat != 0) throw new TickCountVsClassicTicksPerBeatError({beatIndex, tickCount, classicTicksPerBeat});
+  if (tickCount%classicTicksPerBeat != 0) throw new TickCountVsClassicTicksPerBeat_Error({beatIndex, tickCount, classicTicksPerBeat});
 };
 
 const calc_baseTicksForBeat = ({
@@ -150,6 +153,14 @@ const addTicks = ({ticks, beats, metronomeSetting, onTicksEnded}) => {
   Array.prototype.push.apply(ticks, contents);
 };
 
+const validateBeatData = ({beats}) => {
+  const isPositiveInteger = (value) => Number.isInteger(value) && value > 0;
+  beats.forEach((beat, beatIndex) => {
+    if (!isPositiveInteger(beat.rh) || !isPositiveInteger(beat.lh))
+      throw new BeatRhLhPositiveInt_Error({beatIndex});
+  });
+};
+
 const play = ({
   beats = [{rh: 1, lh: 1}],
   metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1},
@@ -159,6 +170,8 @@ const play = ({
   onEndTakingLoopBreak,
   onPlayEnded
 } = {}) => {
+  validateBeatData({beats});
+
   const populateTicks = ({ticks, beats, metronomeSetting, onTicksEnded}) => addTicks({ticks, beats, metronomeSetting, onTicksEnded});
   isStopped = false;
   const ticks = [];

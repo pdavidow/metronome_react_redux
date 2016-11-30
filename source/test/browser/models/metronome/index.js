@@ -32,7 +32,10 @@ import {
   waitInAudioTime,
   embeddedAudioTest_playTicks
 } from '../../../browser/utils';
-import {TickCountVsClassicTicksPerBeatError} from '../../../../exceptions';
+import {
+  TickCountVsClassicTicksPerBeat_Error,
+  BeatRhLhPositiveInt_Error
+} from '../../../../exceptions';
 ////////////////////////////////////
 
 const audioContext = initializedAudioContext();
@@ -277,25 +280,25 @@ test('Metronome model', nestOuter => {
   nestOuter.test('...Validate Tick-count with classic-ticks-per-beat', (nestInner) => {
     nestInner.test('......Yes exception', assert => {
       audioTestStart();
-      const msg = 'Expecting TickCountVsClassicTicksPerBeatError';
+      const msg = 'Expecting TickCountVsClassicTicksPerBeat_Error';
 
       const beats = [{rh: 1, lh: 3}];
       const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 2};
       const fn = () => play({beats, metronomeSetting, isLooping: false, onPlayEnded: ()=>{}});
 
-      assert.throws(fn, TickCountVsClassicTicksPerBeatError, msg);
+      assert.throws(fn, TickCountVsClassicTicksPerBeat_Error, msg);
       assert.end();
       audioTestEnd();
     });
     nestInner.test('......No exception', assert => {
       audioTestStart();
-      const msg = 'Not expecting TickCountVsClassicTicksPerBeatError';
+      const msg = 'Not expecting TickCountVsClassicTicksPerBeat_Error';
 
       const beats = [{rh: 1, lh: 4}];
       const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 2};
       const fn = () => play({beats, metronomeSetting, isLooping: false, onPlayEnded: ()=>{}});
 
-      assert.doesNotThrow(fn, TickCountVsClassicTicksPerBeatError, msg);
+      assert.doesNotThrow(fn, TickCountVsClassicTicksPerBeat_Error, msg);
       assert.end();
       audioTestEnd();
     });
@@ -902,6 +905,68 @@ test('Metronome model', nestOuter => {
       simulate.click(getPlayButton({domNode}));
       await sleep(800000) /* msec */; // slows down audio clock by about 1/3
       audioTestEnd();
+    });
+  });
+  nestOuter.test('...Beat rh, lh must be positive integers', nestInner => {
+    nestInner.test('......0) No exception', assert => {
+      audioTestStart();
+      const msg = 'Not expecting BeatRhLhPositiveInt_Error';
+
+      const beats = [{rh: 2, lh: 3}];
+      const metronomeSetting = {classicTicksPerMinute: 1000, classicTicksPerBeat: 1};
+      const fn = () => play({beats, metronomeSetting, isLooping: false, onPlayEnded: ()=>{}});
+
+      assert.doesNotThrow(fn, BeatRhLhPositiveInt_Error, msg);
+      assert.end();
+      audioTestEnd();
+    });
+    nestInner.test('......1) Beat rh, lh must be positive integers', assert => {
+      const msg = 'Expecting BeatRhLhPositiveInt_Error';
+
+      const beats = [{rh: 0, lh: 0}];
+      const fn = () => play({beats});
+
+      assert.throws(fn, BeatRhLhPositiveInt_Error, msg);
+      assert.end();
+    });
+    nestInner.test('......2) Beat rh, lh must be positive integers', assert => {
+      const msg = 'Expecting BeatRhLhPositiveInt_Error';
+
+      const beats = [{rh: -5, lh: 5}];
+      const fn = () => play({beats});
+
+      assert.throws(fn, BeatRhLhPositiveInt_Error, msg);
+      assert.end();
+    });
+    nestInner.test('......3) Beat rh, lh must be positive integers', assert => {
+      const msg = 'Expecting BeatRhLhPositiveInt_Error';
+
+      const beats = [{rh: 5, lh: 5}, {rh: 5, lh: 5}, {rh: 5.5, lh: 5}];
+      const fn = () => play({beats});
+
+      assert.throws(fn, BeatRhLhPositiveInt_Error, msg);
+      assert.end();
+    });
+    nestInner.test('......4) Report problem', assert => {
+      const msg = 'Problem is in third beat';
+
+      const beats = [{rh: 1, lh: 2},{rh: 1, lh: 2},{rh: -5, lh: 3}];
+      let actual = {};
+
+      try {
+        play({beats});
+      }
+      catch ({beatIndex, message}) {
+        actual = {beatIndex, message};
+      };
+
+      const expected = {
+        beatIndex: 2, // 0 based
+        message: 'Beat #3: Right/Left Hand note counts must be positive integers' // 1 based
+      };
+
+      assert.deepEqual(actual, expected, msg);
+      assert.end();
     });
   });
 });
