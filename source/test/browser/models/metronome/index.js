@@ -34,7 +34,8 @@ import {
 } from '../../../browser/utils';
 import {
   TickCountVsClassicTicksPerBeat_Error,
-  BeatRhLhPositiveInt_Error
+  BeatRhLhPositiveInt_Error,
+  MetronomeSettingPositiveInt_Error,
 } from '../../../../exceptions';
 ////////////////////////////////////
 
@@ -941,13 +942,22 @@ test('Metronome model', nestOuter => {
     nestInner.test('......3) Beat rh, lh must be positive integers', assert => {
       const msg = 'Expecting BeatRhLhPositiveInt_Error';
 
-      const beats = [{rh: 5, lh: 5}, {rh: 5, lh: 5}, {rh: 5.5, lh: 5}];
+      const beats = [{rh: 5, lh: 5}, {rh: 5, lh: 5}, {rh: 5.2, lh: 5}];
       const fn = () => play({beats});
 
       assert.throws(fn, BeatRhLhPositiveInt_Error, msg);
       assert.end();
     });
-    nestInner.test('......4) Report problem', assert => {
+    nestInner.test('......4) Beat rh, lh must be positive integers', assert => {
+      const msg = 'Expecting BeatRhLhPositiveInt_Error';
+
+      const beats = [{rh: 5, lh: 5}, {rh: 5, lh: 5.3}, {rh: 5, lh: 5}];
+      const fn = () => play({beats});
+
+      assert.throws(fn, BeatRhLhPositiveInt_Error, msg);
+      assert.end();
+    });
+    nestInner.test('......5) Report problem', assert => {
       const msg = 'Problem is in third beat';
 
       const beats = [{rh: 1, lh: 2},{rh: 1, lh: 2},{rh: -5, lh: 3}];
@@ -966,6 +976,89 @@ test('Metronome model', nestOuter => {
       };
 
       assert.deepEqual(actual, expected, msg);
+      assert.end();
+    });
+  });
+  nestOuter.test('...MetronomeSetting classicTicksPerMinute, classicTicksPerBeat must be positive integers', nestInner => {
+    nestInner.test('......0) No exception', assert => {
+      audioTestStart();
+      const msg = 'Not expecting MetronomeSettingPositiveInt_Error';
+
+      const beats = [{rh: 1, lh: 1}];
+      const metronomeSetting = {classicTicksPerMinute: 240, classicTicksPerBeat: 1};
+      const fn = () => play({beats, metronomeSetting, isLooping: false, onPlayEnded: ()=>{}});
+
+      assert.doesNotThrow(fn, MetronomeSettingPositiveInt_Error, msg);
+      assert.end();
+      audioTestEnd();
+    });
+    nestInner.test('......1) MetronomeSetting classicTicksPerMinute, classicTicksPerBeat must be positive integers', assert => {
+      const msg = 'Expecting MetronomeSettingPositiveInt_Error';
+
+      const beats = [{rh: 1, lh: 4}];
+      const metronomeSetting = {classicTicksPerMinute: 0, classicTicksPerBeat: 0};
+      const fn = () => play({beats, metronomeSetting});
+
+      assert.throws(fn, MetronomeSettingPositiveInt_Error, msg);
+      assert.end();
+    });
+    nestInner.test('......2) MetronomeSetting classicTicksPerMinute, classicTicksPerBeat must be positive integers', assert => {
+      const msg = 'Expecting MetronomeSettingPositiveInt_Error';
+
+      const beats = [{rh: 1, lh: 4}];
+      const metronomeSetting = {classicTicksPerMinute: 1000, classicTicksPerBeat: -4};
+      const fn = () => play({beats, metronomeSetting});
+
+      assert.throws(fn, MetronomeSettingPositiveInt_Error, msg);
+      assert.end();
+    });
+    nestInner.test('......3) MetronomeSetting classicTicksPerMinute, classicTicksPerBeat must be positive integers', assert => {
+      const msg = 'Expecting MetronomeSettingPositiveInt_Error';
+
+      const beats = [{rh: 1, lh: 4}];
+      const metronomeSetting = {classicTicksPerMinute: -1000, classicTicksPerBeat: 4};
+      const fn = () => play({beats, metronomeSetting});
+
+      assert.throws(fn, MetronomeSettingPositiveInt_Error, msg);
+      assert.end();
+    });
+    nestInner.test('......4) MetronomeSetting classicTicksPerMinute, classicTicksPerBeat must be positive integers', assert => {
+      const msg = 'Expecting MetronomeSettingPositiveInt_Error';
+
+      const beats = [{rh: 1, lh: 4}];
+      const metronomeSetting = {classicTicksPerMinute: 1000, classicTicksPerBeat: 4.3};
+      const fn = () => play({beats, metronomeSetting});
+
+      assert.throws(fn, MetronomeSettingPositiveInt_Error, msg);
+      assert.end();
+    });
+    nestInner.test('......5) MetronomeSetting classicTicksPerMinute, classicTicksPerBeat must be positive integers', assert => {
+      const msg = 'Expecting MetronomeSettingPositiveInt_Error';
+
+      const beats = [{rh: 1, lh: 4}];
+      const metronomeSetting = {classicTicksPerMinute: 1000.3, classicTicksPerBeat: 4};
+      const fn = () => play({beats, metronomeSetting});
+
+      assert.throws(fn, MetronomeSettingPositiveInt_Error, msg);
+      assert.end();
+    });
+    nestInner.test('......6) Report problem', assert => {
+      const msg = 'Problem';
+
+      const beats = [{rh: 1, lh: 4}];
+      const metronomeSetting = {classicTicksPerMinute: 1000.3, classicTicksPerBeat: 4};
+      let actual;
+
+      try {
+        play({beats, metronomeSetting});
+      }
+      catch ({message}) {
+        actual = message;
+      };
+
+      const expected = 'Metronome-Setting classicTicksPerMinute, classicTicksPerBeat must be positive integers' // 1 based
+
+      assert.equal(actual, expected, msg);
       assert.end();
     });
   });

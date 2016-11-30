@@ -17,7 +17,15 @@ class BeatRhLhPositiveInt_Error extends ErrorSubclass {
   }
 };
 
+class MetronomeSettingPositiveInt_Error extends ErrorSubclass {
+  constructor() {
+    const message = 'Metronome-Setting classicTicksPerMinute, classicTicksPerBeat must be positive integers';
+    super(message);
+  }
+};
+
 export {
   TickCountVsClassicTicksPerBeat_Error,
-  BeatRhLhPositiveInt_Error
+  BeatRhLhPositiveInt_Error,
+  MetronomeSettingPositiveInt_Error
 };
