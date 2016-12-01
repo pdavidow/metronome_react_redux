@@ -28,6 +28,8 @@ export default (React) => {
     const {handleSubmit, player} = props;
     const {isPlaying} = player;
 
+    const normalizeNumber = (value) => Number(value);
+
     const renderField = ({input, label, type, min, meta: {touched, error }}) => (
       <div>
         <label>{label}</label>
@@ -50,6 +52,7 @@ export default (React) => {
                 min="1"
                 component={renderField}
                 label="Right Hand note count"
+                normalize={normalizeNumber}
               />
               <Field
                 name={`${beat}.lh`}
@@ -57,6 +60,7 @@ export default (React) => {
                 min="1"
                 component={renderField}
                 label="Left Hand note count"
+                normalize={normalizeNumber}
               />
           </li>
         )}

@@ -30,6 +30,8 @@ export default (React) => {
     const {handleSubmit, player} = props;
     const {isPlaying} = player;
 
+    const normalizeNumber = (value) => Number(value);
+
     return (
       <fieldset id='metronomeSettingFieldset' disabled={isPlaying ? "disabled" : ""}>
         <Panel header={<h1>Metronome Setting</h1>}>
@@ -40,7 +42,7 @@ export default (React) => {
                   Classic Ticks Per Minute
                 </Col>
                 <Col sm={10}>
-                  <Field id="classicTicksPerMinuteInputField" name="classicTicksPerMinute" component="input" type="number" min="1"/>
+                  <Field id="classicTicksPerMinuteInputField" name="classicTicksPerMinute" component="input" type="number" min="1" normalize={normalizeNumber}/>
                 </Col>
               </div>
             </FormGroup>
@@ -50,7 +52,7 @@ export default (React) => {
                   Classic Ticks Per Beat
                 </Col>
                 <Col sm={10}>
-                  <Field id="classicTicksPerBeatInputField" name="classicTicksPerBeat" component="input" type="number" min="1"/>
+                  <Field id="classicTicksPerBeatInputField" name="classicTicksPerBeat" component="input" type="number" min="1" normalize={normalizeNumber}/>
                 </Col>
               </div>
             </FormGroup>

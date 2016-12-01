@@ -98,24 +98,16 @@ const calc_baseTicksForBeats = ({
 
   return flatMap(beats, ((beat, beatIndex) => {
     const shiftAmount = beatDuration * beatIndex;
-    return calc_baseTicksForBeat({beat, beatIndex, metronomeSetting, shiftAmount});
+    return calc_baseTicksForBeat({beat, metronomeSetting, shiftAmount});
   }));
-};
-
-const validateTickCountWithClassicTicksPerBeat = ({tickCount, classicTicksPerBeat, beatIndex}) => {
-  if (tickCount%classicTicksPerBeat != 0) throw new TickCountVsClassicTicksPerBeat_Error({beatIndex, tickCount, classicTicksPerBeat});
 };
 
 const calc_baseTicksForBeat = ({
   beat = {rh: 1, lh: 1},
-  beatIndex = 0,
   metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1},
   shiftAmount = 0
 } = {}) => {
-  const {classicTicksPerBeat} = metronomeSetting;
   const tickCount = calc_tickCount({beat});
-  validateTickCountWithClassicTicksPerBeat({tickCount, classicTicksPerBeat, beatIndex});
-
   const tickDuration = calc_tickDuration({beat, metronomeSetting});
   const startOffsets = calc_shiftedTickStartTimeOffsets({tickCount, tickDuration, shiftAmount});
 
@@ -154,20 +146,38 @@ const addTicks = ({ticks, beats, metronomeSetting, onTicksEnded}) => {
   Array.prototype.push.apply(ticks, contents);
 };
 
-const isPositiveInteger = (value) => Number.isInteger(value) && value > 0;
+const validate = ({beats, metronomeSetting}) => {
+  const isPositiveInteger = (value) => Number.isInteger(value) && value > 0;
 
-const validateBeatData = ({beats}) => {
-  beats.forEach((beat, beatIndex) => {
-    const {rh, lh} = beat;
-    if (!isPositiveInteger(rh) || !isPositiveInteger(lh))
-      throw new BeatRhLhPositiveInt_Error({beatIndex});
-  });
-};
+  const validateBeats = ({beats}) => {
+    beats.forEach((beat, beatIndex) => {
+      const {rh, lh} = beat;
+      if (!isPositiveInteger(rh) || !isPositiveInteger(lh))
+        throw new BeatRhLhPositiveInt_Error({beatIndex});
+    });
+  };
 
-const validateMetronomeSettingData = ({metronomeSetting}) => {
-  const {classicTicksPerMinute, classicTicksPerBeat} = metronomeSetting;
-  if (!isPositiveInteger(classicTicksPerMinute) || !isPositiveInteger(classicTicksPerBeat))
-    throw new MetronomeSettingPositiveInt_Error();
+  const validateMetronomeSetting = ({metronomeSetting}) => {
+    const {classicTicksPerMinute, classicTicksPerBeat} = metronomeSetting;
+    if (!isPositiveInteger(classicTicksPerMinute) || !isPositiveInteger(classicTicksPerBeat))
+      throw new MetronomeSettingPositiveInt_Error();
+  };
+
+  const validateBeatsWithMetronomeSetting = ({beats, metronomeSetting}) => {
+    const {classicTicksPerBeat} = metronomeSetting;
+    const validateTickCountWithClassicTicksPerBeat = ({tickCount, classicTicksPerBeat, beatIndex}) => {
+      if (tickCount%classicTicksPerBeat != 0) throw new TickCountVsClassicTicksPerBeat_Error({beatIndex, tickCount, classicTicksPerBeat});
+    };
+
+    beats.forEach((beat, beatIndex) => {
+      const tickCount = calc_tickCount({beat});
+      validateTickCountWithClassicTicksPerBeat({tickCount, classicTicksPerBeat, beatIndex});
+    });
+  };
+
+  validateBeats({beats});
+  validateMetronomeSetting({metronomeSetting});
+  validateBeatsWithMetronomeSetting({beats, metronomeSetting});
 };
 
 const play = ({
@@ -179,8 +189,7 @@ const play = ({
   onEndTakingLoopBreak,
   onPlayEnded
 } = {}) => {
-  validateBeatData({beats});
-  validateMetronomeSettingData({metronomeSetting});
+  validate({beats, metronomeSetting});
 
   const populateTicks = ({ticks, beats, metronomeSetting, onTicksEnded}) => addTicks({ticks, beats, metronomeSetting, onTicksEnded});
   isStopped = false;
