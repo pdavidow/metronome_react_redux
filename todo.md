@@ -1,7 +1,6 @@
 todo
 
-- cannot delete first beat
-- disable play if no beats
+- disable play if no beats, test play with no beats
 
 - Instead of ticks, have actual notes option (use osclillator for now, and then actual 88 piano tone samples)
 - Metronome-Setting on per beat basis

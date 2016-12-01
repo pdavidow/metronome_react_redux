@@ -64,6 +64,7 @@
     "babel-polyfill": "^6.13.0",
     "error-subclass": "^2.0.4",
     "express": "4.13.4",
+    "lodash": "^4.17.2",
     "mathjs": "^3.4.1",
     "react": "15.0.1",
     "react-bootstrap": "^0.30.6",

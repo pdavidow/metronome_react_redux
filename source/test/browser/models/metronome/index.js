@@ -41,8 +41,6 @@ import {
 
 const audioContext = initializedAudioContext();
 
-// Careful: React may replace the element it is modifying, instead of changing it in place.
-// So always retreive the element, instead of keeping a pointer to it.
 const getPlayButton = ({domNode}) => getElementBySelector({domNode, selector: '#playButton'});
 const getStopButton = ({domNode}) => getElementBySelector({domNode, selector: '#stopButton'});
 

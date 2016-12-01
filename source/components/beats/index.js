@@ -42,7 +42,7 @@ export default (React) => {
 
     const renderBeats = ({fields}) => (
       <ul>
-        <Button type="button" bsStyle="primary" onClick={() => fields.push(defaultBeat)}>Add Beat</Button>
+        <Button id="addBeatButton" type="button" bsStyle="primary" onClick={() => fields.push(defaultBeat)}>Add Beat</Button>
         {fields.map((beat, index) =>
           <li key={index}>
             <h4>Beat #{index + 1} <Button type="button" bsStyle="danger" bsSize="xsmall" onClick={() => fields.remove(index)}>Remove</Button></h4>

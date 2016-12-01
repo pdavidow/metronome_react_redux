@@ -20,8 +20,6 @@ import {
 import {initializedAudioContext} from '../../../../models/audio';
 ////////////////////////////////////
 
-// Careful: React may replace the element it is modifying, instead of changing it in place.
-// So always retreive the element, instead of keeping a pointer to it.
 const getPlayButton = ({domNode}) => getElementBySelector({domNode, selector: '#playButton'});
 const getStopButton = ({domNode}) => getElementBySelector({domNode, selector: '#stopButton'});
 const getLoopCount = ({domNode}) => getElementBySelector({domNode, selector: '#loopCount'});
@@ -29,7 +27,7 @@ const getLoopCountSpan = ({domNode}) => getElementBySelector({domNode, selector:
 const getLoopBreakStatusSpan = ({domNode}) => getElementBySelector({domNode, selector: '#loopBreakStatusSpan'});
 const getAlert = ({domNode}) => getElementBySelector({domNode, selector: '#alert'});
 const getAlertMessage = ({domNode}) => getElementBySelector({domNode, selector: '#alertMessage'});
-const getAlertDismissButton = ({domNode}) => getElementBySelector({domNode, selector: '.narcissus_n3sdvf'}); // class-name retrieved via Chrome debugger inspection
+const getAlertDismissButton = ({domNode}) => getElementBySelector({domNode, selector: '.narcissus_n3sdvf'}); // class-name retrieved via Chrome debugger inspection // todo: use in test
 
 test('Player component', nestOuter => {
   nestOuter.test('...Play button should disable during play', nestInner => {
