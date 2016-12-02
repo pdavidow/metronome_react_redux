@@ -5,6 +5,7 @@ import {
 } from 'redux-form';
 import {connect} from 'react-redux';
 import {
+  Accordion,
   Button,
   Panel
 } from 'react-bootstrap';
@@ -43,27 +44,32 @@ export default (React) => {
     const renderBeats = ({fields}) => (
       <ul>
         <Button id="addBeatButton" type="button" bsStyle="primary" onClick={() => fields.push(defaultBeat)}>Add Beat</Button>
-        {fields.map((beat, index) =>
-          <li key={index}>
-            <h4>Beat #{index + 1} <Button type="button" bsStyle="danger" bsSize="xsmall" onClick={() => fields.remove(index)}>Remove</Button></h4>
-              <Field
-                name={`${beat}.rh`}
-                type="number"
-                min="1"
-                component={renderField}
-                label="Right Hand note count"
-                normalize={normalizeNumber}
-              />
-              <Field
-                name={`${beat}.lh`}
-                type="number"
-                min="1"
-                component={renderField}
-                label="Left Hand note count"
-                normalize={normalizeNumber}
-              />
-          </li>
-        )}
+        <Accordion>
+          {fields.map((beat, index) =>
+            <li key={index}>
+              <Panel header={`Beat #{index + 1}`} eventKey={String(index)}>
+                <Button type="button" bsStyle="danger" bsSize="xsmall" onClick={() => fields.remove(index)}>Remove</Button>
+
+                <Field
+                    name={`${beat}.rh`}
+                    type="number"
+                    min="1"
+                    component={renderField}
+                    label="Right Hand note count"
+                    normalize={normalizeNumber}
+                  />
+                  <Field
+                    name={`${beat}.lh`}
+                    type="number"
+                    min="1"
+                    component={renderField}
+                    label="Left Hand note count"
+                    normalize={normalizeNumber}
+                  />
+              </Panel>
+            </li>
+          )}
+        </Accordion>
       </ul>);
 
     return (
