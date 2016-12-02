@@ -1054,11 +1054,34 @@ test('Metronome model', nestOuter => {
         actual = message;
       };
 
-      const expected = 'Metronome-Setting classicTicksPerMinute, classicTicksPerBeat must be positive integers' // 1 based
+      const expected = 'Metronome-Setting classicTicksPerMinute, classicTicksPerBeat must be positive integers'; // 1 based
 
       assert.equal(actual, expected, msg);
       assert.end();
     });
+  });
+  nestOuter.test('...onEnded should be called if no beats', async(assert) => {
+    audioTestStart();
+    const msg = 'Should yes increment';
+
+    const beats = [];
+    const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1};
+
+    let value = 0;
+    const onPlayEnded = () => value++;
+    const startTime = audioContext.currentTime; // approx
+    play({beats, metronomeSetting, isLooping: false, onLoopCounting: ()=>{}, onPlayEnded});
+
+    const waitTime = 0.2 ; // sec
+    waitInAudioTime({waitTime, audioContext, startTime});
+    await sleep(1) /* msec */; // for some reason, must sleep something
+
+    const expected = 1;
+    const actual = value;
+
+    assert.equal(actual, expected, msg);
+    assert.end();
+    audioTestEnd();
   });
 });
 

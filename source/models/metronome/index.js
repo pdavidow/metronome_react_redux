@@ -1,6 +1,7 @@
 import {
   flatMap,
   includes,
+  isEmpty,
   last,
   range
 } from 'lodash';
@@ -189,6 +190,7 @@ const play = ({
   onEndTakingLoopBreak,
   onPlayEnded
 } = {}) => {
+  if (isEmpty(beats)) return onPlayEnded();
   validate({beats, metronomeSetting});
 
   const populateTicks = ({ticks, beats, metronomeSetting, onTicksEnded}) => addTicks({ticks, beats, metronomeSetting, onTicksEnded});

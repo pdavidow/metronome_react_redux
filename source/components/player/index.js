@@ -2,6 +2,7 @@ import {
   Button,
   ButtonGroup
 } from 'react-bootstrap';
+import {isEmpty} from 'lodash';
 
 import {initialize as initializeAudio} from '../../models/audio';
 import createModalAlert from '../modalAlert';
@@ -36,11 +37,16 @@ export default (React) => {
     const onClick_Play = () => onPlay({beats, metronomeSetting, playerSetting});
     const onClick_Stop = () => onStop();
 
-    const alertIfNeeded = ({playAlert}) => {
+    const alertIfNeeded = () => {
       if (playAlert) {
         const ModalAlert = createModalAlert(React);
         return <ModalAlert message={playAlert} onDismiss={onDismissAlert}/>
       }
+    };
+
+    const isPlayButtonDisabled = () => {
+      if (isEmpty(beats)) return true;
+      return isPlaying;
     };
 
     return {
@@ -51,9 +57,9 @@ export default (React) => {
         return (
           <fieldset>
             <div className="player">
-              <div>{alertIfNeeded({playAlert})}</div>
+              <div>{alertIfNeeded()}</div>
               <ButtonGroup bsSize="large">
-                <Button type="button" bsStyle="primary" id="playButton" disabled={isPlaying} onClick={onClick_Play}>  P L A Y  </Button>
+                <Button type="button" bsStyle="primary" id="playButton" disabled={isPlayButtonDisabled()} onClick={onClick_Play}>  P L A Y  </Button>
                 <Button type="button" bsStyle="primary" id="stopButton" disabled={!isPlaying} onClick={onClick_Stop}>  S T O P  </Button>
               </ButtonGroup >
               <br/>

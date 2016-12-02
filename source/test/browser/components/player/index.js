@@ -34,7 +34,10 @@ test('Player component', nestOuter => {
     nestInner.test('......Should render an enabled Play button by default', assert => {
       const msg = 'Should be enabled';
 
-      const domNode = getDomNode();
+      const beats = [{rh: 1, lh: 1}];
+      const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1};
+      const store = setStore({beats, metronomeSetting});
+      const domNode = getDomNode({store});
 
       const actual = getPlayButton({domNode}).hasAttribute('disabled');
       const expected = false;
@@ -87,6 +90,23 @@ test('Player component', nestOuter => {
       };
       simulate.click(getPlayButton({domNode}));
       waitInAudioTime({waitTime: 2, audioContext: initializedAudioContext(), startTime: 0});
+      audioTestEnd();
+    });
+    nestInner.test('......Play button should be disabled if no beats', async(assert) => {
+      audioTestStart();
+      const msg = 'Should be disabled';
+
+      const beats = [];
+      const metronomeSetting = {classicTicksPerMinute: 60, classicTicksPerBeat: 1};
+      const store = setStore({beats, metronomeSetting});
+      const domNode = getDomNode({store});
+      await sleep(200); // msec
+
+      const actual = getPlayButton({domNode}).hasAttribute('disabled');
+      const expected = true;
+
+      assert.equal(actual, expected, msg);
+      assert.end();
       audioTestEnd();
     });
   });
