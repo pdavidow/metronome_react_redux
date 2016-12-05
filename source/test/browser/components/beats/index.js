@@ -63,4 +63,29 @@ test('Beats component', nestOuter => {
     assert.deepEqual(actual, expected, msg);
     assert.end();
   });
+  nestOuter.test('...Should toggle button text: expand/collapse', async(assert) => {
+    const msg = 'Should toggle expand/collapse';
+
+    const store = defaultStore();
+    const domNode = getDomNode({store});
+
+    const toggleButtonText = () => getToggleIsBeatPanelOpen_Button({domNode}).innerHTML;
+
+    const actual = [];
+    const expected = ['expand', 'collapse', 'expand', 'collapse'];
+
+    actual.push(toggleButtonText());
+    simulate.click(getToggleIsBeatPanelOpen_Button({domNode}));
+    await sleep(100);
+    actual.push(toggleButtonText());
+    simulate.click(getToggleIsBeatPanelOpen_Button({domNode}));
+    await sleep(100);
+    actual.push(toggleButtonText());
+    simulate.click(getToggleIsBeatPanelOpen_Button({domNode}));
+    await sleep(100);
+    actual.push(toggleButtonText());
+
+    assert.deepEqual(actual, expected, msg);
+    assert.end();
+  });
 });

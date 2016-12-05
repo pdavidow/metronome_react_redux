@@ -37,6 +37,7 @@ export default (React) => {
     const {isBeatPanelOpen} = userInterfaceSetting;
 
     const normalizeNumber = (value) => Number(value);
+    const toggleButtonText = () => isBeatPanelOpen ? 'collapse' : 'expand';
 
     const renderField = ({input, label, type, min, meta: {touched, error }}) => (
       <div>
@@ -79,7 +80,7 @@ export default (React) => {
         <Panel header={<h1>Beats</h1>}>
           <form className="beats" onSubmit={handleSubmit}>
             <div>
-              <Button id="toggleIsBeatPanelOpen_Button" onClick={handleToggleIsBeatPanelOpen}>click</Button>
+              <Button id="toggleIsBeatPanelOpen_Button" onClick={handleToggleIsBeatPanelOpen}>{toggleButtonText()}</Button>
               <Panel id="collapsibleBeatPanel" collapsible expanded={isBeatPanelOpen}>
                 <FieldArray name="beats" component={renderBeats}/>
               </Panel>
