@@ -9,7 +9,10 @@ import {
   Panel
 } from 'react-bootstrap';
 
-import {setBeats} from '../../actions';
+import {
+  setBeats,
+  toggleIsBeatPanelOpen
+} from '../../actions';
 import {defaultBeat} from '../../store/reducers/beats';
 ////////////////////////////////////
 
@@ -22,11 +25,16 @@ export default (React) => {
       player: React.PropTypes.shape({
         isPlaying: PropTypes.bool.isRequired
       }),
-      handleSubmit: PropTypes.func.isRequired
+      userInterfaceSetting: React.PropTypes.shape({
+        isBeatPanelOpen: PropTypes.bool.isRequired
+      }),
+      handleSubmit: PropTypes.func.isRequired,
+      handleToggleIsBeatPanelOpen: PropTypes.func.isRequired
     };
 
-    const {handleSubmit, player} = props;
+    const {handleSubmit, handleToggleIsBeatPanelOpen, player, userInterfaceSetting} = props;
     const {isPlaying} = player;
+    const {isBeatPanelOpen} = userInterfaceSetting;
 
     const normalizeNumber = (value) => Number(value);
 
@@ -70,7 +78,12 @@ export default (React) => {
       <fieldset id="beatsFieldset" disabled={isPlaying ? "disabled" : ""}>
         <Panel header={<h1>Beats</h1>}>
           <form className="beats" onSubmit={handleSubmit}>
-            <FieldArray name="beats" component={renderBeats}/>
+            <div>
+              <Button id="toggleIsBeatPanelOpen_Button" onClick={handleToggleIsBeatPanelOpen}>click</Button>
+              <Panel id="collapsibleBeatPanel" collapsible expanded={isBeatPanelOpen}>
+                <FieldArray name="beats" component={renderBeats}/>
+              </Panel>
+            </div>
             <div>
               <Button type="submit" bsStyle="success">Submit</Button>
             </div>
@@ -87,17 +100,24 @@ export default (React) => {
   const mapStateToProps = (state) => {
     const beats = state.beats;
     const player = state.player;
+    const userInterfaceSetting = state.userInterfaceSetting;
 
     return {
       initialValues: {beats},
       player,
+      userInterfaceSetting
     };
   };
 
   const mapDispatchToProps = (dispatch) => {
     return {
       // tricky: onSubmit turns into handleSubmit
-      onSubmit: (beatsObject) => dispatch(setBeats(beatsObject.beats))
+      onSubmit: ((beatsObject) => {
+        dispatch(setBeats(beatsObject.beats))
+      }),
+      handleToggleIsBeatPanelOpen: (() => {
+        dispatch(toggleIsBeatPanelOpen())
+      })
     };
   };
 

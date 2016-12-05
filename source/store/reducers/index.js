@@ -5,6 +5,7 @@ import beatsReducer from './beats';
 import metronomeSettingReducer from './metronomeSetting';
 import playerReducer from './player';
 import playerSettingReducer from './playerSetting';
+import userInterfaceSettingReducer from './userInterfaceSetting';
 ////////////////////////////////////
 
 const reducers = {
@@ -12,6 +13,7 @@ const reducers = {
   metronomeSetting: metronomeSettingReducer,
   player: playerReducer,
   playerSetting: playerSettingReducer,
+  userInterfaceSetting: userInterfaceSettingReducer,
   form: formReducer
 };
 

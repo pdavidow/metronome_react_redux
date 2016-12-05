@@ -8,7 +8,8 @@ import {
   RESET_LOOP_COUNT,
   SET_IS_TAKING_LOOP_BREAK,
   SET_PLAY_ALERT,
-  CANCEL_PLAY_ALERT
+  CANCEL_PLAY_ALERT,
+  TOGGLE_IS_BEAT_PANEL_OPEN
 } from '../constants/actionTypes';
 ////////////////////////////////////
 
@@ -76,5 +77,11 @@ export const setPlayAlert = ({playAlert}) => {
 export const cancelPlayAlert = () => {
   return {
     type: CANCEL_PLAY_ALERT
+  };
+};
+
+export const toggleIsBeatPanelOpen = () => {
+  return {
+    type: TOGGLE_IS_BEAT_PANEL_OPEN,
   };
 };
