@@ -15,8 +15,15 @@ test('Player component', nestOuter => {
       const msg = 'Should have playButton id';
 
       const props = {
-        player: {isPlaying: false},
-        playerSetting: {isLooping: false}
+        player: {
+          isPlaying: false,
+          loopCount: 0,
+          isTakingLoopBreak: false
+        },
+        playerSetting: {isLooping: false},
+        onPlay: ()=>{},
+        onStop: ()=>{},
+        beats: [],
       };
       const el = <Player {...props}/>;
       const $ = dom.load(render(el));
@@ -32,8 +39,15 @@ test('Player component', nestOuter => {
       const msg = 'Should have stopButton id';
 
       const props = {
-        player: {isPlaying: false},
-        playerSetting: {isLooping: false}
+        player: {
+          isPlaying: false,
+          loopCount: 0,
+          isTakingLoopBreak: false
+        },
+        playerSetting: {isLooping: false},
+        onPlay: ()=>{},
+        onStop: ()=>{},
+        beats: [],
       };
       const el = <Player {...props}/>;
       const $ = dom.load(render(el));

@@ -26,7 +26,7 @@ export default (React) => {
       player: React.PropTypes.shape({
         isPlaying: PropTypes.bool.isRequired,
         loopCount: PropTypes.number.isRequired,
-        isTakingLoopBreak: PropTypes.number.isRequired
+        isTakingLoopBreak: PropTypes.bool.isRequired
       })
     };
 
