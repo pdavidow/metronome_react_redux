@@ -510,38 +510,39 @@ test('Player component', nestOuter => {
   // });
 });
 
+// isolate, otherwise doesn't work for some as yet undetermined reason
 test('Player component', nestOuter => {
   nestOuter.test('...Stop button should actually stop audio', async(assert) => {
-  const msg = 'currentTime when onended should be 1 second (approx) later than startTime';
+    const msg = 'currentTime when onended should be 1 second (approx) later than startTime';
 
-  const store = setStore({beats: [{rh: 1, lh: 1}]}); // just 1 tick
-  const domNode = getDomNode({store});
+    const store = setStore({beats: [{rh: 1, lh: 1}]}); // just 1 tick
+    const domNode = getDomNode({store});
 
-  embeddedAudioTest.stopButtonStopsAudio = async({audioContext, oscillator}) => {
-    embeddedAudioTest.stopButtonStopsAudio = null;
+    embeddedAudioTest.stopButtonStopsAudio = async({audioContext, oscillator}) => {
+      embeddedAudioTest.stopButtonStopsAudio = null;
 
-    const analyser = audioContext.createAnalyser();
-    oscillator.onended = () => {
-      const endTime = audioContext.currentTime;
-      const delta = endTime - startTime;
-      const actual = (delta >= 1) && (delta < 1.2);
-      const expected = true;
-      assert.equal(actual, expected, msg);
-      assert.end();
+      const analyser = audioContext.createAnalyser();
+      oscillator.onended = () => {
+        const endTime = audioContext.currentTime;
+        const delta = endTime - startTime;
+        const actual = (delta >= 1) && (delta < 1.2);
+        const expected = true;
+        assert.equal(actual, expected, msg);
+        assert.end();
+      };
+      oscillator.connect(analyser);
+
+      const startTime = audioContext.currentTime;
+      oscillator.start(startTime);
+      oscillator.stop(startTime + 3); // sec
+
+      const waitTime = 1; // sec
+      waitInAudioTime({waitTime, audioContext, startTime});
+      await sleep(1) /* msec */; // for some reason, must sleep something
+
+      simulate.click(getStopButton({domNode}));
     };
-    oscillator.connect(analyser);
-
-    const startTime = audioContext.currentTime;
-    oscillator.start(startTime);
-    oscillator.stop(startTime + 3); // sec
-
-    const waitTime = 1; // sec
-    waitInAudioTime({waitTime, audioContext, startTime});
-    await sleep(1) /* msec */; // for some reason, must sleep something
-
-    simulate.click(getStopButton({domNode}));
-  };
-  simulate.click(getPlayButton({domNode}));
-  //await sleep(20000); // msec
-});
+    simulate.click(getPlayButton({domNode}));
+    //await sleep(20000); // msec
+  });
 });
