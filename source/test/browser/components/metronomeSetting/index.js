@@ -11,7 +11,7 @@ import {
 
 const getClassicTicksPerMinuteInputField = ({domNode}) => getElementBySelector({domNode, selector: '#classicTicksPerMinuteInputField'});
 const getClassicTicksPerBeatInputField = ({domNode}) => getElementBySelector({domNode, selector: '#classicTicksPerBeatInputField'});
-const getForm = ({domNode}) => getElementBySelector({domNode, selector: '.metronomeSetting'});
+const getMetronomeForm = ({domNode}) => getElementBySelector({domNode, selector: '#metronomeForm'});
 
 test('MetronomeSetting component', nestOuter => {
   nestOuter.test('...Should set metronomeSetting state upon submit', assert => {
@@ -23,13 +23,9 @@ test('MetronomeSetting component', nestOuter => {
     const store = defaultStore();
     const domNode = getDomNode({store});
 
-    const classicTicksPerMinuteInputField = getClassicTicksPerMinuteInputField({domNode});
-    const classicTicksPerBeatInputField = getClassicTicksPerBeatInputField({domNode});
-    const form = getForm({domNode});
-
-    simulate.change(classicTicksPerMinuteInputField, {target: {value: classicTicksPerMinute}});
-    simulate.change(classicTicksPerBeatInputField, {target: {value: classicTicksPerBeat}});
-    simulate.submit(form);
+    simulate.change(getClassicTicksPerMinuteInputField({domNode}), {target: {value: classicTicksPerMinute}});
+    simulate.change(getClassicTicksPerBeatInputField({domNode}), {target: {value: classicTicksPerBeat}});
+    simulate.submit(getMetronomeForm({domNode}));
 
     const actual = store.getState().metronomeSetting;
     const expected = {classicTicksPerMinute, classicTicksPerBeat};

@@ -15,7 +15,7 @@ const getLhInputField = ({domNode}) => getElementBySelector({domNode, selector: 
 const getToggleIsBeatPanelOpen_Button = ({domNode}) => getElementBySelector({domNode, selector: '#toggleIsBeatPanelOpen_Button'});
 const getCollapsedBeatPanel = ({domNode}) => getElementBySelector({domNode, selector: '#collapsibleBeatPanel[aria-hidden="true"]'});
 const getExpandedBeatPanel = ({domNode}) => getElementBySelector({domNode, selector: '#collapsibleBeatPanel[aria-hidden="false"]'});
-const getForm = ({domNode}) => getElementBySelector({domNode, selector: '.beats'});
+const getMetronomeForm = ({domNode}) => getElementBySelector({domNode, selector: '#metronomeForm'});
 
 test('Beats component', nestOuter => {
   nestOuter.test('...Should set beats state upon submit', assert => {
@@ -29,7 +29,7 @@ test('Beats component', nestOuter => {
 
     simulate.change(getRhInputField({domNode}), {target: {value: rh}});
     simulate.change(getLhInputField({domNode}), {target: {value: lh}});
-    simulate.submit(getForm({domNode}));
+    simulate.submit(getMetronomeForm({domNode}));
 
     const actual = store.getState().beats;
     const expected = [{rh, lh}];

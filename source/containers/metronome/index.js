@@ -1,6 +1,7 @@
 import {connect} from 'react-redux';
 
 import createPlayer from '../../components/player';
+import createMetronomeForm from '../../components/metronomeForm';
 import {
   play,
   stop
@@ -18,9 +19,11 @@ import {
 export default (React) => {
   const Metronome = (props) => {
     const Player = createPlayer(React);
+    const MetronomeForm = createMetronomeForm(React);
 
     return (
       <div>
+        <MetronomeForm {...props}/>
         <Player {...props}/>
       </div>
     );
@@ -32,12 +35,7 @@ export default (React) => {
     const playerSetting = state.playerSetting;
     const player = state.player;
 
-    return {
-      beats,
-      metronomeSetting,
-      playerSetting,
-      player
-    };
+    return {beats, metronomeSetting, playerSetting, player};
   };
 
   const mapDispatchToProps = (dispatch) => {

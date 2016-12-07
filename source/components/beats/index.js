@@ -1,43 +1,36 @@
 import {
   Field,
-  FieldArray,
-  reduxForm
+  FieldArray
 } from 'redux-form';
-import {connect} from 'react-redux';
 import {
   Button,
   Panel
 } from 'react-bootstrap';
 
-import {
-  setBeats,
-  toggleIsBeatPanelOpen
-} from '../../actions';
 import {defaultBeat} from '../../store/reducers/beats';
 ////////////////////////////////////
 
 export default (React) => {
   const PropTypes = React.PropTypes;
 
-  let BeatsForm = (props) => {
-    BeatsForm.propTypes = {
-      initialValues: PropTypes.object.isRequired,
+  let Beats = (props) => {
+    Beats.propTypes = {
+      initialValues: PropTypes.array.isRequired,
       player: React.PropTypes.shape({
         isPlaying: PropTypes.bool.isRequired
       }),
       userInterfaceSetting: React.PropTypes.shape({
         isBeatPanelOpen: PropTypes.bool.isRequired
       }),
-      handleSubmit: PropTypes.func.isRequired,
       handleToggleIsBeatPanelOpen: PropTypes.func.isRequired
     };
 
-    const {handleSubmit, handleToggleIsBeatPanelOpen, player, userInterfaceSetting} = props;
+    const {handleToggleIsBeatPanelOpen, player, userInterfaceSetting} = props;
     const {isPlaying} = player;
     const {isBeatPanelOpen} = userInterfaceSetting;
 
     const normalizeNumber = (value) => Number(value);
-    const toggleButtonText = () => isBeatPanelOpen ? 'collapse' : 'expand';
+    const toggleButtonText = ({isBeatPanelOpen}) => isBeatPanelOpen ? 'collapse' : 'expand';
 
     const renderField = ({input, label, type, min, meta: {touched, error }}) => (
       <div>
@@ -78,54 +71,16 @@ export default (React) => {
     return (
       <fieldset id="beatsFieldset" disabled={isPlaying ? "disabled" : ""}>
         <Panel header={<h1>Beats</h1>}>
-          <form className="beats" onSubmit={handleSubmit}>
-            <div>
-              <Button id="toggleIsBeatPanelOpen_Button" onClick={handleToggleIsBeatPanelOpen}>{toggleButtonText()}</Button>
-              <Panel id="collapsibleBeatPanel" collapsible expanded={isBeatPanelOpen}>
-                <FieldArray name="beats" component={renderBeats}/>
-              </Panel>
-            </div>
-            <div>
-              <Button type="submit" bsStyle="success">Submit</Button>
-            </div>
-          </form>
+          <div>
+            <Button id="toggleIsBeatPanelOpen_Button" onClick={handleToggleIsBeatPanelOpen}>{toggleButtonText({isBeatPanelOpen})}</Button>
+            <Panel id="collapsibleBeatPanel" collapsible expanded={isBeatPanelOpen}>
+              <FieldArray name="beats" component={renderBeats}/>
+            </Panel>
+          </div>
         </Panel>
       </fieldset>
     );
   };
 
-  BeatsForm = reduxForm({
-    form: 'beats' // a unique identifier for this form
-  })(BeatsForm);
-
-  const mapStateToProps = (state) => {
-    const beats = state.beats;
-    const player = state.player;
-    const userInterfaceSetting = state.userInterfaceSetting;
-
-    return {
-      initialValues: {beats},
-      player,
-      userInterfaceSetting
-    };
-  };
-
-  const mapDispatchToProps = (dispatch) => {
-    return {
-      // tricky: onSubmit turns into handleSubmit
-      onSubmit: ((beatsObject) => {
-        dispatch(setBeats(beatsObject.beats))
-      }),
-      handleToggleIsBeatPanelOpen: (() => {
-        dispatch(toggleIsBeatPanelOpen())
-      })
-    };
-  };
-
-  BeatsForm = connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(BeatsForm);
-
-  return BeatsForm;
+  return Beats;
 };

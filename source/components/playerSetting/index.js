@@ -1,21 +1,13 @@
-import {Field, reduxForm} from 'redux-form';
+import {Field} from 'redux-form';
 import {connect} from 'react-redux';
-import {
-  Button,
-  Panel
-} from 'react-bootstrap';
-
-import {
-  setIsLooping,
-  setIsLoopBreak
-} from '../../actions';
+import {Panel} from 'react-bootstrap';
 ////////////////////////////////////
 
 export default (React) => {
   const PropTypes = React.PropTypes;
 
-  let PlayerSettingForm = (props) => {
-    PlayerSettingForm.propTypes = {
+  let PlayerSetting = (props) => {
+    PlayerSetting.propTypes = {
       initialValues: React.PropTypes.shape({
         isLooping: PropTypes.bool.isRequired,
         isLoopBreak: PropTypes.bool.isRequired
@@ -23,15 +15,14 @@ export default (React) => {
       player: React.PropTypes.shape({
         isPlaying: PropTypes.bool.isRequired
       }),
-      form_isLooping: PropTypes.bool.isRequired,
-      handleSubmit: PropTypes.func.isRequired
+      form_isLooping: PropTypes.bool.isRequired
     };
 
-    const {handleSubmit, player, initialValues, form_isLooping} = props;
+    const {player, initialValues, form_isLooping} = props;
     const {isPlaying} = player;
     const {isLooping} = initialValues;
 
-    const shouldDisable_loopBreakCheckbox = () => {
+    const shouldEnable_loopBreakCheckbox = ({form_isLooping, isLooping}) => {
       if (form_isLooping == null) return isLooping;
       return form_isLooping;
     };
@@ -39,53 +30,31 @@ export default (React) => {
     return (
       <fieldset id='playerSettingFieldset' disabled={isPlaying ? "disabled" : ""}>
         <Panel header={<h1>Player Setting</h1>}>
-          <form className='playerSetting' onSubmit={handleSubmit} disabled={isPlaying ? "disabled" : ""}>
-            <div className='isLooping'>
-              <label>Loop</label>
-              <Field name="isLooping" id="loopCheckbox" component="input" type="checkbox"/>
-            </div>
-            <div className='isLoopBreak'>
-              <label>Loop Break</label>
-              <Field name="isLoopBreak" id="loopBreakCheckbox" component="input" type="checkbox" disabled={shouldDisable_loopBreakCheckbox() ? "" : "disabled"}/>
-            </div>
-            <Button type="submit" bsStyle="success">Submit</Button>
-          </form>
+          <div className='isLooping'>
+            <label>Loop</label>
+            <Field name="isLooping" id="loopCheckbox" component="input" type="checkbox"/>
+          </div>
+          <div className='isLoopBreak'>
+            <label>Loop Break</label>
+            <Field name="isLoopBreak" id="loopBreakCheckbox" component="input" type="checkbox" disabled={!shouldEnable_loopBreakCheckbox({form_isLooping, isLooping}) ? "disabled" : ""}/>
+          </div>
         </Panel>
       </fieldset>
     );
   };
 
-  PlayerSettingForm = reduxForm({
-    form: 'playerSetting' // a unique identifier for this form
-  })(PlayerSettingForm);
-
   const mapStateToProps = (state) => {
-    const playerSetting = state.playerSetting;
-    const player = state.player;
-    const form_playerSetting = state.form.playerSetting;
-    const form_isLooping = form_playerSetting ? form_playerSetting.values.isLooping : null;
+    const formValues = state.form.metronome.values;
+    const form_isLooping = formValues ? formValues.isLooping : null;
 
     return {
-      initialValues: playerSetting,
-      player,
       form_isLooping
     }
   };
 
-  const mapDispatchToProps = (dispatch) => {
-    return {
-      // tricky: onSubmit turns into handleSubmit
-      onSubmit: ({isLooping, isLoopBreak}) => {
-        dispatch(setIsLooping({isLooping}));
-        dispatch(setIsLoopBreak({isLoopBreak}));
-      }
-    }
-  };
+  PlayerSetting = connect(
+    mapStateToProps
+  )(PlayerSetting);
 
-  PlayerSettingForm = connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(PlayerSettingForm);
-
-  return PlayerSettingForm;
+  return PlayerSetting;
 };

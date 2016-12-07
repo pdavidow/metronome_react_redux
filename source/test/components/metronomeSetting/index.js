@@ -5,11 +5,11 @@ import dom from 'cheerio';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 
-import createMetronomeSetting from '../../../components/metronomeSetting';
+import createMetronomeContainer from '../../../containers/metronome';
 import combinedReducers from '../../../store/reducers';
 ////////////////////////////////////
 
-const MetronomeSetting = createMetronomeSetting(React);
+const MetronomeContainer = createMetronomeContainer(React);
 const render = reactDom.renderToStaticMarkup;
 
 test('MetronomeSetting component', nest => {
@@ -20,7 +20,7 @@ test('MetronomeSetting component', nest => {
 
     const el =
       <Provider store={store}>
-        <MetronomeSetting />
+        <MetronomeContainer />
       </Provider>;
     const $ = dom.load(render(el));
 

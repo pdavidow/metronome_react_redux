@@ -22,16 +22,12 @@ test('Metronome', assert => {
     </Provider>;
 
   const $ = dom.load(render(el));
-  const beatsClass = 'beats';
-  const playerClass = 'player';
-  const playerSettingClass = 'playerSetting';
-  const metronomeSettingClass = 'metronomeSetting';
 
   const actual = {
-    beats: Boolean($(`.${ beatsClass }`).html()),
-    player: Boolean($(`.${ playerClass }`).html()),
-    playerSetting: Boolean($(`.${ playerSettingClass }`).html()),
-    metronomeSetting: Boolean($(`.${ metronomeSettingClass }`).html())
+    beats: Boolean($('#beatsFieldset').html()),
+    player: Boolean($('#player').html()),
+    playerSetting: Boolean($('#playerSettingFieldset').html()),
+    metronomeSetting: Boolean($('#metronomeSettingFieldset').html())
   };
 
   const expected = {

@@ -13,7 +13,7 @@ import {
 } from '../constants/actionTypes';
 ////////////////////////////////////
 
-export const setBeats = (beats) => {
+export const setBeats = ({beats}) => {
   return {
       type: SET_BEATS,
       payload: beats

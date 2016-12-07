@@ -17,24 +17,22 @@ import {
 } from '../../../models/audio/destination';
 ////////////////////////////////////
 
+const getMetronomeForm = ({domNode}) => getElementBySelector({domNode, selector: '#metronomeForm'});
 const getBeatsComponent = ({domNode}) => getElementBySelector({domNode, selector: '#beatsFieldset'});
 const getMetronomeSettingComponent = ({domNode}) => getElementBySelector({domNode, selector: '#metronomeSettingFieldset'});
-const getPlayerSettingComponent = ({domNode}) => getElementBySelector({domNode, selector: '.playerSetting'});
+const getPlayerSettingComponent = ({domNode}) => getElementBySelector({domNode, selector: '#playerSettingFieldset'});
 
 const getBeat_AddButton = ({domNode}) => getElementBySelector({domNode, selector: '#addBeatButton'});
 const getBeat_RhInputField0 = ({domNode}) => getElementBySelector({domNode, selector: '[name="beats[0].rh"]'});
 const getBeat_LhInputField0 = ({domNode}) => getElementBySelector({domNode, selector: '[name="beats[0].lh"]'});
 const getBeat_RhInputField1 = ({domNode}) => getElementBySelector({domNode, selector: '[name="beats[1].rh"]'});
 const getBeat_LhInputField1 = ({domNode}) => getElementBySelector({domNode, selector: '[name="beats[1].lh"]'});
-const getBeat_Form = ({domNode}) => getElementBySelector({domNode, selector: '.beats'});
 
 const getMetronomeSetting_ClassicTicksPerMinuteInputField = ({domNode}) => getElementBySelector({domNode, selector: '#classicTicksPerMinuteInputField'});
 const getMetronomeSetting_ClassicTicksPerBeatInputField = ({domNode}) => getElementBySelector({domNode, selector: '#classicTicksPerBeatInputField'});
-const getMetronomeSetting_Form = ({domNode}) => getElementBySelector({domNode, selector: '.metronomeSetting'});
 
 const getPlayerSetting_LoopCheckbox = ({domNode}) => getElementBySelector({domNode, selector: '#loopCheckbox'});
 const getPlayerSetting_LoopBreakCheckbox = ({domNode}) => getElementBySelector({domNode, selector: '#loopBreakCheckbox'});
-const getPlayerSetting_Form = ({domNode}) => getElementBySelector({domNode, selector: '.playerSetting'});
 
 const getPlayButton = ({domNode}) => getElementBySelector({domNode, selector: '#playButton'});
 const getStopButton = ({domNode}) => getElementBySelector({domNode, selector: '#stopButton'});
@@ -137,20 +135,17 @@ test('App', nestOuter => {
       simulate.change(getBeat_LhInputField0({domNode}), {target: {value: beat0.lh}});
       simulate.change(getBeat_RhInputField1({domNode}), {target: {value: beat1.rh}});
       simulate.change(getBeat_LhInputField1({domNode}), {target: {value: beat1.lh}});
-      simulate.submit(getBeat_Form({domNode}));
-      await sleep(250);
 
       const metronomeSetting = {classicTicksPerMinute: 120, classicTicksPerBeat: 6};
       simulate.change(getMetronomeSetting_ClassicTicksPerMinuteInputField({domNode}), {target: {value: metronomeSetting.classicTicksPerMinute}});
       simulate.change(getMetronomeSetting_ClassicTicksPerBeatInputField({domNode}), {target: {value: metronomeSetting.classicTicksPerBeat}});
-      simulate.submit(getMetronomeSetting_Form({domNode}));
-      await sleep(250);
 
       const isLooping = true;
       const isLoopBreak = true;
       simulate.change(getPlayerSetting_LoopCheckbox({domNode}), {target: {value: isLooping}});
       simulate.change(getPlayerSetting_LoopBreakCheckbox({domNode}), {target: {value: isLoopBreak}});
-      simulate.submit(getPlayerSetting_Form({domNode}));
+
+      simulate.submit(getMetronomeForm({domNode}));
       await sleep(250);
 
       let iterationCount = 0;

@@ -37,14 +37,14 @@ export default (React) => {
     const onClick_Play = () => onPlay({beats, metronomeSetting, playerSetting});
     const onClick_Stop = () => onStop();
 
-    const alertIfNeeded = () => {
+    const alertIfNeeded = ({playAlert}) => {
       if (playAlert) {
         const ModalAlert = createModalAlert(React);
         return <ModalAlert message={playAlert} onDismiss={onDismissAlert}/>
       }
     };
 
-    const isPlayButtonDisabled = () => {
+    const isPlayButtonDisabled = ({beats, isPlaying}) => {
       if (isEmpty(beats)) return true;
       return isPlaying;
     };
@@ -56,10 +56,10 @@ export default (React) => {
       render () {
         return (
           <fieldset>
-            <div className="player">
-              <div>{alertIfNeeded()}</div>
+            <div id="player">
+              <div>{alertIfNeeded({playAlert})}</div>
               <ButtonGroup bsSize="large">
-                <Button type="button" bsStyle="primary" id="playButton" disabled={isPlayButtonDisabled()} onClick={onClick_Play}>  P L A Y  </Button>
+                <Button type="button" bsStyle="primary" id="playButton" disabled={isPlayButtonDisabled({beats, isPlaying})} onClick={onClick_Play}>  P L A Y  </Button>
                 <Button type="button" bsStyle="primary" id="stopButton" disabled={!isPlaying} onClick={onClick_Stop}>  S T O P  </Button>
               </ButtonGroup >
               <br/>

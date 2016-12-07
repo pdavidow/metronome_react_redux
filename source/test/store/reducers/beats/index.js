@@ -19,7 +19,7 @@ test('Beats reducer', nestOuter => {
     const message = 'should set entire array';
 
     const stateBefore = [{rh: 3, lh: 3}];
-    const action = setBeats([{rh: 1, lh: 2}, {rh: 3, lh: 4}]);
+    const action = setBeats({beats: [{rh: 1, lh: 2}, {rh: 3, lh: 4}]});
 
     deepFreeze(stateBefore);
     deepFreeze(action);

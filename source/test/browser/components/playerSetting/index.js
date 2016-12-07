@@ -14,7 +14,7 @@ import {
 
 const getLoopCheckbox = ({domNode}) => getElementBySelector({domNode, selector: '#loopCheckbox'});
 const getLoopBreakCheckbox = ({domNode}) => getElementBySelector({domNode, selector: '#loopBreakCheckbox'});
-const getForm = ({domNode}) => getElementBySelector({domNode, selector: '.playerSetting'});
+const getMetronomeForm = ({domNode}) => getElementBySelector({domNode, selector: '#metronomeForm'});
 
 test('PlayerSetting component', nestOuter => {
   nestOuter.test('...Should set store isLooping upon submit', nestInner => {
@@ -27,7 +27,7 @@ test('PlayerSetting component', nestOuter => {
       const domNode = getDomNode({store});
 
       simulate.change(getLoopCheckbox({domNode}), {target: {value: isLooping}});
-      simulate.submit(getForm({domNode}));
+      simulate.submit(getMetronomeForm({domNode}));
 
       const actual = store.getState().playerSetting.isLooping;
       const expected = isLooping;
@@ -46,7 +46,7 @@ test('PlayerSetting component', nestOuter => {
       const domNode = getDomNode({store});
 
       simulate.change(getLoopCheckbox({domNode}), {target: {value: isLooping}});
-      simulate.submit(getForm({domNode}));
+      simulate.submit(getMetronomeForm({domNode}));
 
       const actual = store.getState().playerSetting.isLooping;
       const expected = isLooping;
@@ -65,7 +65,7 @@ test('PlayerSetting component', nestOuter => {
       const domNode = getDomNode({store});
 
       simulate.change(getLoopBreakCheckbox({domNode}), {target: {value: isLoopBreak}});
-      simulate.submit(getForm({domNode}));
+      simulate.submit(getMetronomeForm({domNode}));
 
       const actual = store.getState().playerSetting.isLoopBreak;
       const expected = isLoopBreak;
@@ -84,7 +84,7 @@ test('PlayerSetting component', nestOuter => {
       const domNode = getDomNode({store});
 
       simulate.change(getLoopBreakCheckbox({domNode}), {target: {value: isLooping}});
-      simulate.submit(getForm({domNode}));
+      simulate.submit(getMetronomeForm({domNode}));
 
       const actual = store.getState().playerSetting.isLooping;
       const expected = isLooping;
