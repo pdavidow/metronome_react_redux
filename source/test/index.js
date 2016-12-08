@@ -6,7 +6,7 @@ import './store/reducers/playerSetting';
 import './store/reducers/userInterface';
 import './models/metronome';
 import './models/tick';
-import './containers/metronome'
+import './components/metronome'
 // // import './components/beats'; todo
 import './components/metronomeSetting';
 import './components/player';

@@ -6,10 +6,10 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 
 import combinedReducers from '../../../store/reducers';
-import createMetronomeContainer from '../../../containers/metronome';
+import createMetronome from '../../../components/metronome';
 ////////////////////////////////////
 
-const MetronomeContainer = createMetronomeContainer(React);
+const Metronome = createMetronome(React);
 const render = reactDom.renderToStaticMarkup;
 
 test('Metronome Container', nest => {
@@ -19,7 +19,7 @@ test('Metronome Container', nest => {
     const store = createStore(combinedReducers);
     const el = (
       <Provider store={store}>
-        <MetronomeContainer />
+        <Metronome />
       </Provider>
     );
     const $ = dom.load(render(el));

@@ -1,12 +1,12 @@
-import createMetronomeContainer from './containers/metronome';
+import createMetronome from './components/metronome';
 ////////////////////////////////////
 
 export default (React) => () => {
-  const MetronomeContainer = createMetronomeContainer(React);
+  const Metronome = createMetronome(React);
 
   return (
     <div>
-      <MetronomeContainer />
+      <Metronome />
     </div>
   );
 };
