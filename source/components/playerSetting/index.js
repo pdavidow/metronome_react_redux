@@ -1,5 +1,5 @@
 import {Field} from 'redux-form';
-import {connect} from 'react-redux';
+//import {connect} from 'react-redux';
 import {Panel} from 'react-bootstrap';
 ////////////////////////////////////
 
@@ -23,8 +23,9 @@ export default (React) => {
     const {isLooping} = initialValues;
 
     const shouldEnable_loopBreakCheckbox = ({form_isLooping, isLooping}) => {
-      if (form_isLooping == null) return isLooping;
-      return form_isLooping;
+      return true;
+      // if (form_isLooping == null) return isLooping;
+      // return form_isLooping;
     };
 
     return (
@@ -42,7 +43,8 @@ export default (React) => {
       </fieldset>
     );
   };
-
+/*
+ // todo: causes form unresponsiveness
   const mapStateToProps = (state) => {
     const formValues = state.form.metronome.values;
     const form_isLooping = formValues ? formValues.isLooping : null;
@@ -55,6 +57,6 @@ export default (React) => {
   PlayerSetting = connect(
     mapStateToProps
   )(PlayerSetting);
-
+*/
   return PlayerSetting;
 };
