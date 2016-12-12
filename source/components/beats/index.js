@@ -29,7 +29,7 @@ export default (React) => {
     const {isPlaying} = player;
     const {isBeatPanelOpen} = userInterfaceSetting;
 
-    const normalizeNumber = (value) => Number(value);
+    const toNumber = (string) => Number(string);
     const toggleButtonText = ({isBeatPanelOpen}) => isBeatPanelOpen ? 'collapse' : 'expand';
 
     const renderField = ({input, label, type, min, meta: {touched, error }}) => (
@@ -54,7 +54,7 @@ export default (React) => {
                 min="1"
                 component={renderField}
                 label="Right Hand note count"
-                normalize={normalizeNumber}
+                parse={toNumber}
               />
               <Field
                 name={`${beat}.lh`}
@@ -62,7 +62,7 @@ export default (React) => {
                 min="1"
                 component={renderField}
                 label="Left Hand note count"
-                normalize={normalizeNumber}
+                parse={toNumber}
               />
           </li>
         )}
